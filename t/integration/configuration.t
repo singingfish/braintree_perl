@@ -1,13 +1,13 @@
 use lib qw(lib t/lib);
 use Test::More;
-use Net::Braintree;
-use Net::Braintree::TestHelper;
+use WebService::Braintree;
+use WebService::Braintree::TestHelper;
 
 subtest "default integration configuration" => sub {
-  my $config = Net::Braintree->configuration;
+  my $config = WebService::Braintree->configuration;
   $config->environment("integration");
 
-  my $result = Net::Braintree::Transaction->sale({
+  my $result = WebService::Braintree::Transaction->sale({
     amount => "10.00",
     credit_card => {
       number => "5431111111111111",
@@ -19,9 +19,9 @@ subtest "default integration configuration" => sub {
 };
 
 subtest "configuration two" => sub {
-  Net::Braintree->configuration->environment("integration");
+  WebService::Braintree->configuration->environment("integration");
 
-  my $result = Net::Braintree::Transaction->sale({
+  my $result = WebService::Braintree::Transaction->sale({
     amount => "10.00",
     credit_card => {
       number => "5431111111111111",
@@ -31,7 +31,7 @@ subtest "configuration two" => sub {
   ok $result->is_success;
   is $result->transaction->amount, "10.00";
 
-  my $config = Net::Braintree::Configuration->new;
+  my $config = WebService::Braintree::Configuration->new;
   $config->environment("integration");
   $config->public_key("it_should_explode");
   $config->private_key("with_these_values");

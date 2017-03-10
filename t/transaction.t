@@ -1,25 +1,25 @@
 use lib qw(lib t/lib);
-use Net::Braintree;
-use Net::Braintree::TestHelper;
+use WebService::Braintree;
+use WebService::Braintree::TestHelper;
 use Test::More;
 
 subtest "params tests" => sub {
-  should_throw("ArgumentError", sub { Net::Braintree::Transaction->sale({"foo" => "Bar"}); });
+  should_throw("ArgumentError", sub { WebService::Braintree::Transaction->sale({"foo" => "Bar"}); });
 };
 
 subtest "validates clone_transaction params"  => sub {
   should_throw("ArgumentError", sub {
-    Net::Braintree::Transaction->clone_transaction("foo", { invalid_param => "something"});
+    WebService::Braintree::Transaction->clone_transaction("foo", { invalid_param => "something"});
   });
 };
 
 subtest "raises error if find is passed a blank string" => sub {
-  should_throw("NotFoundError", sub { Net::Braintree::Transaction->find("") });
-  should_throw("NotFoundError", sub { Net::Braintree::Transaction->find("  ") });
+  should_throw("NotFoundError", sub { WebService::Braintree::Transaction->find("") });
+  should_throw("NotFoundError", sub { WebService::Braintree::Transaction->find("  ") });
 };
 
 subtest "details" => sub {
-  my $result = Net::Braintree::Transaction->new({
+  my $result = WebService::Braintree::Transaction->new({
     amount => "50.00",
     credit_card => {
       number => "5431111111111111",

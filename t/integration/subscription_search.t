@@ -1,28 +1,28 @@
 use lib qw(lib t/lib);
 use Test::More;
 use Time::HiRes qw(gettimeofday);
-use Net::Braintree;
-use Net::Braintree::Util;
-use Net::Braintree::TestHelper;
+use WebService::Braintree;
+use WebService::Braintree::Util;
+use WebService::Braintree::TestHelper;
 
-my $customer = Net::Braintree::Customer->create({first_name => "Fred", last_name => "Fredson"});
-my $card = Net::Braintree::CreditCard->create({number => "5431111111111111", expiration_date => "05/12", customer_id => $customer->customer->id});
+my $customer = WebService::Braintree::Customer->create({first_name => "Fred", last_name => "Fredson"});
+my $card = WebService::Braintree::CreditCard->create({number => "5431111111111111", expiration_date => "05/12", customer_id => $customer->customer->id});
 
 subtest "id (equality)" => sub {
   my $id = generate_unique_integer() . "123";
-  my $subscription1 = Net::Braintree::Subscription->create({
+  my $subscription1 = WebService::Braintree::Subscription->create({
     payment_method_token => $card->credit_card->token,
     plan_id => "integration_trialless_plan",
     id => "subscription1_$id"
   })->subscription;
 
-  my $subscription2 = Net::Braintree::Subscription->create({
+  my $subscription2 = WebService::Braintree::Subscription->create({
     payment_method_token => $card->credit_card->token,
     plan_id => "integration_trialless_plan",
     id => "subscription2_$id"
   })->subscription;
 
-  my $search_result = Net::Braintree::Subscription->search(sub {
+  my $search_result = WebService::Braintree::Subscription->search(sub {
     my $search = shift;
     $search->id->is("subscription1_$id");
   });
@@ -34,21 +34,21 @@ subtest "id (equality)" => sub {
 subtest "price (range)" => sub {
   my $id = generate_unique_integer() . "223";
 
-  my $subscription1 = Net::Braintree::Subscription->create({
+  my $subscription1 = WebService::Braintree::Subscription->create({
     payment_method_token => $card->credit_card->token,
     plan_id => "integration_trialless_plan",
     id => "subscription1_$id",
     price => "5.00"
   })->subscription;
 
-  my $subscription2 = Net::Braintree::Subscription->create({
+  my $subscription2 = WebService::Braintree::Subscription->create({
     payment_method_token => $card->credit_card->token,
     plan_id => "integration_trialless_plan",
     id => "subscription2_$id",
     price => "6.00"
   })->subscription;
 
-  my $search_result = Net::Braintree::Subscription->search(sub {
+  my $search_result = WebService::Braintree::Subscription->search(sub {
     my $search = shift;
     $search->price->max("5.50");
   });
@@ -60,21 +60,21 @@ subtest "price (range)" => sub {
 subtest "price (is)"  => sub {
   my $id = generate_unique_integer() . "223";
 
-  my $subscription1 = Net::Braintree::Subscription->create({
+  my $subscription1 = WebService::Braintree::Subscription->create({
     payment_method_token => $card->credit_card->token,
     plan_id => "integration_trialless_plan",
     id => "subscription1_$id",
     price => "5.00"
   })->subscription;
 
-  my $subscription2 = Net::Braintree::Subscription->create({
+  my $subscription2 = WebService::Braintree::Subscription->create({
     payment_method_token => $card->credit_card->token,
     plan_id => "integration_trialless_plan",
     id => "subscription2_$id",
     price => "6.00"
   })->subscription;
 
-  my $search_result = Net::Braintree::Subscription->search(sub {
+  my $search_result = WebService::Braintree::Subscription->search(sub {
     my $search = shift;
     $search->price->is("5.00");
   });
@@ -86,13 +86,13 @@ subtest "price (is)"  => sub {
 subtest "status (multiple value)" => sub {
   my $id = generate_unique_integer() . "222";
 
-  my $subscription_active = Net::Braintree::Subscription->create({
+  my $subscription_active = WebService::Braintree::Subscription->create({
     payment_method_token => $card->credit_card->token,
     plan_id => "integration_trialless_plan",
     id => "subscription1_$id"
   })->subscription;
 
-  my $subscription_past_due = Net::Braintree::Subscription->create({
+  my $subscription_past_due = WebService::Braintree::Subscription->create({
     payment_method_token => $card->credit_card->token,
     plan_id => "integration_trialless_plan",
     id => "subscription2_$id"
@@ -100,7 +100,7 @@ subtest "status (multiple value)" => sub {
 
   make_subscription_past_due($subscription_past_due->id);
 
-  my $search_result = Net::Braintree::Subscription->search(sub {
+  my $search_result = WebService::Braintree::Subscription->search(sub {
     my $search = shift;
     $search->status->is("Active");
   });
@@ -112,13 +112,13 @@ subtest "status (multiple value)" => sub {
 subtest "each (single value)" => sub {
   my $id = generate_unique_integer() . "single_value";
 
-  my $subscription_active = Net::Braintree::Subscription->create({
+  my $subscription_active = WebService::Braintree::Subscription->create({
     payment_method_token => $card->credit_card->token,
     plan_id => "integration_trialless_plan",
     id => "subscription1_$id"
   })->subscription;
 
-  my $search_result = Net::Braintree::Subscription->search(sub{
+  my $search_result = WebService::Braintree::Subscription->search(sub{
     shift->id->is("subscription1_$id");
   });
 
@@ -134,13 +134,13 @@ subtest "each (single value)" => sub {
 subtest "merchant_account_id" => sub {
   subtest "bogus id" => sub {
     my $id = generate_unique_integer() . "single_value";
-    my $subscription_active = Net::Braintree::Subscription->create({
+    my $subscription_active = WebService::Braintree::Subscription->create({
       payment_method_token => $card->credit_card->token,
       plan_id => "integration_trialless_plan",
       id => "subscription1_$id"
     })->subscription;
 
-    my $search_result = Net::Braintree::Subscription->search(sub{
+    my $search_result = WebService::Braintree::Subscription->search(sub{
       my $search = shift;
       $search->id->is("subscription1_$id");
       $search->merchant_account_id->is("obvious_junk");
@@ -151,13 +151,13 @@ subtest "merchant_account_id" => sub {
 
   subtest "mixed bogus and valid id" => sub {
     my $id = generate_unique_integer() . "single_value";
-    my $subscription_active = Net::Braintree::Subscription->create({
+    my $subscription_active = WebService::Braintree::Subscription->create({
       payment_method_token => $card->credit_card->token,
       plan_id => "integration_trialless_plan",
       id => "subscription1_$id"
     })->subscription;
 
-    my $search_result = Net::Braintree::Subscription->search(sub{
+    my $search_result = WebService::Braintree::Subscription->search(sub{
       my $search = shift;
       $search->id->is("subscription1_$id");
       $search->merchant_account_id->in("obvious_junk", $subscription_active->merchant_account_id);
@@ -168,13 +168,13 @@ subtest "merchant_account_id" => sub {
 
   subtest "valid id" => sub {
     my $id = generate_unique_integer() . "single_value";
-    my $subscription_active = Net::Braintree::Subscription->create({
+    my $subscription_active = WebService::Braintree::Subscription->create({
       payment_method_token => $card->credit_card->token,
       plan_id => "integration_trialless_plan",
       id => "subscription1_$id"
     })->subscription;
 
-    my $search_result = Net::Braintree::Subscription->search(sub{
+    my $search_result = WebService::Braintree::Subscription->search(sub{
       my $search = shift;
       $search->id->is("subscription1_$id");
       $search->merchant_account_id->is($subscription_active->merchant_account_id);
@@ -185,7 +185,7 @@ subtest "merchant_account_id" => sub {
 };
 
 subtest "all" => sub {
-  my $subscriptions = Net::Braintree::Subscription->all;
+  my $subscriptions = WebService::Braintree::Subscription->all;
   ok scalar @{$subscriptions->ids} > 1;
 };
 

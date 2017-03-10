@@ -1,8 +1,8 @@
 use lib qw(lib t/lib);
 use Test::More;
-use Net::Braintree;
-use Net::Braintree::TestHelper;
-use Net::Braintree::Test;
+use WebService::Braintree;
+use WebService::Braintree::TestHelper;
+use WebService::Braintree::Test;
 
 my $disbursement_params = {
   id => "123456",
@@ -16,7 +16,7 @@ my $disbursement_params = {
   },
   transaction_ids => ["sub_merchant_transaction"],
   amount => "100.00",
-  disbursement_date => Net::Braintree::TestHelper::parse_datetime("2014-04-10 00:00:00"),
+  disbursement_date => WebService::Braintree::TestHelper::parse_datetime("2014-04-10 00:00:00"),
   exception_message => "invalid_account_number",
   follow_up_action => "update",
   retry => "false",
@@ -25,7 +25,7 @@ my $disbursement_params = {
 
 subtest "Transactions" => sub {
   subtest "retrieves transactions associated with the disbursement" => sub {
-    my $disbursement = Net::Braintree::Disbursement->new($disbursement_params);
+    my $disbursement = WebService::Braintree::Disbursement->new($disbursement_params);
     my $transactions = $disbursement->transactions();
     isnt $transactions, undef;
     is($transactions->first()->id(), "sub_merchant_transaction");

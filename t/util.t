@@ -1,7 +1,7 @@
 use Test::More;
 use lib qw(lib t/lib);
-use Net::Braintree::Util;
-use Net::Braintree::TestHelper;
+use WebService::Braintree::Util;
+use WebService::Braintree::TestHelper;
 
 subtest "Flatten Hashes" => sub {
   is_deeply(flatten({}), {}, "empty hash");

@@ -1,9 +1,9 @@
 use lib qw(lib t/lib);
-use Net::Braintree;
-use Net::Braintree::TestHelper;
+use WebService::Braintree;
+use WebService::Braintree::TestHelper;
 use Test::More;
 
-BEGIN { use_ok('Net::Braintree::ValidationErrorCollection') };
+BEGIN { use_ok('WebService::Braintree::ValidationErrorCollection') };
 
 subtest "constructor and deep_errors" => sub {
   subtest "builds an error object given an array of hashes" => sub {
@@ -16,7 +16,7 @@ subtest "constructor and deep_errors" => sub {
       }
     };
 
-    my $collection = Net::Braintree::ValidationErrorCollection->new($hash);
+    my $collection = WebService::Braintree::ValidationErrorCollection->new($hash);
     my $error = $collection->deep_errors->[2];
     is($error->attribute, "a third attribute");
     is($error->code, 3);
@@ -37,7 +37,7 @@ subtest "for" => sub {
       }
     };
 
-    my $errors = Net::Braintree::ValidationErrorCollection->new($hash);
+    my $errors = WebService::Braintree::ValidationErrorCollection->new($hash);
 
     is(scalar @{$errors->deep_errors}, 3);
     is($errors->for('nested')->on('number')->[0]->code, 2);

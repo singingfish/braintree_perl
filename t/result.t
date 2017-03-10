@@ -1,7 +1,7 @@
 use lib qw(lib t/lib);
 use Test::More;
-use Net::Braintree::TestHelper;
-use Net::Braintree::Result;
+use WebService::Braintree::TestHelper;
+use WebService::Braintree::Result;
 
 subtest "multiple errors" => sub {
   my $response = {
@@ -10,7 +10,7 @@ subtest "multiple errors" => sub {
     }
   };
 
-  my $result = Net::Braintree::Result->new(response => $response);
+  my $result = WebService::Braintree::Result->new(response => $response);
   not_ok $result->is_success;
   is ($result->message, "Customer ID is invalid.\nCredit card number is invalid.");
 
@@ -24,7 +24,7 @@ subtest "allow access to relevant objects on response" => sub {
     }
   };
 
-  my $result = Net::Braintree::Result->new(response => $response);
+  my $result = WebService::Braintree::Result->new(response => $response);
   is($result->transaction->amount, "44.00");
   is($result->customer, undef);
 };
@@ -39,7 +39,7 @@ subtest "allow access to relevant objects on error response" => sub {
     }
   };
 
-  my $result = Net::Braintree::Result->new(response => $response);
+  my $result = WebService::Braintree::Result->new(response => $response);
   is($result->subscription->random_subscription_info, "foo");
   is($result->transaction, undef);
 };

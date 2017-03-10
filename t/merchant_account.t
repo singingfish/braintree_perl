@@ -1,9 +1,9 @@
 use lib qw(lib t/lib);
 use Test::More;
 use Test::Moose;
-use Net::Braintree;
-use Net::Braintree::TestHelper;
-use Net::Braintree::MerchantAccount;
+use WebService::Braintree;
+use WebService::Braintree::TestHelper;
+use WebService::Braintree::MerchantAccount;
 
 subtest 'create new merchant account with all params', sub {
 	my $params = {
@@ -38,7 +38,7 @@ subtest 'create new merchant account with all params', sub {
 		}
 	};
 
-	my $merchant_account = Net::Braintree::MerchantAccount->new($params);
+	my $merchant_account = WebService::Braintree::MerchantAccount->new($params);
 	is $merchant_account->status, "active";
 	is $merchant_account->id, "sub_merchant_account";
 	is $merchant_account->master_merchant_account->id, "master_merchant_account";

@@ -1,7 +1,7 @@
 use lib qw(lib t/lib);
 use Test::More;
-use Net::Braintree::Xml;
-use Net::Braintree::TestHelper;
+use WebService::Braintree::Xml;
+use WebService::Braintree::TestHelper;
 
 sub check_round_trip {
   my $data = shift;

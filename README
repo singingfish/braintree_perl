@@ -32,7 +32,7 @@ SUPPORT AND DOCUMENTATION
 After installing, you can find documentation for this module with the
 perldoc command.
 
-    perldoc Net::Braintree
+    perldoc WebService::Braintree
 
 You can also look for information at:
 

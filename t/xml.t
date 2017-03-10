@@ -1,7 +1,7 @@
 use lib qw(lib t/lib);
 use Test::More;
-use Net::Braintree::Xml;
-use Net::Braintree::TestHelper;
+use WebService::Braintree::Xml;
+use WebService::Braintree::TestHelper;
 
 subtest "simple parsing" => sub {
   is_deeply xml_to_hash("<node>text</node>"), {node => "text"};

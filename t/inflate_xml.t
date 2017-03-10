@@ -1,7 +1,7 @@
 use lib qw(lib t/lib);
-use Net::Braintree;
-use Net::Braintree::Xml;
-use Net::Braintree::TestHelper;
+use WebService::Braintree;
+use WebService::Braintree::Xml;
+use WebService::Braintree::TestHelper;
 use Test::More;
 
 subtest "should survive some deep parsing" => sub {

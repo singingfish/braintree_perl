@@ -1,13 +1,13 @@
 use lib qw(lib t/lib);
 use Test::More;
-use Net::Braintree::TestHelper;
-use Net::Braintree::TransparentRedirect::QueryString;
-use Net::Braintree::Digest qw(hexdigest);
-use Net::Braintree::Configuration;
+use WebService::Braintree::TestHelper;
+use WebService::Braintree::TransparentRedirect::QueryString;
+use WebService::Braintree::Digest qw(hexdigest);
+use WebService::Braintree::Configuration;
 
-my $config = Net::Braintree::Configuration->new({environment => "integration"});
+my $config = WebService::Braintree::Configuration->new({environment => "integration"});
 
-my $tr = Net::Braintree::TransparentRedirect::QueryString->new(config => $config);
+my $tr = WebService::Braintree::TransparentRedirect::QueryString->new(config => $config);
 my $query_string = "one=1&two=2&http_status=200";
 my $cgi_query_string = "one=1;two=2;http_status=200";
 my $hash = hexdigest($config->private_key, $query_string);

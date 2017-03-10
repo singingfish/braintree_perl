@@ -1,9 +1,9 @@
 use lib qw(lib t/lib);
 use Test::More;
-use Net::Braintree;
-use Net::Braintree::Nonce;
-use Net::Braintree::TestHelper;
-use Net::Braintree::Test;
+use WebService::Braintree;
+use WebService::Braintree::Nonce;
+use WebService::Braintree::TestHelper;
+use WebService::Braintree::Test;
 
 my $customer_attributes = {
   first_name => "Johnny",
@@ -34,14 +34,14 @@ my $customer_with_cc_and_billing = {
 
 subtest "Create:S2S" => sub {
   subtest "simple" => sub {
-    my $result = Net::Braintree::Customer->create($customer_attributes);
+    my $result = WebService::Braintree::Customer->create($customer_attributes);
     ok($result->is_success, "customer s2s create successful");
     is($result->customer->first_name, "Johnny", "sets customer attributes (first name)");
     isnt($result->customer->id, undef, "customer id != blank");
   };
 
   subtest "with CC and billing address" => sub {
-    my $result = Net::Braintree::Customer->create($customer_with_cc_and_billing);
+    my $result = WebService::Braintree::Customer->create($customer_with_cc_and_billing);
     ok $result->is_success, "customer s2s complex create successful";
     is($result->customer->first_name, "Johnny", "sets customer attributes (first name)");
     is($result->customer->addresses->[0]->street_address, "2 E Main St", "sets deeply nested attributes");
@@ -50,11 +50,11 @@ subtest "Create:S2S" => sub {
   };
 
   subtest "with venmo sdk payment method code" => sub {
-    my $result = Net::Braintree::Customer->create({
+    my $result = WebService::Braintree::Customer->create({
       first_name => "Johnny",
       last_name => "Doe",
       credit_card => {
-        venmo_sdk_payment_method_code => Net::Braintree::Test::VenmoSdk::VisaPaymentMethodCode
+        venmo_sdk_payment_method_code => WebService::Braintree::Test::VenmoSdk::VisaPaymentMethodCode
       }
     });
 
@@ -63,9 +63,9 @@ subtest "Create:S2S" => sub {
   };
 
   subtest "with credit card nonce" => sub {
-    my $nonce = Net::Braintree::TestHelper::get_nonce_for_new_card("4111111111111111", "");
+    my $nonce = WebService::Braintree::TestHelper::get_nonce_for_new_card("4111111111111111", "");
 
-    my $result = Net::Braintree::Customer->create({
+    my $result = WebService::Braintree::Customer->create({
       first_name => "Johnny",
       last_name => "Doe",
       credit_card => {
@@ -78,8 +78,8 @@ subtest "Create:S2S" => sub {
   };
 
   subtest "with paypal payment method nonce" => sub {
-    my $nonce = Net::Braintree::TestHelper::generate_future_payment_paypal_nonce();
-    my $customer_result = Net::Braintree::Customer->create({
+    my $nonce = WebService::Braintree::TestHelper::generate_future_payment_paypal_nonce();
+    my $customer_result = WebService::Braintree::Customer->create({
       payment_method_nonce => $nonce
     });
 
@@ -90,14 +90,14 @@ subtest "Create:S2S" => sub {
   };
 
   subtest "with venmo sdk session" => sub {
-    my $result = Net::Braintree::Customer->create({
+    my $result = WebService::Braintree::Customer->create({
       first_name => "Johnny",
       last_name => "Doe",
       credit_card => {
         number => "5431111111111111",
         expiration_date => "08/2012",
         options => {
-          venmo_sdk_session => Net::Braintree::Test::VenmoSdk::Session
+          venmo_sdk_session => WebService::Braintree::Test::VenmoSdk::Session
         }
       }
     });
@@ -107,7 +107,7 @@ subtest "Create:S2S" => sub {
   };
 
   subtest "with security params" => sub {
-    my $result = Net::Braintree::Customer->create({
+    my $result = WebService::Braintree::Customer->create({
       first_name => "Johnny",
       last_name => "Doe",
       credit_card => {
@@ -136,50 +136,50 @@ subtest "Create:S2S" => sub {
 
 subtest "delete" => sub {
   subtest "existing customer" => sub {
-    my $create = Net::Braintree::Customer->create($customer_attributes);
-    my $delete = Net::Braintree::Customer->delete($create->customer->id);
+    my $create = WebService::Braintree::Customer->create($customer_attributes);
+    my $delete = WebService::Braintree::Customer->delete($create->customer->id);
     ok $delete->is_success, "customer delete success";
   };
 
   subtest "customer doesn't exist" => sub {
-    should_throw("NotFoundError", sub { Net::Braintree::Customer->delete("foo") }, "throws NotFoundError if customer doesn't exist");
+    should_throw("NotFoundError", sub { WebService::Braintree::Customer->delete("foo") }, "throws NotFoundError if customer doesn't exist");
   };
 };
 
 subtest "find" => sub {
   subtest "existing customer" => sub {
-    my $create = Net::Braintree::Customer->create($customer_attributes);
-    my $customer = Net::Braintree::Customer->find($create->customer->id);
+    my $create = WebService::Braintree::Customer->create($customer_attributes);
+    my $customer = WebService::Braintree::Customer->find($create->customer->id);
     is $customer->id, $create->customer->id, "finds the correct customer";
     is $customer->first_name, "Johnny", "gets customer details (First name)";
   };
 
   subtest "doesn't exist" => sub {
-    should_throw("NotFoundError", sub { Net::Braintree::Customer->find("foo") }, "throws NotFoundError if customer doesn't exist");
+    should_throw("NotFoundError", sub { WebService::Braintree::Customer->find("foo") }, "throws NotFoundError if customer doesn't exist");
   };
 };
 
 subtest "update" => sub {
   subtest "existing simple customer" => sub {
-    my $create = Net::Braintree::Customer->create($customer_attributes);
-    my $update = Net::Braintree::Customer->update($create->customer->id, {first_name => "Timmy"});
+    my $create = WebService::Braintree::Customer->create($customer_attributes);
+    my $update = WebService::Braintree::Customer->update($create->customer->id, {first_name => "Timmy"});
 
     ok $update->is_success;
     is $update->customer->first_name, "Timmy", "updates attribute correctly";
   };
 
   subtest "add CC/address details existing simple customer" => sub {
-    my $create = Net::Braintree::Customer->create($customer_attributes);
-    my $update = Net::Braintree::Customer->update($create->customer->id, $customer_with_cc_and_billing);
+    my $create = WebService::Braintree::Customer->create($customer_attributes);
+    my $update = WebService::Braintree::Customer->update($create->customer->id, $customer_with_cc_and_billing);
 
     ok $update->is_success;
     is $update->customer->addresses->[0]->street_address, "2 E Main St", "sets deeply nested attributes";
   };
 
   subtest "update existing customer CC/Address details" => sub {
-    my $create = Net::Braintree::Customer->create($customer_with_cc_and_billing);
+    my $create = WebService::Braintree::Customer->create($customer_with_cc_and_billing);
 
-    my $update = Net::Braintree::Customer->update($create->customer->id, {
+    my $update = WebService::Braintree::Customer->update($create->customer->id, {
       credit_card => {
         number => "4009348888881881",
         expiration_date => "09/2013",
@@ -192,8 +192,8 @@ subtest "update" => sub {
   };
 
   subtest "update existing customer billing address details" => sub {
-    my $create = Net::Braintree::Customer->create($customer_with_cc_and_billing);
-    my $update = Net::Braintree::Customer->update($create->customer->id, {
+    my $create = WebService::Braintree::Customer->create($customer_with_cc_and_billing);
+    my $update = WebService::Braintree::Customer->update($create->customer->id, {
         credit_card => {
           number => "4009348888881881",
           options => {update_existing_token => $create->customer->credit_cards->[0]->token },
@@ -210,25 +210,25 @@ subtest "update" => sub {
   };
 
   subtest "doesn't exist" => sub {
-    should_throw("NotFoundError", sub { Net::Braintree::Customer->update("baz", {first_name => "Timmy"}) }, "throws error if customer doesn't exist");
+    should_throw("NotFoundError", sub { WebService::Braintree::Customer->update("baz", {first_name => "Timmy"}) }, "throws error if customer doesn't exist");
   };
 
   subtest "invalid params" => sub {
-    should_throw("ArgumentError", sub { Net::Braintree::Customer->update('foo', {"invalid_param" => "1"})}, "throws arg error");
+    should_throw("ArgumentError", sub { WebService::Braintree::Customer->update('foo', {"invalid_param" => "1"})}, "throws arg error");
   };
 
   subtest "update accepts payment method nonce" => sub {
-    my $customer_result = Net::Braintree::Customer->create({
+    my $customer_result = WebService::Braintree::Customer->create({
       credit_card => {
         number => "4111111111111111",
         expiration_date => "10/18"
       }
     });
 
-    my $update_result = Net::Braintree::Customer->update(
+    my $update_result = WebService::Braintree::Customer->update(
       $customer_result->customer->id,
       {
-        payment_method_nonce => Net::Braintree::Nonce::paypal_future_payment
+        payment_method_nonce => WebService::Braintree::Nonce::paypal_future_payment
       });
 
     my $updated_customer = $update_result->customer;
@@ -240,12 +240,12 @@ subtest "update" => sub {
 
 subtest "Search" => sub {
   subtest "search on paypal account email" => sub {
-    my $customer_result = Net::Braintree::Customer->create({
-      payment_method_nonce => Net::Braintree::Nonce::paypal_future_payment
+    my $customer_result = WebService::Braintree::Customer->create({
+      payment_method_nonce => WebService::Braintree::Nonce::paypal_future_payment
     });
 
     my $customer = $customer_result->customer;
-    my $search_result = Net::Braintree::Customer->search(sub {
+    my $search_result = WebService::Braintree::Customer->search(sub {
       my $search = shift;
       $search->id->is($customer->id);
       $search->paypal_account_email->is($customer->paypal_accounts->[0]->email);

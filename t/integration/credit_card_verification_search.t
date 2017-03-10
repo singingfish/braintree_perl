@@ -1,10 +1,10 @@
 use lib qw(lib t/lib);
 use Test::More;
 use Time::HiRes qw(gettimeofday);
-use Net::Braintree;
-use Net::Braintree::TestHelper;
+use WebService::Braintree;
+use WebService::Braintree::TestHelper;
 
-my $customer_create = Net::Braintree::Customer->create({first_name => "Walter", last_name => "Weatherman"});
+my $customer_create = WebService::Braintree::Customer->create({first_name => "Walter", last_name => "Weatherman"});
 
 subtest "Searches text and partial match and equality fields" => sub {
   my $cardholder_name = "Tom Smith" . gettimeofday;
@@ -18,10 +18,10 @@ subtest "Searches text and partial match and equality fields" => sub {
     }
   };
 
-  my $result = Net::Braintree::CreditCard->create($credit_card_params);
+  my $result = WebService::Braintree::CreditCard->create($credit_card_params);
   my $verification = $result->credit_card_verification;
 
-  my $search_results = Net::Braintree::CreditCardVerification->search( sub {
+  my $search_results = WebService::Braintree::CreditCardVerification->search( sub {
       my $search = shift;
       $search->id->is($verification->id);
       $search->credit_card_cardholder_name->is($cardholder_name);
@@ -48,7 +48,7 @@ subtest "Searches multiple value fields" => sub {
     }
   };
 
-  my $result = Net::Braintree::CreditCard->create($visa_credit_card_params);
+  my $result = WebService::Braintree::CreditCard->create($visa_credit_card_params);
   my $first_verification = $result->credit_card_verification;
 
   my $mastercard_credit_card_params = {
@@ -60,45 +60,45 @@ subtest "Searches multiple value fields" => sub {
     }
   };
 
-  $result = Net::Braintree::CreditCard->create($mastercard_credit_card_params);
+  $result = WebService::Braintree::CreditCard->create($mastercard_credit_card_params);
   my $second_verification = $result->credit_card_verification;
 
-  my $search_results = Net::Braintree::CreditCardVerification->search( sub {
+  my $search_results = WebService::Braintree::CreditCardVerification->search( sub {
       my $search = shift;
       $search->ids->in($first_verification->id, $second_verification->id);
       $search->credit_card_card_type->in([
-        Net::Braintree::CreditCard::CardType::Visa,
-        Net::Braintree::CreditCard::CardType::MasterCard
+        WebService::Braintree::CreditCard::CardType::Visa,
+        WebService::Braintree::CreditCard::CardType::MasterCard
       ]);
     });
 
   is $search_results->maximum_size, 2;
 
-  $search_results = Net::Braintree::CreditCardVerification->search( sub {
+  $search_results = WebService::Braintree::CreditCardVerification->search( sub {
       my $search = shift;
       $search->ids->in($first_verification->id);
       $search->credit_card_card_type->in(
-        Net::Braintree::CreditCard::CardType::MasterCard
+        WebService::Braintree::CreditCard::CardType::MasterCard
       );
     });
 
   is $search_results->maximum_size, 0;
 
-  $search_results = Net::Braintree::CreditCardVerification->search( sub {
+  $search_results = WebService::Braintree::CreditCardVerification->search( sub {
       my $search = shift;
       $search->ids->in($second_verification->id);
       $search->credit_card_card_type->in(
-        Net::Braintree::CreditCard::CardType::MasterCard
+        WebService::Braintree::CreditCard::CardType::MasterCard
       );
     });
 
   is $search_results->maximum_size, 1;
-  is $search_results->first->credit_card->{'card_type'}, Net::Braintree::CreditCard::CardType::MasterCard;
+  is $search_results->first->credit_card->{'card_type'}, WebService::Braintree::CreditCard::CardType::MasterCard;
 };
 
 subtest "Searches fail on invalid credit card types" => sub {
   should_throw "Invalid Argument\\(s\\) for credit_card_card_type: invalid credit_card_card_type", sub {
-    my $search_result = Net::Braintree::CreditCardVerification->search(sub {
+    my $search_result = WebService::Braintree::CreditCardVerification->search(sub {
       my $search = shift;
       $search->credit_card_card_type->is("invalid credit_card_card_type");
     });
@@ -117,13 +117,13 @@ subtest "Searches range fields" => sub {
     }
   };
 
-  my $result = Net::Braintree::CreditCard->create($credit_card_params);
+  my $result = WebService::Braintree::CreditCard->create($credit_card_params);
   my $verification = $result->credit_card_verification;
 
   my $before = $verification->created_at - DateTime::Duration->new(minutes => 1);
   my $after  = $verification->created_at + DateTime::Duration->new(minutes => 1);
 
-  my $search_results = Net::Braintree::CreditCardVerification->search( sub {
+  my $search_results = WebService::Braintree::CreditCardVerification->search( sub {
       my $search = shift;
       $search->credit_card_cardholder_name->is($cardholder_name);
       $search->created_at->between($before, $after);
@@ -132,7 +132,7 @@ subtest "Searches range fields" => sub {
  is $search_results->maximum_size, 1;
  is $search_results->first->credit_card->{'cardholder_name'}, $cardholder_name;
 
-  $search_results = Net::Braintree::CreditCardVerification->search( sub {
+  $search_results = WebService::Braintree::CreditCardVerification->search( sub {
       my $search = shift;
       $search->credit_card_cardholder_name->is($cardholder_name);
       $search->created_at->min($after);

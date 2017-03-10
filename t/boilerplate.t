@@ -49,7 +49,7 @@ TODO: {
     "placeholder date/time"       => qr(Date/time)
   );
 
-  module_boilerplate_ok('lib/Net/Braintree.pm');
+  module_boilerplate_ok('lib/WebService/Braintree.pm');
 
 
 }

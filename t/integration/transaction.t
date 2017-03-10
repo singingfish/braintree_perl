@@ -1,17 +1,17 @@
 use lib qw(lib t/lib);
 use Test::More;
-use Net::Braintree;
-use Net::Braintree::TestHelper;
-use Net::Braintree::CreditCardNumbers::CardTypeIndicators;
-use Net::Braintree::ErrorCodes::Transaction;
-use Net::Braintree::ErrorCodes::Descriptor;
-use Net::Braintree::CreditCardDefaults;
-use Net::Braintree::Nonce;
-use Net::Braintree::SandboxValues::CreditCardNumber;
-use Net::Braintree::SandboxValues::TransactionAmount;
-use Net::Braintree::Test;
-use Net::Braintree::Transaction::Status;
-use Net::Braintree::Transaction::PaymentInstrumentType;
+use WebService::Braintree;
+use WebService::Braintree::TestHelper;
+use WebService::Braintree::CreditCardNumbers::CardTypeIndicators;
+use WebService::Braintree::ErrorCodes::Transaction;
+use WebService::Braintree::ErrorCodes::Descriptor;
+use WebService::Braintree::CreditCardDefaults;
+use WebService::Braintree::Nonce;
+use WebService::Braintree::SandboxValues::CreditCardNumber;
+use WebService::Braintree::SandboxValues::TransactionAmount;
+use WebService::Braintree::Test;
+use WebService::Braintree::Transaction::Status;
+use WebService::Braintree::Transaction::PaymentInstrumentType;
 
 my $transaction_params = {
   amount => "50.00",
@@ -31,7 +31,7 @@ subtest "Successful Transactions" => sub {
 
   foreach (@examples) {
     my ($method) = $_;
-    my $result = Net::Braintree::Transaction->$method($transaction_params);
+    my $result = WebService::Braintree::Transaction->$method($transaction_params);
 
     ok $result->is_success;
     is($result->message, "", "$method result has errors: " . $result->message);
@@ -44,7 +44,7 @@ subtest "Successful Transactions" => sub {
 };
 
 subtest "descriptor validations" => sub {
-  my $result = Net::Braintree::Transaction->sale({
+  my $result = WebService::Braintree::Transaction->sale({
       amount => "5.00",
       credit_card => {
         number => "4000111111111511",
@@ -57,13 +57,13 @@ subtest "descriptor validations" => sub {
   }
   });
   not_ok $result->is_success;
-  is($result->errors->for("transaction")->for("descriptor")->on("name")->[0]->code, Net::Braintree::ErrorCodes::Descriptor::NameFormatIsInvalid);
-  is($result->errors->for("transaction")->for("descriptor")->on("phone")->[0]->code, Net::Braintree::ErrorCodes::Descriptor::PhoneFormatIsInvalid);
-  is($result->errors->for("transaction")->for("descriptor")->on("url")->[0]->code, Net::Braintree::ErrorCodes::Descriptor::UrlFormatIsInvalid);
+  is($result->errors->for("transaction")->for("descriptor")->on("name")->[0]->code, WebService::Braintree::ErrorCodes::Descriptor::NameFormatIsInvalid);
+  is($result->errors->for("transaction")->for("descriptor")->on("phone")->[0]->code, WebService::Braintree::ErrorCodes::Descriptor::PhoneFormatIsInvalid);
+  is($result->errors->for("transaction")->for("descriptor")->on("url")->[0]->code, WebService::Braintree::ErrorCodes::Descriptor::UrlFormatIsInvalid);
 };
 
 subtest "Fraud rejections" => sub {
-  my $result = Net::Braintree::Transaction->sale({
+  my $result = WebService::Braintree::Transaction->sale({
       amount => "5.00",
       credit_card => {
         number => "4000111111111511",
@@ -76,7 +76,7 @@ subtest "Fraud rejections" => sub {
 };
 
 subtest "Processor declined rejection" => sub {
-  my $result = Net::Braintree::Transaction->sale({
+  my $result = WebService::Braintree::Transaction->sale({
       amount => "2001.00",
       credit_card => {
         number => "4111111111111111",
@@ -91,7 +91,7 @@ subtest "Processor declined rejection" => sub {
 };
 
 subtest "Custom Fields" => sub {
-  my $result = Net::Braintree::Transaction->sale({
+  my $result = WebService::Braintree::Transaction->sale({
     amount => "50.00",
     credit_card => {
       number => "5431111111111111",
@@ -106,12 +106,12 @@ subtest "Custom Fields" => sub {
 };
 
 subtest "billing_address_id" => sub {
-  my $customer_result = Net::Braintree::Customer->create();
-  my $address_result = Net::Braintree::Address->create({
+  my $customer_result = WebService::Braintree::Customer->create();
+  my $address_result = WebService::Braintree::Address->create({
       customer_id => $customer_result->customer->id,
       first_name => 'Jenna',
     });
-  my $result = Net::Braintree::Transaction->sale({
+  my $result = WebService::Braintree::Transaction->sale({
     amount => "50.00",
     customer_id => $customer_result->customer->id,
     billing_address_id => $address_result->address->id,
@@ -126,9 +126,9 @@ subtest "billing_address_id" => sub {
 
 subtest "with payment method nonce" => sub {
   subtest "it can create a transaction" => sub {
-    my $nonce = Net::Braintree::TestHelper::get_nonce_for_new_card("4111111111111111", '');
+    my $nonce = WebService::Braintree::TestHelper::get_nonce_for_new_card("4111111111111111", '');
 
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "50.00",
       payment_method_nonce => $nonce
     });
@@ -140,14 +140,14 @@ subtest "with payment method nonce" => sub {
 
 subtest "apple pay" => sub {
   subtest "it can create a transaction with a fake apple pay nonce" => sub {
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "50.00",
-      payment_method_nonce => Net::Braintree::Nonce::apple_pay_visa
+      payment_method_nonce => WebService::Braintree::Nonce::apple_pay_visa
     });
 
     ok $result->is_success;
     my $apple_pay_detail = $result->transaction->apple_pay;
-    is($apple_pay_detail->card_type, Net::Braintree::ApplePayCard::CardType::Visa);
+    is($apple_pay_detail->card_type, WebService::Braintree::ApplePayCard::CardType::Visa);
     ok $apple_pay_detail->expiration_month + 0 > 0;
     ok $apple_pay_detail->expiration_year + 0 > 0;
     isnt($apple_pay_detail->cardholder_name, undef);
@@ -156,14 +156,14 @@ subtest "apple pay" => sub {
 
 subtest "three_d_secure" => sub {
   subtest "can create a transaction with a three_d_secure_token" => sub {
-    my $merchant_account_id = Net::Braintree::TestHelper::three_d_secure_merchant_account_id;
-    my $three_d_secure_token = Net::Braintree::TestHelper::create_3ds_verification(
+    my $merchant_account_id = WebService::Braintree::TestHelper::three_d_secure_merchant_account_id;
+    my $three_d_secure_token = WebService::Braintree::TestHelper::create_3ds_verification(
       $merchant_account_id, {
         number => "4111111111111111",
         expiration_month => "05",
         expiration_year => "2009",
     });
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "100.00",
       credit_card => {
         number => "4111111111111111",
@@ -177,8 +177,8 @@ subtest "three_d_secure" => sub {
   };
 
   subtest "returns an error if three_d_secure_token is not a real one" => sub {
-    my $merchant_account_id = Net::Braintree::TestHelper::three_d_secure_merchant_account_id;
-    my $result = Net::Braintree::Transaction->sale({
+    my $merchant_account_id = WebService::Braintree::TestHelper::three_d_secure_merchant_account_id;
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "100.00",
       credit_card => {
         number => "4111111111111111",
@@ -189,19 +189,19 @@ subtest "three_d_secure" => sub {
     });
 
     not_ok $result->is_success;
-    my $expected_error_code = Net::Braintree::ErrorCodes::Transaction::ThreeDSecureTokenIsInvalid;
+    my $expected_error_code = WebService::Braintree::ErrorCodes::Transaction::ThreeDSecureTokenIsInvalid;
     is($result->errors->for("transaction")->on("three_d_secure_token")->[0]->code, $expected_error_code);
   };
 
   subtest "returns an error if 3ds lookup data does not match transaction" => sub {
-    my $merchant_account_id = Net::Braintree::TestHelper::three_d_secure_merchant_account_id;
-    my $three_d_secure_token = Net::Braintree::TestHelper::create_3ds_verification(
+    my $merchant_account_id = WebService::Braintree::TestHelper::three_d_secure_merchant_account_id;
+    my $three_d_secure_token = WebService::Braintree::TestHelper::create_3ds_verification(
       $merchant_account_id, {
         number => "4111111111111111",
         expiration_month => "05",
         expiration_year => "2009",
     });
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "100.00",
       credit_card => {
         number => "4111111111111111",
@@ -212,14 +212,14 @@ subtest "three_d_secure" => sub {
     });
 
     not_ok $result->is_success;
-    my $expected_error_code = Net::Braintree::ErrorCodes::Transaction::ThreeDSecureTransactionDataDoesntMatchVerify;
+    my $expected_error_code = WebService::Braintree::ErrorCodes::Transaction::ThreeDSecureTransactionDataDoesntMatchVerify;
     is($result->errors->for("transaction")->on("three_d_secure_token")->[0]->code, $expected_error_code);
   };
 };
 
 subtest "Service Fee" => sub {
   subtest "can create a transaction" => sub {
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "50.00",
       merchant_account_id => "sandbox_sub_merchant_account",
       credit_card => {
@@ -233,7 +233,7 @@ subtest "Service Fee" => sub {
   };
 
   subtest "master merchant account does not support service fee" => sub {
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "50.00",
       merchant_account_id => "sandbox_credit_card",
       credit_card => {
@@ -243,12 +243,12 @@ subtest "Service Fee" => sub {
       service_fee_amount => "10.00"
     });
     not_ok $result->is_success;
-    my $expected_error_code = Net::Braintree::ErrorCodes::Transaction::ServiceFeeAmountNotAllowedOnMasterMerchantAccount;
+    my $expected_error_code = WebService::Braintree::ErrorCodes::Transaction::ServiceFeeAmountNotAllowedOnMasterMerchantAccount;
     is($result->errors->for("transaction")->on("service_fee_amount")->[0]->code, $expected_error_code);
   };
 
   subtest "sub merchant account requires service fee" => sub {
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "50.00",
       merchant_account_id => "sandbox_sub_merchant_account",
       credit_card => {
@@ -257,12 +257,12 @@ subtest "Service Fee" => sub {
       }
     });
     not_ok $result->is_success;
-    my $expected_error_code = Net::Braintree::ErrorCodes::Transaction::SubMerchantAccountRequiresServiceFeeAmount;
+    my $expected_error_code = WebService::Braintree::ErrorCodes::Transaction::SubMerchantAccountRequiresServiceFeeAmount;
     is($result->errors->for("transaction")->on("merchant_account_id")->[0]->code, $expected_error_code);
   };
 
   subtest "not allowed on credits" => sub {
-    my $result = Net::Braintree::Transaction->credit({
+    my $result = WebService::Braintree::Transaction->credit({
       amount => "50.00",
       merchant_account_id => "sandbox_sub_merchant_account",
       credit_card => {
@@ -272,14 +272,14 @@ subtest "Service Fee" => sub {
       service_fee_amount => "10.00"
     });
     not_ok $result->is_success;
-    my $expected_error_code = Net::Braintree::ErrorCodes::Transaction::ServiceFeeIsNotAllowedOnCredits;
+    my $expected_error_code = WebService::Braintree::ErrorCodes::Transaction::ServiceFeeIsNotAllowedOnCredits;
     is($result->errors->for("transaction")->on("base")->[0]->code, $expected_error_code);
   };
 };
 
 subtest "create with hold in escrow" => sub {
   subtest "can successfully create new transcation with hold in escrow option" => sub {
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
         amount => "50.00",
         merchant_account_id => "sandbox_sub_merchant_account",
         credit_card => {
@@ -292,11 +292,11 @@ subtest "create with hold in escrow" => sub {
         }
     });
     ok $result->is_success;
-    is($result->transaction->escrow_status, Net::Braintree::Transaction::EscrowStatus::HoldPending);
+    is($result->transaction->escrow_status, WebService::Braintree::Transaction::EscrowStatus::HoldPending);
   };
 
   subtest "fails to create new transaction with hold in escrow if merchant account is not submerchant"  => sub {
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
         amount => "50.00",
         merchant_account_id => "sandbox_credit_card",
         credit_card => {
@@ -310,14 +310,14 @@ subtest "create with hold in escrow" => sub {
     });
     not_ok $result->is_success;
     is($result->errors->for("transaction")->on("base")->[0]->code,
-      Net::Braintree::ErrorCodes::Transaction::CannotHoldInEscrow
+      WebService::Braintree::ErrorCodes::Transaction::CannotHoldInEscrow
     );
   }
 };
 
 subtest "Hold for escrow"  => sub {
   subtest "can hold a submerchant's authorized transaction for escrow" => sub {
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "50.00",
       merchant_account_id => "sandbox_sub_merchant_account",
       credit_card => {
@@ -326,12 +326,12 @@ subtest "Hold for escrow"  => sub {
       },
       service_fee_amount => "10.00"
     });
-    my $hold_result = Net::Braintree::Transaction->hold_in_escrow($result->transaction->id);
+    my $hold_result = WebService::Braintree::Transaction->hold_in_escrow($result->transaction->id);
     ok $hold_result->is_success;
-    is($hold_result->transaction->escrow_status, Net::Braintree::Transaction::EscrowStatus::HoldPending);
+    is($hold_result->transaction->escrow_status, WebService::Braintree::Transaction::EscrowStatus::HoldPending);
   };
   subtest "fails with an error when holding non submerchant account transactions for error" => sub {
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "50.00",
       merchant_account_id => "sandbox_credit_card",
       credit_card => {
@@ -339,10 +339,10 @@ subtest "Hold for escrow"  => sub {
         expiration_date => "05/12"
       }
     });
-    my $hold_result = Net::Braintree::Transaction->hold_in_escrow($result->transaction->id);
+    my $hold_result = WebService::Braintree::Transaction->hold_in_escrow($result->transaction->id);
     not_ok $hold_result->is_success;
     is($hold_result->errors->for("transaction")->on("base")->[0]->code,
-      Net::Braintree::ErrorCodes::Transaction::CannotHoldInEscrow
+      WebService::Braintree::ErrorCodes::Transaction::CannotHoldInEscrow
     );
   };
 };
@@ -350,15 +350,15 @@ subtest "Hold for escrow"  => sub {
 subtest "Submit For Release" => sub {
   subtest "can submit a escrowed transaction for release" => sub {
     my $response = create_escrowed_transaction();
-    my $result = Net::Braintree::Transaction->release_from_escrow($response->transaction->id);
+    my $result = WebService::Braintree::Transaction->release_from_escrow($response->transaction->id);
     ok $result->is_success;
     is($result->transaction->escrow_status,
-      Net::Braintree::Transaction::EscrowStatus::ReleasePending
+      WebService::Braintree::Transaction::EscrowStatus::ReleasePending
     );
   };
 
   subtest "cannot submit non-escrowed transaction for release" => sub {
-    my $sale = Net::Braintree::Transaction->sale({
+    my $sale = WebService::Braintree::Transaction->sale({
       amount => "50.00",
       merchant_account_id => "sandbox_credit_card",
       credit_card => {
@@ -366,10 +366,10 @@ subtest "Submit For Release" => sub {
         expiration_date => "05/12"
       }
     });
-    my $result = Net::Braintree::Transaction->release_from_escrow($sale->transaction->id);
+    my $result = WebService::Braintree::Transaction->release_from_escrow($sale->transaction->id);
     not_ok $result->is_success;
     is($result->errors->for("transaction")->on("base")->[0]->code,
-      Net::Braintree::ErrorCodes::Transaction::CannotReleaseFromEscrow
+      WebService::Braintree::ErrorCodes::Transaction::CannotReleaseFromEscrow
     );
   };
 };
@@ -377,24 +377,24 @@ subtest "Submit For Release" => sub {
 subtest "Cancel Release" => sub {
   subtest "can cancel release for a transaction which has been submitted" => sub {
     my $escrow = create_escrowed_transaction();
-    my $submit = Net::Braintree::Transaction->release_from_escrow($escrow->transaction->id);
-    my $result = Net::Braintree::Transaction->cancel_release($submit->transaction->id);
+    my $submit = WebService::Braintree::Transaction->release_from_escrow($escrow->transaction->id);
+    my $result = WebService::Braintree::Transaction->cancel_release($submit->transaction->id);
     ok $result->is_success;
-    is($result->transaction->escrow_status, Net::Braintree::Transaction::EscrowStatus::Held);
+    is($result->transaction->escrow_status, WebService::Braintree::Transaction::EscrowStatus::Held);
   };
 
   subtest "cannot cancel release of already released transactions" => sub {
     my $escrowed = create_escrowed_transaction();
-    my $result = Net::Braintree::Transaction->cancel_release($escrowed->transaction->id);
+    my $result = WebService::Braintree::Transaction->cancel_release($escrowed->transaction->id);
     not_ok $result->is_success;
     is($result->errors->for("transaction")->on("base")->[0]->code,
-      Net::Braintree::ErrorCodes::Transaction::CannotCancelRelease
+      WebService::Braintree::ErrorCodes::Transaction::CannotCancelRelease
     );
   };
 };
 
 subtest "Security parameters" => sub {
-  my $result = Net::Braintree::Transaction->sale({
+  my $result = WebService::Braintree::Transaction->sale({
     amount => "50.00",
     device_session_id => "abc123",
     fraud_merchant_id => "456",
@@ -408,35 +408,35 @@ subtest "Security parameters" => sub {
 
 subtest "Sale" => sub {
   subtest "returns payment instrument type" => sub {
-    my $result = Net::Braintree::Transaction->sale({
-      amount => Net::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
+    my $result = WebService::Braintree::Transaction->sale({
+      amount => WebService::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
       credit_card => {
-        number => Net::Braintree::SandboxValues::CreditCardNumber::VISA,
+        number => WebService::Braintree::SandboxValues::CreditCardNumber::VISA,
         expiration_date => "05/2009"
       }
     });
 
     ok $result->is_success;
     my $transaction = $result->transaction;
-    ok($transaction->payment_instrument_type eq Net::Braintree::Transaction::PaymentInstrumentType::CREDIT_CARD);
+    ok($transaction->payment_instrument_type eq WebService::Braintree::Transaction::PaymentInstrumentType::CREDIT_CARD);
   };
 
   subtest "returns payment instrument type for paypal" => sub {
-    my $nonce = Net::Braintree::TestHelper::generate_one_time_paypal_nonce();
-    my $result = Net::Braintree::Transaction->sale({
-      amount => Net::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
+    my $nonce = WebService::Braintree::TestHelper::generate_one_time_paypal_nonce();
+    my $result = WebService::Braintree::Transaction->sale({
+      amount => WebService::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
       payment_method_nonce => $nonce
     });
 
     ok $result->is_success;
     my $transaction = $result->transaction;
-    ok($transaction->payment_instrument_type eq Net::Braintree::Transaction::PaymentInstrumentType::PAYPAL_ACCOUNT);
+    ok($transaction->payment_instrument_type eq WebService::Braintree::Transaction::PaymentInstrumentType::PAYPAL_ACCOUNT);
   };
 
   subtest "returns debug ID for paypal" => sub {
-    my $nonce = Net::Braintree::TestHelper::generate_one_time_paypal_nonce();
-    my $result = Net::Braintree::Transaction->sale({
-      amount => Net::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
+    my $nonce = WebService::Braintree::TestHelper::generate_one_time_paypal_nonce();
+    my $result = WebService::Braintree::Transaction->sale({
+      amount => WebService::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
       payment_method_nonce => $nonce
     });
 
@@ -448,7 +448,7 @@ subtest "Sale" => sub {
 
 subtest "Disbursement Details" => sub {
   subtest "disbursement_details for disbursed transactions" => sub {
-    my $result = Net::Braintree::Transaction->find("deposittransaction");
+    my $result = WebService::Braintree::Transaction->find("deposittransaction");
 
     is $result->transaction->is_disbursed, 1;
 
@@ -462,7 +462,7 @@ subtest "Disbursement Details" => sub {
   };
 
   subtest "is_disbursed false for non-disbursed transactions" => sub {
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "50.00",
       credit_card => {
         number => "5431111111111111",
@@ -476,7 +476,7 @@ subtest "Disbursement Details" => sub {
 
 subtest "Disputes" => sub {
   subtest "exposes disputes for disputed transactions" => sub {
-    my $result = Net::Braintree::Transaction->find("disputedtransaction");
+    my $result = WebService::Braintree::Transaction->find("disputedtransaction");
 
     ok $result->is_success;
 
@@ -486,8 +486,8 @@ subtest "Disputes" => sub {
     is $dispute->amount, '250.00';
     is $dispute->received_date, "2014-03-01T00:00:00Z";
     is $dispute->reply_by_date, "2014-03-21T00:00:00Z";
-    is $dispute->reason, Net::Braintree::Dispute::Reason::Fraud;
-    is $dispute->status, Net::Braintree::Dispute::Status::Won;
+    is $dispute->reason, WebService::Braintree::Dispute::Reason::Fraud;
+    is $dispute->status, WebService::Braintree::Dispute::Status::Won;
     is $dispute->currency_iso_code, "USD";
     is $dispute->transaction_details->id, "disputedtransaction";
     is $dispute->transaction_details->amount, "1000.00";
@@ -496,8 +496,8 @@ subtest "Disputes" => sub {
 
 subtest "Submit for Settlement" => sub {
   subtest "submit the full amount for settlement" => sub {
-    my $sale = Net::Braintree::Transaction->sale($transaction_params);
-    my $result = Net::Braintree::Transaction->submit_for_settlement($sale->transaction->id);
+    my $sale = WebService::Braintree::Transaction->sale($transaction_params);
+    my $result = WebService::Braintree::Transaction->submit_for_settlement($sale->transaction->id);
 
     ok $result->is_success;
     is($result->transaction->amount, "50.00", "settlement amount");
@@ -505,8 +505,8 @@ subtest "Submit for Settlement" => sub {
   };
 
   subtest "submit a lesser amount for settlement" => sub {
-    my $sale = Net::Braintree::Transaction->sale($transaction_params);
-    my $result = Net::Braintree::Transaction->submit_for_settlement($sale->transaction->id, "10.00");
+    my $sale = WebService::Braintree::Transaction->sale($transaction_params);
+    my $result = WebService::Braintree::Transaction->submit_for_settlement($sale->transaction->id, "10.00");
 
     ok $result->is_success;
     is($result->transaction->amount, "10.00", "settlement amount");
@@ -514,8 +514,8 @@ subtest "Submit for Settlement" => sub {
   };
 
   subtest "can't submit a greater amount for settlement" => sub {
-    my $sale = Net::Braintree::Transaction->sale($transaction_params);
-    my $result = Net::Braintree::Transaction->submit_for_settlement($sale->transaction->id, "100.00");
+    my $sale = WebService::Braintree::Transaction->sale($transaction_params);
+    my $result = WebService::Braintree::Transaction->submit_for_settlement($sale->transaction->id, "100.00");
 
     not_ok $result->is_success;
     is($result->message, "Settlement amount is too large.");
@@ -525,7 +525,7 @@ subtest "Submit for Settlement" => sub {
 subtest "Refund" => sub {
   subtest "successful w/ partial refund amount" => sub {
     my $settled = create_settled_transaction($transaction_params);
-    my $result  = Net::Braintree::Transaction->refund($settled->transaction->id, "20.00");
+    my $result  = WebService::Braintree::Transaction->refund($settled->transaction->id, "20.00");
 
     ok $result->is_success;
     is($result->transaction->type, 'credit', 'Refund result type is credit');
@@ -533,8 +533,8 @@ subtest "Refund" => sub {
   };
 
   subtest "unsuccessful if transaction has not been settled" => sub {
-    my $sale       = Net::Braintree::Transaction->sale($transaction_params);
-    my $result     = Net::Braintree::Transaction->refund($sale->transaction->id);
+    my $sale       = WebService::Braintree::Transaction->sale($transaction_params);
+    my $result     = WebService::Braintree::Transaction->refund($sale->transaction->id);
 
     not_ok $result->is_success;
     is($result->message, "Cannot refund a transaction unless it is settled.", "Errors on unsettled transaction");
@@ -543,8 +543,8 @@ subtest "Refund" => sub {
 
 subtest "Void" => sub {
   subtest "successful" => sub {
-    my $sale = Net::Braintree::Transaction->sale($transaction_params);
-    my $void = Net::Braintree::Transaction->void($sale->transaction->id);
+    my $sale = WebService::Braintree::Transaction->sale($transaction_params);
+    my $void = WebService::Braintree::Transaction->void($sale->transaction->id);
 
     ok $void->is_success;
     is($void->transaction->id, $sale->transaction->id, "Void tied to sale");
@@ -552,7 +552,7 @@ subtest "Void" => sub {
 
   subtest "unsuccessful" => sub {
     my $settled = create_settled_transaction($transaction_params);
-    my $void    = Net::Braintree::Transaction->void($settled->transaction->id);
+    my $void    = WebService::Braintree::Transaction->void($settled->transaction->id);
 
     not_ok $void->is_success;
     is($void->message, "Transaction can only be voided if status is authorized or submitted_for_settlement.");
@@ -561,20 +561,20 @@ subtest "Void" => sub {
 
 subtest "Find" => sub {
   subtest "successful" => sub {
-    my $sale_result = Net::Braintree::Transaction->sale($transaction_params);
-    $find_result = Net::Braintree::Transaction->find($sale_result->transaction->id);
+    my $sale_result = WebService::Braintree::Transaction->sale($transaction_params);
+    $find_result = WebService::Braintree::Transaction->find($sale_result->transaction->id);
     is $find_result->transaction->id, $sale_result->transaction->id, "should find existing transaction";
     is $find_result->transaction->amount, "50.00", "should find correct amount";
   };
 
   subtest "unsuccessful" => sub {
-    should_throw("NotFoundError", sub { Net::Braintree::Transaction->find('foo') }, "Not Foound");
+    should_throw("NotFoundError", sub { WebService::Braintree::Transaction->find('foo') }, "Not Foound");
   };
 };
 
 subtest "Options" => sub {
   subtest "submit for settlement" => sub {
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "50.00",
       credit_card => {
         number => "5431111111111111",
@@ -586,7 +586,7 @@ subtest "Options" => sub {
   };
 
   subtest "store_in_vault" => sub {
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "50.00",
       credit_card => {
         number => "5431111111111111",
@@ -598,14 +598,14 @@ subtest "Options" => sub {
       options  => { store_in_vault  => 'true', add_billing_address_to_payment_method => 'true', store_shipping_address_in_vault => 'true' }
     });
 
-    my $customer_result = Net::Braintree::Customer->find($result->transaction->customer->id);
+    my $customer_result = WebService::Braintree::Customer->find($result->transaction->customer->id);
 
     like $result->transaction->credit_card->token, qr/[\d\w]{4,}/, "it sets the token";
   };
 };
 
 subtest "Create from payment method token" => sub {
-  my $sale_result = Net::Braintree::Transaction->sale({
+  my $sale_result = WebService::Braintree::Transaction->sale({
     amount => "50.00",
     credit_card => {
       number => "5431111111111111",
@@ -615,7 +615,7 @@ subtest "Create from payment method token" => sub {
     options  => { store_in_vault  => 'true' }
   });
 
-  my $create_from_token = Net::Braintree::Transaction->sale({customer_id => $sale_result->transaction->customer->id, payment_method_token => $sale_result->transaction->credit_card->token, amount => "10.00"});
+  my $create_from_token = WebService::Braintree::Transaction->sale({customer_id => $sale_result->transaction->customer->id, payment_method_token => $sale_result->transaction->credit_card->token, amount => "10.00"});
 
   ok $create_from_token->is_success;
   is $create_from_token->transaction->customer->id, $sale_result->transaction->customer->id, "ties sale to existing customer";
@@ -624,7 +624,7 @@ subtest "Create from payment method token" => sub {
 };
 
 subtest "Clone transaction" => sub {
-  my $sale_result = Net::Braintree::Transaction->sale({
+  my $sale_result = WebService::Braintree::Transaction->sale({
     amount => "50.00",
     credit_card => {
       number => "5431111111111111",
@@ -635,7 +635,7 @@ subtest "Clone transaction" => sub {
     shipping => {first_name => "John"}
   });
 
-  my $clone_result = Net::Braintree::Transaction->clone_transaction($sale_result->transaction->id, {
+  my $clone_result = WebService::Braintree::Transaction->clone_transaction($sale_result->transaction->id, {
       amount => "123.45",
       channel => "MyShoppingCartProvider",
       options => { submit_for_settlement => "false" }
@@ -657,7 +657,7 @@ subtest "Clone transaction" => sub {
 
 
 subtest "Clone transaction and submit for settlement" => sub {
-  my $sale_result = Net::Braintree::Transaction->sale({
+  my $sale_result = WebService::Braintree::Transaction->sale({
     amount => "50.00",
     credit_card => {
       number => "5431111111111111",
@@ -665,7 +665,7 @@ subtest "Clone transaction and submit for settlement" => sub {
     }
   });
 
-  my $clone_result = Net::Braintree::Transaction->clone_transaction($sale_result->transaction->id, {
+  my $clone_result = WebService::Braintree::Transaction->clone_transaction($sale_result->transaction->id, {
       amount => "123.45",
       options => { submit_for_settlement => "true" }
   });
@@ -675,7 +675,7 @@ subtest "Clone transaction and submit for settlement" => sub {
   is $clone_transaction->status, "submitted_for_settlement";
 };
 subtest "Clone transaction with validation error" => sub {
-  my $credit_result = Net::Braintree::Transaction->credit({
+  my $credit_result = WebService::Braintree::Transaction->credit({
     amount => "50.00",
     credit_card => {
       number => "5431111111111111",
@@ -683,7 +683,7 @@ subtest "Clone transaction with validation error" => sub {
     }
   });
 
-  my $clone_result = Net::Braintree::Transaction->clone_transaction($credit_result->transaction->id, {amount => "123.45"});
+  my $clone_result = WebService::Braintree::Transaction->clone_transaction($credit_result->transaction->id, {amount => "123.45"});
   my $expected_error_code = 91543;
 
   not_ok $clone_result->is_success;
@@ -691,7 +691,7 @@ subtest "Clone transaction with validation error" => sub {
 };
 
 subtest "Recurring" => sub {
-  my $result = Net::Braintree::Transaction->sale({
+  my $result = WebService::Braintree::Transaction->sale({
       amount => "50.00",
       recurring => "true",
       credit_card => {
@@ -705,29 +705,29 @@ subtest "Recurring" => sub {
 };
 
 subtest "Card Type Indicators" => sub {
-  my $result = Net::Braintree::Transaction->sale({
+  my $result = WebService::Braintree::Transaction->sale({
       amount => "50.00",
       credit_card => {
-        number => Net::Braintree::CreditCardNumbers::CardTypeIndicators::Unknown,
+        number => WebService::Braintree::CreditCardNumbers::CardTypeIndicators::Unknown,
         expiration_date => "05/12",
       }
   });
 
   ok $result->is_success;
-  is($result->transaction->credit_card->prepaid, Net::Braintree::CreditCard::Prepaid::Unknown);
-  is($result->transaction->credit_card->commercial, Net::Braintree::CreditCard::Commercial::Unknown);
-  is($result->transaction->credit_card->debit, Net::Braintree::CreditCard::Debit::Unknown);
-  is($result->transaction->credit_card->payroll, Net::Braintree::CreditCard::Payroll::Unknown);
-  is($result->transaction->credit_card->healthcare, Net::Braintree::CreditCard::Healthcare::Unknown);
-  is($result->transaction->credit_card->durbin_regulated, Net::Braintree::CreditCard::DurbinRegulated::Unknown);
-  is($result->transaction->credit_card->issuing_bank, Net::Braintree::CreditCard::IssuingBank::Unknown);
-  is($result->transaction->credit_card->country_of_issuance, Net::Braintree::CreditCard::CountryOfIssuance::Unknown);
+  is($result->transaction->credit_card->prepaid, WebService::Braintree::CreditCard::Prepaid::Unknown);
+  is($result->transaction->credit_card->commercial, WebService::Braintree::CreditCard::Commercial::Unknown);
+  is($result->transaction->credit_card->debit, WebService::Braintree::CreditCard::Debit::Unknown);
+  is($result->transaction->credit_card->payroll, WebService::Braintree::CreditCard::Payroll::Unknown);
+  is($result->transaction->credit_card->healthcare, WebService::Braintree::CreditCard::Healthcare::Unknown);
+  is($result->transaction->credit_card->durbin_regulated, WebService::Braintree::CreditCard::DurbinRegulated::Unknown);
+  is($result->transaction->credit_card->issuing_bank, WebService::Braintree::CreditCard::IssuingBank::Unknown);
+  is($result->transaction->credit_card->country_of_issuance, WebService::Braintree::CreditCard::CountryOfIssuance::Unknown);
 };
 
 subtest "Venmo Sdk Payment Method Code" => sub {
-  my $result = Net::Braintree::Transaction->sale({
+  my $result = WebService::Braintree::Transaction->sale({
       amount => "50.00",
-      venmo_sdk_payment_method_code => Net::Braintree::Test::VenmoSdk::VisaPaymentMethodCode
+      venmo_sdk_payment_method_code => WebService::Braintree::Test::VenmoSdk::VisaPaymentMethodCode
   });
 
   ok $result->is_success;
@@ -736,14 +736,14 @@ subtest "Venmo Sdk Payment Method Code" => sub {
 };
 
 subtest "Venmo Sdk Session" => sub {
-  my $result = Net::Braintree::Transaction->sale({
+  my $result = WebService::Braintree::Transaction->sale({
     amount => "50.00",
     credit_card => {
       number => "5431111111111111",
       expiration_date => "08/2012"
     },
     options => {
-      venmo_sdk_session => Net::Braintree::Test::VenmoSdk::Session
+      venmo_sdk_session => WebService::Braintree::Test::VenmoSdk::Session
     }
   });
 
@@ -753,10 +753,10 @@ subtest "Venmo Sdk Session" => sub {
 
 subtest "paypal" => sub {
   subtest "create a transaction with a one-time paypal nonce" => sub {
-    my $nonce = Net::Braintree::TestHelper::generate_one_time_paypal_nonce('');
+    my $nonce = WebService::Braintree::TestHelper::generate_one_time_paypal_nonce('');
     isnt($nonce, undef);
 
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "10.00",
       payment_method_nonce => $nonce
     });
@@ -771,10 +771,10 @@ subtest "paypal" => sub {
   };
 
   subtest "create a transaction with a payee email" => sub {
-    my $nonce = Net::Braintree::TestHelper::generate_one_time_paypal_nonce('');
+    my $nonce = WebService::Braintree::TestHelper::generate_one_time_paypal_nonce('');
     isnt($nonce, undef);
 
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "10.00",
       payment_method_nonce => $nonce,
       paypal_account => {
@@ -793,10 +793,10 @@ subtest "paypal" => sub {
   };
 
   subtest "create a transaction with a payee email in the options params" => sub {
-    my $nonce = Net::Braintree::TestHelper::generate_one_time_paypal_nonce('');
+    my $nonce = WebService::Braintree::TestHelper::generate_one_time_paypal_nonce('');
     isnt($nonce, undef);
 
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "10.00",
       payment_method_nonce => $nonce,
       paypal_account => {
@@ -817,11 +817,11 @@ subtest "paypal" => sub {
   };
 
   subtest "create a transaction with a one-time paypal nonce and vault" => sub {
-    my $nonce = Net::Braintree::TestHelper::generate_one_time_paypal_nonce('');
+    my $nonce = WebService::Braintree::TestHelper::generate_one_time_paypal_nonce('');
     isnt($nonce, undef);
 
-    my $result = Net::Braintree::Transaction->sale({
-      amount => Net::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
+    my $result = WebService::Braintree::Transaction->sale({
+      amount => WebService::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
       payment_method_nonce => $nonce,
       options => {
         store_in_vault => "true"
@@ -839,11 +839,11 @@ subtest "paypal" => sub {
   };
 
   subtest "create a transaction with a future payment paypal nonce and vault" => sub {
-    my $nonce = Net::Braintree::TestHelper::generate_future_payment_paypal_nonce('');
+    my $nonce = WebService::Braintree::TestHelper::generate_future_payment_paypal_nonce('');
     isnt($nonce, undef);
 
-    my $result = Net::Braintree::Transaction->sale({
-      amount => Net::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
+    my $result = WebService::Braintree::Transaction->sale({
+      amount => WebService::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
       payment_method_nonce => $nonce,
       options => {
         store_in_vault => "true"
@@ -861,40 +861,40 @@ subtest "paypal" => sub {
   };
 
   subtest "void paypal transaction" => sub {
-    my $nonce = Net::Braintree::TestHelper::generate_future_payment_paypal_nonce('');
+    my $nonce = WebService::Braintree::TestHelper::generate_future_payment_paypal_nonce('');
     isnt($nonce, undef);
 
-    my $result = Net::Braintree::Transaction->sale({
-      amount => Net::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
+    my $result = WebService::Braintree::Transaction->sale({
+      amount => WebService::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
       payment_method_nonce => $nonce,
     });
 
     ok $result->is_success;
-    my $void_result = Net::Braintree::Transaction->void($result->transaction->id);
+    my $void_result = WebService::Braintree::Transaction->void($result->transaction->id);
     ok $void_result->is_success;
   };
 
   subtest "submit paypal transaction for settlement" => sub {
-    my $nonce = Net::Braintree::TestHelper::generate_future_payment_paypal_nonce('');
+    my $nonce = WebService::Braintree::TestHelper::generate_future_payment_paypal_nonce('');
     isnt($nonce, undef);
 
-    my $result = Net::Braintree::Transaction->sale({
-      amount => Net::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
+    my $result = WebService::Braintree::Transaction->sale({
+      amount => WebService::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
       payment_method_nonce => $nonce,
     });
 
     ok $result->is_success;
-    my $settlement_result = Net::Braintree::Transaction->submit_for_settlement($result->transaction->id);
+    my $settlement_result = WebService::Braintree::Transaction->submit_for_settlement($result->transaction->id);
     ok $settlement_result->is_success;
-    ok $settlement_result->transaction->status eq Net::Braintree::Transaction::Status::Settling
+    ok $settlement_result->transaction->status eq WebService::Braintree::Transaction::Status::Settling
   };
 
   subtest "refund a paypal transaction" => sub {
-    my $nonce = Net::Braintree::TestHelper::generate_future_payment_paypal_nonce('');
+    my $nonce = WebService::Braintree::TestHelper::generate_future_payment_paypal_nonce('');
     isnt($nonce, undef);
 
-    my $result = Net::Braintree::Transaction->sale({
-      amount => Net::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
+    my $result = WebService::Braintree::Transaction->sale({
+      amount => WebService::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
       payment_method_nonce => $nonce,
       options => {
         submit_for_settlement => "true"
@@ -904,25 +904,25 @@ subtest "paypal" => sub {
     ok $result->is_success;
     my $id = $result->transaction->id;
 
-    my $refund_result = Net::Braintree::Transaction->refund($id);
+    my $refund_result = WebService::Braintree::Transaction->refund($id);
     ok $refund_result->is_success;
   };
 
   subtest "paypal transaction returns settlement response code" => sub {
-    my $result = Net::Braintree::Transaction->sale({
+    my $result = WebService::Braintree::Transaction->sale({
       amount => "10.00",
-      payment_method_nonce => Net::Braintree::Nonce::paypal_future_payment,
+      payment_method_nonce => WebService::Braintree::Nonce::paypal_future_payment,
       options => {
         submit_for_settlement => "true"
       }
     });
     ok $result->is_success;
 
-    Net::Braintree::TestHelper::settlement_decline($result->transaction->id);
+    WebService::Braintree::TestHelper::settlement_decline($result->transaction->id);
 
-    $result = Net::Braintree::Transaction->find($result->transaction->id);
+    $result = WebService::Braintree::Transaction->find($result->transaction->id);
     my $transaction = $result->transaction;
-    is($transaction->status, Net::Braintree::Transaction::Status::SettlementDeclined);
+    is($transaction->status, WebService::Braintree::Transaction::Status::SettlementDeclined);
     is($transaction->processor_settlement_response_code, "4001");
     is($transaction->processor_settlement_response_text, "Settlement Declined");
   };

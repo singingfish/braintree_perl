@@ -1,7 +1,7 @@
 use lib qw(lib t/lib);
 use Test::More;
-use Net::Braintree::TestHelper;
-use Net::Braintree::Validations qw(verify_params);
+use WebService::Braintree::TestHelper;
+use WebService::Braintree::Validations qw(verify_params);
 
 ok verify_params({}, {}, "Empty params verify");
 not_ok verify_params({param_1 => "value"}, {}, "fails verifification if param isn't in signature");
