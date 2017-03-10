@@ -11,15 +11,35 @@ use WebService::Braintree::Util;
 use DateTime::Format::Strptime;
 use URI::Escape;
 use JSON;
-
 use WebService::Braintree;
-WebService::Braintree->configuration->environment("integration");
 
-use vars qw(@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS );
 use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(create_escrowed_transaction create_settled_transaction not_ok should_throw should_throw_containing simulate_form_post_for_tr make_subscription_past_due NON_DEFAULT_MERCHANT_ACCOUNT_ID);
 our @EXPORT_OK = qw();
+
+
+my $config;
+sub config {
+    return $config;
+}
+
+sub import {
+    my ($class, $env) = @_;
+    $env ||= 'integration';
+    $class->export_to_level(1, @EXPORT);
+
+    $conf = WebService::Braintree->configuration;
+    $conf->environment($env);
+    if ($env eq 'sandbox') {
+        my $conf_file = 'sandbox_config.json';
+        die "Can not run sandbox tests without $conf_file in distribution root" unless -e $conf_file;
+        my $sandbox = decode_json( do { local $/; open my $f, "$conf_file"; <$f>} );
+        $conf->public_key($sandbox->{public_key});
+        $conf->merchant_id($sandbox->{merchant_id});
+        $conf->private_key($sandbox->{private_key});
+    }
+};
 
 use constant NON_DEFAULT_MERCHANT_ACCOUNT_ID => "sandbox_credit_card_non_default";
 
