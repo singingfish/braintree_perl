@@ -1,5 +1,5 @@
 package WebService::Braintree::CreditCardVerificationSearch;
-use Moo;
+use Moose;
 use WebService::Braintree::CreditCard::CardType;
 use WebService::Braintree::AdvancedSearch qw(search_to_hash);
 my $meta = __PACKAGE__->meta();
@@ -19,4 +19,6 @@ sub to_hash {
   WebService::Braintree::AdvancedSearch->search_to_hash(shift);
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

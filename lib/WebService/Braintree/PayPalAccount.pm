@@ -1,5 +1,5 @@
 package WebService::Braintree::PayPalAccount;
-use Moo;
+use Moose;
 extends 'WebService::Braintree::PaymentMethod';
 
 sub BUILD {
@@ -23,4 +23,6 @@ sub gateway {
   WebService::Braintree->configuration->gateway;
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

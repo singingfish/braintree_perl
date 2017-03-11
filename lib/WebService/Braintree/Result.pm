@@ -1,5 +1,5 @@
 package WebService::Braintree::Result;
-use Moo;
+use Moose;
 use Hash::Inflator;
 use WebService::Braintree::Util;
 use WebService::Braintree::ValidationErrorCollection;
@@ -92,4 +92,6 @@ sub credit_card_verification {
   return WebService::Braintree::CreditCardVerification->new($self->api_error_response->{verification});
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

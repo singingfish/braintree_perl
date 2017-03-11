@@ -1,5 +1,5 @@
 package WebService::Braintree::CreditCardVerificationGateway;
-use Moo;
+use Moose;
 use WebService::Braintree::CreditCardVerificationSearch;
 use WebService::Braintree::Util;
 use Carp qw(confess);
@@ -40,4 +40,6 @@ sub fetch_verifications {
   return to_instance_array($attrs, "WebService::Braintree::CreditCardVerification");
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

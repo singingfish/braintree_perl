@@ -1,5 +1,5 @@
 package WebService::Braintree::ClientTokenGateway;
-use Moo;
+use Moose;
 use Carp qw(confess);
 use WebService::Braintree::Validations qw(verify_params client_token_signature_with_customer_id client_token_signature_without_customer_id);
 use WebService::Braintree::Result;
@@ -33,4 +33,6 @@ sub _conditionally_verify_params {
   };
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

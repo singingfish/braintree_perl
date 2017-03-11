@@ -1,5 +1,5 @@
 package WebService::Braintree::Address;
-use Moo;
+use Moose;
 extends 'WebService::Braintree::ResultObject';
 
 sub BUILD {
@@ -36,4 +36,6 @@ sub full_name {
   return $self->first_name . " " . $self->last_name
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

@@ -3,7 +3,7 @@ package WebService::Braintree::HTTP;
 use HTTP::Request;
 use LWP::UserAgent;
 use WebService::Braintree::Xml;
-use Moo;
+use Moose;
 use Carp qw(confess);
 
 has 'config' => (is => 'ro', default => sub { WebService::Braintree->configuration });
@@ -63,4 +63,6 @@ sub check_response_code {
   confess "DownForMaintenance"  if $code eq '503';
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

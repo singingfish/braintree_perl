@@ -1,5 +1,5 @@
 package WebService::Braintree::PaymentMethod;
-use Moo;
+use Moose;
 extends 'WebService::Braintree::ResultObject';
 
 has token => ( is => 'rw' );
@@ -28,4 +28,6 @@ sub gateway {
   return WebService::Braintree->configuration->gateway;
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

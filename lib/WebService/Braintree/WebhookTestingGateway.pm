@@ -4,7 +4,7 @@ use MIME::Base64;
 use POSIX qw(strftime);
 use WebService::Braintree::Digest qw(hexdigest);
 use WebService::Braintree::WebhookNotification::Kind;
-use Moo;
+use Moose;
 
 has 'gateway' => (is => 'ro');
 
@@ -269,4 +269,6 @@ sub _partner_merchant_declined_sample_xml {
 XML
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

@@ -1,6 +1,6 @@
 package WebService::Braintree::ValidationErrorCollection;
 
-use Moo;
+use Moose;
 use WebService::Braintree::Util;
 use WebService::Braintree::ValidationError;
 
@@ -34,4 +34,6 @@ sub on {
   return [ grep { $_->attribute eq $attribute } @{$self->{_errors}} ]
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

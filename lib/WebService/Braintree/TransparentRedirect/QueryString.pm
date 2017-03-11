@@ -1,7 +1,7 @@
 package WebService::Braintree::TransparentRedirect::QueryString;
 use URI;
 use WebService::Braintree::Digest qw(hexdigest);
-use Moo;
+use Moose;
 use Carp qw(confess);
 
 has 'config' => ( is => 'rw', default => sub { WebService::Braintree->configuration});
@@ -41,4 +41,6 @@ sub check_http_status {
   confess "UnexpectedError"     if $params->{'http_status'} ne '200';
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

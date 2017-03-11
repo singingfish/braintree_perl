@@ -1,5 +1,5 @@
 package WebService::Braintree::TransactionGateway;
-use Moo;
+use Moose;
 use Carp qw(confess);
 use WebService::Braintree::Util qw(validate_id);
 use WebService::Braintree::Validations qw(verify_params transaction_signature clone_transaction_signature transaction_search_results_signature);
@@ -100,4 +100,6 @@ sub fetch_transactions {
   return to_instance_array($attrs, "WebService::Braintree::Transaction");
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

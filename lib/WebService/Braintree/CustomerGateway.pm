@@ -1,5 +1,5 @@
 package WebService::Braintree::CustomerGateway;
-use Moo;
+use Moose;
 use Carp qw(confess);
 use WebService::Braintree::Validations qw(verify_params customer_signature);
 use WebService::Braintree::Util qw(validate_id);
@@ -67,5 +67,7 @@ sub fetch_customers {
 }
 
 
+__PACKAGE__->meta->make_immutable;
 1;
+
 

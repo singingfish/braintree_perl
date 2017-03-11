@@ -1,5 +1,5 @@
 package WebService::Braintree::SubscriptionSearch;
-use Moo;
+use Moose;
 use WebService::Braintree::AdvancedSearch qw(search_to_hash);
 
 my $field = WebService::Braintree::AdvancedSearchFields->new(metaclass => __PACKAGE__->meta);
@@ -22,4 +22,6 @@ sub to_hash {
   WebService::Braintree::AdvancedSearch->search_to_hash(shift);
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

@@ -1,5 +1,5 @@
 package WebService::Braintree::ResourceCollection;
-use Moo;
+use Moose;
 extends "WebService::Braintree::ResultObject";
 
 has 'response' => (is => 'rw');
@@ -62,4 +62,6 @@ sub execute_block_for_page {
   }
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

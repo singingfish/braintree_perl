@@ -1,11 +1,11 @@
 {
   package WebService::Braintree::AdvancedSearchNodes;
-  use Moo;
+  use Moose;
 }
 
 {
   package WebService::Braintree::SearchNode;
-  use Moo;
+  use Moose;
 
   has 'searcher' => (is => 'rw');
   has 'name' => (is => 'rw');
@@ -26,37 +26,39 @@
     $self->criteria->{$operator} = $operand;
     return $self->searcher;
   }
-
+  __PACKAGE__->meta->make_immutable;
   1;
 }
 
 {
   package WebService::Braintree::IsNode;
-  use Moo;
+  use Moose;
   extends ("WebService::Braintree::SearchNode");
 
   sub is {
     my ($self, $operand) = @_;
     return $self->add_node("is", $operand);
   }
+  __PACKAGE__->meta->make_immutable;
   1;
 }
 
 {
   package WebService::Braintree::EqualityNode;
-  use Moo;
+  use Moose;
   extends ("WebService::Braintree::IsNode");
 
   sub is_not {
     my ($self, $operand) = @_;
     return $self->add_node("is_not", $operand);
   }
+  __PACKAGE__->meta->make_immutable;
   1;
 }
 
 {
   package WebService::Braintree::KeyValueNode;
-  use Moo;
+  use Moose;
   extends ("WebService::Braintree::SearchNode");
 
   sub default_criteria {
@@ -73,12 +75,13 @@
     $self->criteria($operand);
     return $self->searcher;
   }
+  __PACKAGE__->meta->make_immutable;
   1;
 }
 
 {
   package WebService::Braintree::PartialMatchNode;
-  use Moo;
+  use Moose;
   extends ("WebService::Braintree::EqualityNode");
 
   sub starts_with {
@@ -90,24 +93,26 @@
     my ($self, $operand) = @_;
     return $self->add_node("ends_with", $operand);
   }
+  __PACKAGE__->meta->make_immutable;
   1;
 }
 
 {
   package WebService::Braintree::TextNode;
-  use Moo;
+  use Moose;
   extends ("WebService::Braintree::PartialMatchNode");
 
   sub contains {
     my ($self, $operand) = @_;
     return $self->add_node("contains", $operand);
   }
+  __PACKAGE__->meta->make_immutable;
   1;
 }
 
 {
   package WebService::Braintree::RangeNode;
-  use Moo;
+  use Moose;
   extends ("WebService::Braintree::EqualityNode");
 
   use overload ( '>=' => 'min', '<=' => 'max');
@@ -127,14 +132,14 @@
     $self->max($max);
     $self->min($min);
   }
-
+  __PACKAGE__->meta->make_immutable;
   1;
 }
 
 {
   package WebService::Braintree::MultipleValuesNode;
   use Carp;
-  use Moo;
+  use Moose;
   use WebService::Braintree::Util;
   extends ("WebService::Braintree::SearchNode");
 
@@ -177,6 +182,6 @@
     @{$self->criteria} = @values;
     return $self->searcher;
   }
-
+  __PACKAGE__->meta->make_immutable;
   1;
 }

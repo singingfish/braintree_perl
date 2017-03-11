@@ -1,5 +1,5 @@
 package WebService::Braintree::MerchantAccountGateway;
-use Moo;
+use Moose;
 use Carp qw(confess);
 use WebService::Braintree::Validations qw(verify_params);
 use WebService::Braintree::Util qw(validate_id);
@@ -149,4 +149,6 @@ sub _update_signature{
   };
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

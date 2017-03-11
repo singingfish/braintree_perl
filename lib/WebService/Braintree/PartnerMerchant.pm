@@ -1,5 +1,5 @@
 package WebService::Braintree::PartnerMerchant;
-use Moo;
+use Moose;
 extends 'WebService::Braintree::ResultObject';
 
 sub BUILD {
@@ -7,4 +7,6 @@ sub BUILD {
   $self->set_attributes_from_hash($self, $attributes);
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

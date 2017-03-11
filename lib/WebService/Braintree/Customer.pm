@@ -1,5 +1,5 @@
 package WebService::Braintree::Customer;
-use Moo;
+use Moose;
 extends 'WebService::Braintree::ResultObject';
 
 
@@ -67,4 +67,6 @@ sub gateway {
   return WebService::Braintree->configuration->gateway;
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

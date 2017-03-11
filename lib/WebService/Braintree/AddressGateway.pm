@@ -1,5 +1,5 @@
 package WebService::Braintree::AddressGateway;
-use Moo;
+use Moose;
 use Carp qw(confess);
 use WebService::Braintree::Validations qw(verify_params address_signature);
 use WebService::Braintree::Util qw(validate_id);
@@ -39,4 +39,6 @@ sub _make_request {
 }
 
 
+__PACKAGE__->meta->make_immutable;
 1;
+

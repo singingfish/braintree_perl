@@ -1,5 +1,5 @@
 package WebService::Braintree::TransparentRedirect;
-use Moo;
+use Moose;
 
 sub confirm {
   my($class, $query_string) = @_;
@@ -40,4 +40,6 @@ sub gateway {
   WebService::Braintree->configuration->gateway;
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

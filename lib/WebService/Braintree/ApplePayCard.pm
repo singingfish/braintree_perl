@@ -1,7 +1,7 @@
 package WebService::Braintree::ApplePayCard;
 use WebService::Braintree::ApplePayCard::CardType;
 
-use Moo;
+use Moose;
 extends 'WebService::Braintree::PaymentMethod';
 
 sub BUILD {
@@ -18,4 +18,6 @@ sub is_default {
   return shift->default;
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

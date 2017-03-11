@@ -1,5 +1,5 @@
 package WebService::Braintree::PaymentMethodGateway;
-use Moo;
+use Moose;
 use Carp qw(confess);
 
 has 'gateway' => (is => 'ro');
@@ -36,4 +36,6 @@ sub _make_request {
   return WebService::Braintree::Result->new(response => $response);
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

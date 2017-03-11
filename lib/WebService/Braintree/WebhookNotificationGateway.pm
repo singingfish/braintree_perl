@@ -4,7 +4,7 @@ use MIME::Base64;
 use WebService::Braintree::Digest qw(hexdigest);
 use WebService::Braintree::Xml qw(xml_to_hash);
 use Carp qw(confess);
-use Moo;
+use Moose;
 
 has 'gateway' => (is => 'ro');
 
@@ -44,4 +44,6 @@ sub verify {
   return $self->gateway->config->public_key . "|" . hexdigest($self->gateway->config->private_key, $challenge);
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

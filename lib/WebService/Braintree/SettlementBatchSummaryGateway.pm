@@ -1,5 +1,5 @@
 package WebService::Braintree::SettlementBatchSummaryGateway;
-use Moo;
+use Moose;
 use Carp qw(confess);
 
 has 'gateway' => (is => 'ro');
@@ -21,4 +21,6 @@ sub _make_request {
   return $result;
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

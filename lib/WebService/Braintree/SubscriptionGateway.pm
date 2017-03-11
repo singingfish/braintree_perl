@@ -2,7 +2,7 @@ package WebService::Braintree::SubscriptionGateway;
 use WebService::Braintree::Util qw(to_instance_array validate_id);
 use Carp qw(confess);
 
-use Moo;
+use Moose;
 
 has 'gateway' => (is => 'ro');
 
@@ -61,4 +61,6 @@ sub fetch_subscriptions {
   my $attrs = $response->{'subscriptions'}->{'subscription'};
   return to_instance_array($attrs, "WebService::Braintree::Subscription");
 }
+__PACKAGE__->meta->make_immutable;
 1;
+

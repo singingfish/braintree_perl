@@ -1,7 +1,7 @@
 package WebService::Braintree::Configuration;
 
 use WebService::Braintree::Gateway;
-use Moo;
+use Moose;
 
 has merchant_id => (is => 'rw');
 has partner_id => (is => 'rw');
@@ -80,4 +80,6 @@ sub api_version {
   return "4";
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

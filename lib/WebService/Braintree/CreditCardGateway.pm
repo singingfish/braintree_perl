@@ -1,5 +1,5 @@
 package WebService::Braintree::CreditCardGateway;
-use Moo;
+use Moose;
 use Carp qw(confess);
 use WebService::Braintree::Validations qw(verify_params credit_card_signature);
 use WebService::Braintree::Util qw(validate_id);
@@ -49,4 +49,6 @@ sub _make_request {
   return $result;
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

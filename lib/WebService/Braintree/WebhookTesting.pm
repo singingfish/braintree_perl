@@ -1,6 +1,6 @@
 package WebService::Braintree::WebhookTesting;
 
-use Moo;
+use Moose;
 
 
 sub sample_notification {
@@ -13,4 +13,6 @@ sub gateway {
   return WebService::Braintree->configuration->gateway;
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

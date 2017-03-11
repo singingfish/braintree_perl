@@ -2,7 +2,7 @@ package WebService::Braintree::CreditCardVerification;
 use WebService::Braintree::CreditCard;
 use WebService::Braintree::CreditCard::CardType;
 
-use Moo;
+use Moose;
 
 has 'avs_error_response_code' => (is => 'ro');
 has 'avs_postal_code_response_code' => (is => 'ro');
@@ -38,4 +38,6 @@ sub gateway {
 }
 
 
+__PACKAGE__->meta->make_immutable;
 1;
+

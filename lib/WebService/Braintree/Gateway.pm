@@ -15,7 +15,7 @@ use WebService::Braintree::TransparentRedirectGateway;
 use WebService::Braintree::WebhookNotificationGateway;
 use WebService::Braintree::WebhookTestingGateway;
 
-use Moo;
+use Moose;
 
 has 'config' => (is => 'ro');
 
@@ -93,4 +93,6 @@ sub http {
   WebService::Braintree::HTTP->new(config => shift->config);
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+

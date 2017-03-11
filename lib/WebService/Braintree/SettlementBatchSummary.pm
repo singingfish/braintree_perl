@@ -1,5 +1,5 @@
 package WebService::Braintree::SettlementBatchSummary;
-use Moo;
+use Moose;
 extends 'WebService::Braintree::ResultObject';
 
 sub BUILD {
@@ -16,4 +16,6 @@ sub gateway {
   return WebService::Braintree->configuration->gateway;
 }
 
+__PACKAGE__->meta->make_immutable;
 1;
+
