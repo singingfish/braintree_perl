@@ -12,8 +12,7 @@ use WebService::Braintree::ClientApiHTTP;
 subtest "Generate a fingerprint that the gateway accepts" => sub {
   my $client_token = decode_json(WebService::Braintree::TestHelper::generate_decoded_client_token());
   my $authorization_fingerprint = $client_token->{'authorizationFingerprint'};
-  my $config = WebService::Braintree::Configuration->new();
-  $config->environment("integration");
+  my $config = WebService::Braintree::TestHelper->config;
 
   my $http = WebService::Braintree::ClientApiHTTP->new(
     config => $config,
@@ -32,8 +31,7 @@ subtest "it allows a client token version to be specified" => sub {
 };
 
 subtest "it can pass verify card" => sub {
-  my $config = WebService::Braintree::Configuration->new();
-  $config->environment("integration");
+  my $config = WebService::Braintree::TestHelper->config;
   my $customer = WebService::Braintree::Customer->create()->customer();
 
   my $client_token = decode_json(WebService::Braintree::TestHelper::generate_decoded_client_token({
@@ -63,8 +61,7 @@ subtest "it can pass verify card" => sub {
 };
 
 subtest "it can pass make default" => sub {
-  my $config = WebService::Braintree::Configuration->new();
-  $config->environment("integration");
+  my $config = WebService::Braintree::TestHelper->config;
   my $customer = WebService::Braintree::Customer->create()->customer();
 
   my $client_token = decode_json(WebService::Braintree::TestHelper::generate_decoded_client_token({
@@ -115,10 +112,8 @@ subtest "it defaults to version 2" => sub {
 };
 
 subtest "it can pass fail_on_duplicate_payment_method card" => sub {
-  my $config = WebService::Braintree::Configuration->new();
-  $config->environment("integration");
+  my $config = WebService::Braintree::TestHelper->config;
   my $customer = WebService::Braintree::Customer->create()->customer();
-
   my $client_token = decode_json(WebService::Braintree::TestHelper::generate_decoded_client_token({
     customer_id => $customer->id
   }));
