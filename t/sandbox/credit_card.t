@@ -1,3 +1,4 @@
+#!/usr/bin/env perl
 use lib qw(lib t/lib);
 use JSON;
 use Test::More;
@@ -145,9 +146,7 @@ subtest "from_nonce" => sub {
   };
 
   subtest "fails if nonce is locked" => sub {
-    my $config = WebService::Braintree::Configuration->new();
-    $config->environment("integration");
-
+    my $config = WebService::Braintree::TestHelper->config;
     my $raw_client_token = WebService::Braintree::TestHelper::generate_decoded_client_token();
     my $client_token = decode_json($raw_client_token);
     my $authorization_fingerprint = $client_token->{'authorizationFingerprint'};
