@@ -1,7 +1,7 @@
 use lib qw(lib t/lib);
 use Test::More;
 use WebService::Braintree::Nonce;
-use WebService::Braintree::TestHelper;
+ use WebService::Braintree::TestHelper qw(sandbox);
 use WebService::Braintree;
 use WebService::Braintree::ErrorCodes::Descriptor;
 

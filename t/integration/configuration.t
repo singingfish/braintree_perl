@@ -1,7 +1,7 @@
 use lib qw(lib t/lib);
 use Test::More;
 use WebService::Braintree;
-use WebService::Braintree::TestHelper;
+ use WebService::Braintree::TestHelper qw(sandbox);
 
 subtest "default integration configuration" => sub {
   my $config = WebService::Braintree->configuration;

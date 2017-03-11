@@ -5,7 +5,7 @@ use WebService::Braintree;
 use WebService::Braintree::Nonce;
 use WebService::Braintree::SandboxValues::TransactionAmount;
 use WebService::Braintree::Util;
-use WebService::Braintree::TestHelper;
+ use WebService::Braintree::TestHelper qw(sandbox);
 
 my $credit_card_number = "5431111111111111";
 

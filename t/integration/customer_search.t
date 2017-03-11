@@ -2,7 +2,7 @@ use lib qw(lib t/lib);
 use Test::More;
 use Time::HiRes qw(gettimeofday);
 use WebService::Braintree;
-use WebService::Braintree::TestHelper;
+ use WebService::Braintree::TestHelper qw(sandbox);
 use WebService::Braintree::Util;
 use DateTime;
 use DateTime::Duration;

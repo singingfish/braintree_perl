@@ -1,7 +1,7 @@
 use lib qw(lib t/lib);
 use Test::More;
 use WebService::Braintree;
-use WebService::Braintree::TestHelper;
+ use WebService::Braintree::TestHelper qw(sandbox);
 
 subtest "returns an empty collection if there is no data" => sub {
   my $settlement_date = '2011-01-01';

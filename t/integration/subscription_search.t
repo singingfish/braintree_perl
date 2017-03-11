@@ -3,7 +3,7 @@ use Test::More;
 use Time::HiRes qw(gettimeofday);
 use WebService::Braintree;
 use WebService::Braintree::Util;
-use WebService::Braintree::TestHelper;
+ use WebService::Braintree::TestHelper qw(sandbox);
 
 my $customer = WebService::Braintree::Customer->create({first_name => "Fred", last_name => "Fredson"});
 my $card = WebService::Braintree::CreditCard->create({number => "5431111111111111", expiration_date => "05/12", customer_id => $customer->customer->id});

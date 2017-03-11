@@ -7,7 +7,7 @@ use WebService::Braintree::ErrorCodes::MerchantAccount::Individual::Address;
 use WebService::Braintree::ErrorCodes::MerchantAccount::Funding;
 use WebService::Braintree::ErrorCodes::MerchantAccount::Business;
 use WebService::Braintree::ErrorCodes::MerchantAccount::Business::Address;
-use WebService::Braintree::TestHelper;
+ use WebService::Braintree::TestHelper qw(sandbox);
 use WebService::Braintree::Test;
 
 my $deprecated_application_params = {

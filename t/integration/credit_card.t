@@ -6,7 +6,7 @@ use WebService::Braintree::CreditCardNumbers::CardTypeIndicators;
 use WebService::Braintree::CreditCardDefaults;
 use WebService::Braintree::ErrorCodes::CreditCard;
 use WebService::Braintree::Test;
-use WebService::Braintree::TestHelper;
+ use WebService::Braintree::TestHelper qw(sandbox);
 
 my $customer_create = WebService::Braintree::Customer->create({first_name => "Walter", last_name => "Weatherman"});
 

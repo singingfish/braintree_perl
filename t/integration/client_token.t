@@ -1,3 +1,4 @@
+#!/usr/bin/env perl
 use lib qw(lib t/lib);
 use Test::More;
 use JSON;
@@ -5,7 +6,7 @@ use MIME::Base64;
 use WebService::Braintree;
 use WebService::Braintree::ClientToken;
 use WebService::Braintree::Test;
-use WebService::Braintree::TestHelper;
+ use WebService::Braintree::TestHelper qw(sandbox);
 use WebService::Braintree::ClientApiHTTP;
 
 subtest "Generate a fingerprint that the gateway accepts" => sub {

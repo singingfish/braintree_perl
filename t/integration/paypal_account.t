@@ -3,7 +3,7 @@ use Test::More;
 use Data::GUID;
 use WebService::Braintree;
 use WebService::Braintree::Nonce;
-use WebService::Braintree::TestHelper;
+ use WebService::Braintree::TestHelper qw(sandbox);
 use WebService::Braintree::Test;
 use WebService::Braintree::Xml;
 

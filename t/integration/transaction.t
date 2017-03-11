@@ -1,7 +1,7 @@
 use lib qw(lib t/lib);
 use Test::More;
 use WebService::Braintree;
-use WebService::Braintree::TestHelper;
+ use WebService::Braintree::TestHelper qw(sandbox);
 use WebService::Braintree::CreditCardNumbers::CardTypeIndicators;
 use WebService::Braintree::ErrorCodes::Transaction;
 use WebService::Braintree::ErrorCodes::Descriptor;

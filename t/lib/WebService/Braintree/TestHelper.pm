@@ -1,4 +1,6 @@
 package WebService::Braintree::TestHelper;
+use warnings;
+use strict;
 use lib qw(lib t/lib);
 use WebService::Braintree::ClientToken;
 use WebService::Braintree::ClientApiHTTP;
@@ -29,15 +31,15 @@ sub import {
     $env ||= 'integration';
     $class->export_to_level(1, @EXPORT);
 
-    $conf = WebService::Braintree->configuration;
-    $conf->environment($env);
+    $config = WebService::Braintree->configuration;
+    $config->environment($env);
     if ($env eq 'sandbox') {
         my $conf_file = 'sandbox_config.json';
         die "Can not run sandbox tests without $conf_file in distribution root" unless -e $conf_file;
         my $sandbox = decode_json( do { local $/; open my $f, "$conf_file"; <$f>} );
-        $conf->public_key($sandbox->{public_key});
-        $conf->merchant_id($sandbox->{merchant_id});
-        $conf->private_key($sandbox->{private_key});
+        $config->public_key($sandbox->{public_key});
+        $config->merchant_id($sandbox->{merchant_id});
+        $config->private_key($sandbox->{private_key});
     }
 };
 
@@ -173,7 +175,7 @@ sub parse_datetime {
 }
 
 sub get_new_http_client {
-  my $config = WebService::Braintree::Configuration->new(environment => "integration");
+  my $config = __PACKAGE__->config;
   my $customer = WebService::Braintree::Customer->create()->customer;
   my $raw_client_token = WebService::Braintree::TestHelper::generate_decoded_client_token();
   my $client_token = decode_json($raw_client_token);
@@ -199,8 +201,7 @@ sub get_nonce_for_new_card {
   my $client_token = decode_json($raw_client_token);
   my $authorization_fingerprint = $client_token->{'authorizationFingerprint'};
 
-  my $config = WebService::Braintree::Configuration->new();
-  $config->environment("integration");
+  my $config = __PACKAGE__->config;
 
   my $http = WebService::Braintree::ClientApiHTTP->new(
     config => $config,
@@ -224,7 +225,7 @@ sub generate_unlocked_nonce {
   my $client_token = decode_json($raw_client_token);
 
   my $authorization_fingerprint = $client_token->{'authorizationFingerprint'};
-  my $config = WebService::Braintree::Configuration->new(environment => "integration");
+  my $config = __PACKAGE__->config;
   my $http = WebService::Braintree::ClientApiHTTP->new(
     config => $config,
     fingerprint => $authorization_fingerprint,
@@ -247,7 +248,7 @@ sub generate_one_time_paypal_nonce {
   my $client_token = decode_json($raw_client_token);
 
   my $authorization_fingerprint = $client_token->{'authorizationFingerprint'};
-  my $config = WebService::Braintree::Configuration->new(environment => "integration");
+  my $config = __PACKAGE__->config;
   my $http = WebService::Braintree::ClientApiHTTP->new(
     config => $config,
     fingerprint => $authorization_fingerprint,
@@ -270,7 +271,7 @@ sub generate_future_payment_paypal_nonce {
   my $client_token = decode_json($raw_client_token);
 
   my $authorization_fingerprint = $client_token->{'authorizationFingerprint'};
-  my $config = WebService::Braintree::Configuration->new(environment => "integration");
+  my $config = __PACKAGE__->config;
   my $http = WebService::Braintree::ClientApiHTTP->new(
     config => $config,
     fingerprint => $authorization_fingerprint,
@@ -296,7 +297,7 @@ sub nonce_for_new_payment_method {
   my $params = shift;
   my $raw_client_token = generate_decoded_client_token();
   my $client_token = decode_json($raw_client_token);
-  my $config = WebService::Braintree::Configuration->new(environment => "integration");
+  my $config = __PACKAGE__->config;
   my $http = WebService::Braintree::ClientApiHTTP->new(
     config => $config,
     fingerprint => $client_token->{'authorizationFingerprint'},
@@ -318,7 +319,7 @@ sub nonce_for_paypal_account {
   my $paypal_account_details = shift;
   my $raw_client_token = generate_decoded_client_token();
   my $client_token = decode_json($raw_client_token);
-  my $config = WebService::Braintree::Configuration->new(environment => "integration");
+  my $config = __PACKAGE__->config;
   my $http = WebService::Braintree::ClientApiHTTP->new(
     config => $config,
     fingerprint => $client_token->{'authorizationFingerprint'}

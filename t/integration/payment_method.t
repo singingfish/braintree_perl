@@ -4,7 +4,7 @@ use WebService::Braintree;
 use WebService::Braintree::ErrorCodes;
 use WebService::Braintree::Nonce;
 use WebService::Braintree::SandboxValues::CreditCardNumber;
-use WebService::Braintree::TestHelper;
+ use WebService::Braintree::TestHelper qw(sandbox);
 use WebService::Braintree::Test;
 use WebService::Braintree::Xml;
 use Data::GUID;
@@ -241,7 +241,7 @@ subtest "Create" => sub {
   };
 
   subtest "it does not override the billing address for a vaulted credit card" => sub {
-    my $config = WebService::Braintree::Configuration->new(environment => "integration");
+    my $config = WebService::Braintree::TestHelper->config;
     my $customer = WebService::Braintree::Customer->create()->customer;
     my $raw_client_token = WebService::Braintree::TestHelper::generate_decoded_client_token({ customer_id => $customer->id });
     my $client_token = decode_json($raw_client_token);
@@ -303,7 +303,7 @@ subtest "Create" => sub {
   };
 
   subtest "it allows passing a billing address id outside of the nonce" => sub {
-    my $config = WebService::Braintree::Configuration->new(environment => "integration");
+    my $config = WebService::Braintree::TestHelper->config;
     my $customer = WebService::Braintree::Customer->create()->customer;
     my $raw_client_token = WebService::Braintree::TestHelper::generate_decoded_client_token({ customer_id => $customer->id });
     my $client_token = decode_json($raw_client_token);

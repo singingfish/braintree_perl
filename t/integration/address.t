@@ -1,7 +1,8 @@
+#!/usr/bin/env perl
 use lib qw(lib t/lib);
 use Test::More;
 use WebService::Braintree;
-use WebService::Braintree::TestHelper;
+use WebService::Braintree::TestHelper qw/sandbox/;
 
 my $customer_instance = WebService::Braintree::Customer->new;
 my $customer = $customer_instance->create({first_name => "Walter", last_name => "Weatherman"});
