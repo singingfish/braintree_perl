@@ -1,11 +1,11 @@
 package WebService::Braintree::HTTP;
 
-
 use HTTP::Request;
 use LWP::UserAgent;
 use WebService::Braintree::Xml;
 use Moose;
 use Carp qw(confess);
+use constant CLIENT_VERSION => $WebService::Braintree::VERSION || 'development';
 
 has 'config' => (is => 'ro', default => sub { WebService::Braintree->configuration });
 
@@ -41,7 +41,7 @@ sub make_request {
 
     $request->header("X-ApiVersion" => $self->config->api_version);
     $request->header("environment" => $self->config->environment);
-    $request->header("User-Agent" => "Braintree Perl Module " . WebService::Braintree->VERSION);
+    $request->header("User-Agent" => "Braintree Perl Module " . CLIENT_VERSION );
 
     my $agent = LWP::UserAgent->new;
     my $response = $agent->request($request);
