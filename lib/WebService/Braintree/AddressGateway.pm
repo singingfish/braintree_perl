@@ -1,5 +1,7 @@
 package WebService::Braintree::AddressGateway;
 use Moose;
+with 'WebService::Braintree::Role::MakeRequest';
+
 use Carp qw(confess);
 use WebService::Braintree::Validations qw(verify_params address_signature);
 use WebService::Braintree::Util qw(validate_id);
@@ -30,14 +32,6 @@ sub delete {
   my ($self, $customer_id, $address_id) = @_;
   $self->_make_request("/customers/$customer_id/addresses/$address_id", "delete");
 }
-
-sub _make_request {
-  my($self, $path, $verb, $params) = @_;
-  my $response = $self->gateway->http->$verb($path, $params);
-  my $result = WebService::Braintree::Result->new(response => $response);
-  return $result;
-}
-
 
 __PACKAGE__->meta->make_immutable;
 1;

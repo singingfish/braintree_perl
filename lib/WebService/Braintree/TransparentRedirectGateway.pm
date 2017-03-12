@@ -1,5 +1,6 @@
 package WebService::Braintree::TransparentRedirectGateway;
 use Moose;
+with 'WebService::Braintree::Role::MakeRequest';
 
 use Carp qw(confess);
 use DateTime;
@@ -94,13 +95,6 @@ sub build_tr_data {
   my $query = hash_to_query_string($params);
   my $tr_hash = hexdigest($self->gateway->config->private_key, $query);
   return "$tr_hash|$query";
-}
-
-sub _make_request {
-  my($self, $path, $verb, $params) = @_;
-  my $response = $self->gateway->http->$verb($path, $params);
-  my $result = WebService::Braintree::Result->new(response => $response);
-  return $result;
 }
 
 __PACKAGE__->meta->make_immutable;

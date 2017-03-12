@@ -1,5 +1,7 @@
 package WebService::Braintree::CustomerGateway;
 use Moose;
+with 'WebService::Braintree::Role::MakeRequest';
+
 use Carp qw(confess);
 use WebService::Braintree::Validations qw(verify_params customer_signature);
 use WebService::Braintree::Util qw(validate_id);
@@ -47,13 +49,6 @@ sub all {
   return WebService::Braintree::ResourceCollection->new()->init($response, sub {
     $self->fetch_customers(WebService::Braintree::CustomerSearch->new, shift);
   });
-}
-
-sub _make_request {
-  my($self, $path, $verb, $params) = @_;
-  my $response = $self->gateway->http->$verb($path, $params);
-  my $result = WebService::Braintree::Result->new(response => $response);
-  return $result;
 }
 
 sub fetch_customers {

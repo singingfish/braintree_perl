@@ -3,6 +3,7 @@ use WebService::Braintree::Util qw(to_instance_array validate_id);
 use Carp qw(confess);
 
 use Moose;
+with 'WebService::Braintree::Role::MakeRequest';
 
 has 'gateway' => (is => 'ro');
 
@@ -26,13 +27,6 @@ sub update {
 sub cancel {
   my ($self, $id) = @_;
   my $result = $self->_make_request("/subscriptions/$id/cancel", "put", undef);
-}
-
-sub _make_request {
-  my($self, $path, $verb, $params) = @_;
-  my $response = $self->gateway->http->$verb($path, $params);
-  my $result = WebService::Braintree::Result->new(response => $response);
-  return $result;
 }
 
 sub search {

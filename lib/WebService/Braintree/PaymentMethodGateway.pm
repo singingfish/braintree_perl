@@ -1,5 +1,7 @@
 package WebService::Braintree::PaymentMethodGateway;
 use Moose;
+with 'WebService::Braintree::Role::MakeRequest';
+
 use Carp qw(confess);
 
 has 'gateway' => (is => 'ro');
@@ -29,12 +31,6 @@ sub find {
   return $response->payment_method;
 }
 
-sub _make_request {
-  my ($self, $path, $verb, $params) = @_;
-  my $response = $self->gateway->http->$verb($path, $params);
-
-  return WebService::Braintree::Result->new(response => $response);
-}
 
 __PACKAGE__->meta->make_immutable;
 1;

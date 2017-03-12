@@ -1,5 +1,7 @@
 package WebService::Braintree::PayPalAccountGateway;
 use Moose;
+with 'WebService::Braintree::Role::MakeRequest';
+
 use Carp qw(confess);
 
 has 'gateway' => (is => 'ro');
@@ -17,13 +19,6 @@ sub update {
     {
       paypal_account => $params
     });
-}
-
-sub _make_request {
-  my($self, $path, $verb, $params) = @_;
-  my $response = $self->gateway->http->$verb($path, $params);
-  my $result = WebService::Braintree::Result->new(response => $response);
-  return $result;
 }
 
 __PACKAGE__->meta->make_immutable;

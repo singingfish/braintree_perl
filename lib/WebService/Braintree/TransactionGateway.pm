@@ -1,5 +1,6 @@
 package WebService::Braintree::TransactionGateway;
 use Moose;
+with 'WebService::Braintree::Role::MakeRequest';
 use Carp qw(confess);
 use WebService::Braintree::Util qw(validate_id);
 use WebService::Braintree::Validations qw(verify_params transaction_signature clone_transaction_signature transaction_search_results_signature);
@@ -83,12 +84,6 @@ sub all {
   return WebService::Braintree::ResourceCollection->new()->init($response, sub {
     $self->fetch_transactions(WebService::Braintree::TransactionSearch->new, shift);
   });
-}
-
-sub _make_request {
-  my($self, $path, $verb, $params) = @_;
-  my $response = $self->gateway->http->$verb($path, $params);
-  return WebService::Braintree::Result->new(response => $response);
 }
 
 sub fetch_transactions {

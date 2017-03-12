@@ -1,5 +1,7 @@
 package WebService::Braintree::ClientTokenGateway;
 use Moose;
+with 'WebService::Braintree::Role::MakeRequest';
+
 use Carp qw(confess);
 use WebService::Braintree::Validations qw(verify_params client_token_signature_with_customer_id client_token_signature_without_customer_id);
 use WebService::Braintree::Result;
@@ -17,11 +19,6 @@ sub generate {
   $result->{"response"}->{"client_token"}->{"value"};
 }
 
-sub _make_request {
-  my($self, $path, $verb, $params) = @_;
-  my $response = $self->gateway->http->$verb($path, $params);
-  WebService::Braintree::Result->new(response => $response);
-}
 
 sub _conditionally_verify_params {
   my ($self, $params) = @_;

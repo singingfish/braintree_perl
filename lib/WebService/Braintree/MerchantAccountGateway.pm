@@ -1,5 +1,7 @@
 package WebService::Braintree::MerchantAccountGateway;
 use Moose;
+with 'WebService::Braintree::Role::MakeRequest';
+
 use Carp qw(confess);
 use WebService::Braintree::Validations qw(verify_params);
 use WebService::Braintree::Util qw(validate_id);
@@ -23,13 +25,6 @@ sub find {
   my ($self, $id) = @_;
   confess "NotFoundError" unless validate_id($id);
   my $result = $self->_make_request("/merchant_accounts/$id", "get", undef)->merchant_account;
-}
-
-sub _make_request {
-  my($self, $path, $verb, $params) = @_;
-  my $response = $self->gateway->http->$verb($path, $params);
-  my $result = WebService::Braintree::Result->new(response => $response);
-  return $result;
 }
 
 sub _detect_signature {
