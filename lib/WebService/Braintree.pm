@@ -1,8 +1,7 @@
 package WebService::Braintree;
-
-use 5.006;
-use strict;
 use warnings;
+use strict;
+
 use WebService::Braintree::Address;
 use WebService::Braintree::AdvancedSearchFields;
 use WebService::Braintree::AdvancedSearchNodes;
@@ -31,16 +30,33 @@ use WebService::Braintree::Configuration;
 
 =head1 NAME
 
-WebService::Braintree - A Client Library for wrapping the Braintree Payment Services Gateway API
+WebService::Braintree - A Client Library for wrapping the Braintree Payment
+Services Gateway API
 
 =head1 VERSION
 
-Version 0.29.0
+Version 0.001
 
-=head1 DEPRECATED
+=head1 IMPORTANT
 
-This library is deprecated; current integrations are supported, but no new feature development is planned at this time.
-For more details see: https://support.braintreepayments.com/customer/portal/articles/1763061-status-of-the-perl-client-library
+This is a community fork of the deprecated L<Net:BrainTree> module renamed
+to the WebService::Braintree.  While unsupported by paypal, this library is
+endorsed for future development by the open source community.
+
+=head2 DOCUMENTATION
+
+similiar to ruby.
+Read the tests, especially t/sandbox, and the ruby docs at L<XXX>.  Note the sandbox tests are ...
+
+=head2 TODO/Wishlist
+
+More code cleaning
+Eliminate the metaobject wrangling
+use Moo
+Work out why the really slow sandbox tests are slow.
+work out how to get the TODO sandbox libraries passing.
+
+
 
 =cut
 
