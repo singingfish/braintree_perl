@@ -8,11 +8,11 @@ use constant Released => 'released';
 use constant Refunded => 'refunded';
 
 use constant All => (
-  HoldPending,
-  Held,
-  ReleasePending,
-  Released,
-  Refunded
+    HoldPending,
+    Held,
+    ReleasePending,
+    Released,
+    Refunded
 );
 
 1;

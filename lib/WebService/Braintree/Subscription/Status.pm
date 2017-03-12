@@ -8,11 +8,11 @@ use constant PastDue => 'Past Due';
 use constant Pending => 'Pending';
 
 use constant All => (
-  Active,
-  Canceled,
-  Expired,
-  PastDue,
-  Pending
+    Active,
+    Canceled,
+    Expired,
+    PastDue,
+    Pending
 );
 
 1;

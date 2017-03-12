@@ -5,17 +5,17 @@ use Moose;
 extends 'WebService::Braintree::PaymentMethod';
 
 sub BUILD {
-  my ($self, $attributes) = @_;
-  $self->set_attributes_from_hash($self, $attributes);
+    my ($self, $attributes) = @_;
+    $self->set_attributes_from_hash($self, $attributes);
 }
 
 sub expiration_date {
-  my $self = shift;
-  return $self->expiration_month . "/" . $self->expiration_year;
+    my $self = shift;
+    return $self->expiration_month . "/" . $self->expiration_year;
 }
 
 sub is_default {
-  return shift->default;
+    return shift->default;
 }
 
 __PACKAGE__->meta->make_immutable;
