@@ -17,18 +17,18 @@ use constant Visa => "Visa";
 use constant Unknown => "Unknown";
 
 use constant All => [
-  AmericanExpress,
-  CarteBlanche,
-  ChinaUnionPay,
-  DinersClub,
-  Discover,
-  JCB,
-  Laser,
-  Maestro,
-  MasterCard,
-  Solo,
-  Switch,
-  Visa,
-  Unknown
+    AmericanExpress,
+    CarteBlanche,
+    ChinaUnionPay,
+    DinersClub,
+    Discover,
+    JCB,
+    Laser,
+    Maestro,
+    MasterCard,
+    Solo,
+    Switch,
+    Visa,
+    Unknown
 ];
 1;

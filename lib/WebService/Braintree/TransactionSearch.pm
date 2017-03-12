@@ -71,7 +71,7 @@ $field->range("submitted_for_settlement_at");
 $field->range("voided_at");
 
 sub to_hash {
-  WebService::Braintree::AdvancedSearch->search_to_hash(shift);
+    WebService::Braintree::AdvancedSearch->search_to_hash(shift);
 }
 
 __PACKAGE__->meta->make_immutable;

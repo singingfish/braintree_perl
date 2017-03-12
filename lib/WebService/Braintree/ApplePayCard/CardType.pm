@@ -7,9 +7,9 @@ use constant MasterCard => "Apple Pay - MasterCard";
 use constant Visa => "Apple Pay - Visa";
 
 use constant All => [
-  AmericanExpress,
-  MasterCard,
-  Visa
+    AmericanExpress,
+    MasterCard,
+    Visa
 ];
 
 1;

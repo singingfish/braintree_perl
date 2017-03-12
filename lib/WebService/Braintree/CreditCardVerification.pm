@@ -20,22 +20,22 @@ has 'created_at' => (is => 'ro');
 has 'status' => (is => 'ro');
 
 sub search {
-  my ($class, $block) = @_;
-  $class->gateway->credit_card_verification->search($block);
+    my ($class, $block) = @_;
+    $class->gateway->credit_card_verification->search($block);
 }
 
 sub all {
-  my $class = shift;
-  $class->gateway->credit_card_verification->all;
+    my $class = shift;
+    $class->gateway->credit_card_verification->all;
 }
 
 sub find {
-  my ($class, $token) = @_;
-  $class->gateway->credit_card_verification->find($token);
+    my ($class, $token) = @_;
+    $class->gateway->credit_card_verification->find($token);
 }
 
 sub gateway {
-  WebService::Braintree->configuration->gateway;
+    WebService::Braintree->configuration->gateway;
 }
 
 

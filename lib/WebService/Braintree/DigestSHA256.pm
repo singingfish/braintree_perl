@@ -12,7 +12,7 @@ our @EXPORT = qw(new);
 our @EXPORT_OK = qw();
 
 sub new {
-  return Digest->new("SHA-256");
+    return Digest->new("SHA-256");
 }
 
 1;

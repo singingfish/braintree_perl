@@ -16,18 +16,18 @@ use constant SettlementPending => 'settlement_pending';
 use constant Voided => 'voided';
 
 use constant All => (
-  AuthorizationExpired,
-  Authorizing,
-  Authorized,
-  GatewayRejected,
-  Failed,
-  ProcessorDeclined,
-  Settled,
-  SettlementDeclined,
-  SettlementPending,
-  Settling,
-  SubmittedForSettlement,
-  Voided,
+    AuthorizationExpired,
+    Authorizing,
+    Authorized,
+    GatewayRejected,
+    Failed,
+    ProcessorDeclined,
+    Settled,
+    SettlementDeclined,
+    SettlementPending,
+    Settling,
+    SubmittedForSettlement,
+    Voided,
 );
 
 1;

@@ -10,21 +10,21 @@ use Moose;
 has 'gateway' => (is => 'ro');
 
 sub sample_notification {
-  my ($self, $kind, $id) = @_;
+    my ($self, $kind, $id) = @_;
 
-  my $sample_xml = $self->_sample_xml($kind, $id);
-  my $payload = encode_base64($sample_xml);
-  my $signature = $self->gateway->config->public_key . "|" . hexdigest($self->gateway->config->private_key, $payload);
+    my $sample_xml = $self->_sample_xml($kind, $id);
+    my $payload = encode_base64($sample_xml);
+    my $signature = $self->gateway->config->public_key . "|" . hexdigest($self->gateway->config->private_key, $payload);
 
-  return ($signature, $payload);
+    return ($signature, $payload);
 }
 
 sub _sample_xml {
-  my ($self, $kind, $id) = @_;
-  my $subject_sample_xml = $self->_subject_sample_xml($kind, $id);
-  my $timestamp = strftime("%Y-%m-%dT%H:%M:%SZ", gmtime());
+    my ($self, $kind, $id) = @_;
+    my $subject_sample_xml = $self->_subject_sample_xml($kind, $id);
+    my $timestamp = strftime("%Y-%m-%dT%H:%M:%SZ", gmtime());
 
-  return <<XML
+    return <<XML
     <notification>
       <timestamp type="datetime">$timestamp</timestamp>
       <kind>$kind</kind>
@@ -34,31 +34,31 @@ XML
 }
 
 sub _subject_sample_xml {
-  my ($self, $kind, $id) = @_;
+    my ($self, $kind, $id) = @_;
 
-  my $dispatch = {
-    WebService::Braintree::WebhookNotification::Kind::TransactionDisbursed => sub { _transaction_disbursed_sample_xml(@_) },
-    WebService::Braintree::WebhookNotification::Kind::DisbursementException => sub { _disbursement_exception_sample_xml(@_) },
-    WebService::Braintree::WebhookNotification::Kind::Disbursement => sub { _disbursement_sample_xml(@_) },
-    WebService::Braintree::WebhookNotification::Kind::SubMerchantAccountApproved => sub { _merchant_account_approved_sample_xml(@_) },
-    WebService::Braintree::WebhookNotification::Kind::SubMerchantAccountDeclined => sub { _merchant_account_declined_sample_xml(@_) },
-    WebService::Braintree::WebhookNotification::Kind::PartnerMerchantConnected => sub { _partner_merchant_connected_sample_xml(@_) },
-    WebService::Braintree::WebhookNotification::Kind::PartnerMerchantDisconnected => sub { _partner_merchant_disconnected_sample_xml(@_) },
-    WebService::Braintree::WebhookNotification::Kind::PartnerMerchantDeclined => sub { _partner_merchant_declined_sample_xml(@_) },
-    WebService::Braintree::WebhookNotification::Kind::DisputeOpened => sub { _dispute_opened_sample_xml(@_) },
-    WebService::Braintree::WebhookNotification::Kind::DisputeLost => sub { _dispute_lost_sample_xml(@_) },
-    WebService::Braintree::WebhookNotification::Kind::DisputeWon => sub { _dispute_won_sample_xml(@_) }
-  };
+    my $dispatch = {
+        WebService::Braintree::WebhookNotification::Kind::TransactionDisbursed => sub { _transaction_disbursed_sample_xml(@_) },
+        WebService::Braintree::WebhookNotification::Kind::DisbursementException => sub { _disbursement_exception_sample_xml(@_) },
+        WebService::Braintree::WebhookNotification::Kind::Disbursement => sub { _disbursement_sample_xml(@_) },
+        WebService::Braintree::WebhookNotification::Kind::SubMerchantAccountApproved => sub { _merchant_account_approved_sample_xml(@_) },
+        WebService::Braintree::WebhookNotification::Kind::SubMerchantAccountDeclined => sub { _merchant_account_declined_sample_xml(@_) },
+        WebService::Braintree::WebhookNotification::Kind::PartnerMerchantConnected => sub { _partner_merchant_connected_sample_xml(@_) },
+        WebService::Braintree::WebhookNotification::Kind::PartnerMerchantDisconnected => sub { _partner_merchant_disconnected_sample_xml(@_) },
+        WebService::Braintree::WebhookNotification::Kind::PartnerMerchantDeclined => sub { _partner_merchant_declined_sample_xml(@_) },
+        WebService::Braintree::WebhookNotification::Kind::DisputeOpened => sub { _dispute_opened_sample_xml(@_) },
+        WebService::Braintree::WebhookNotification::Kind::DisputeLost => sub { _dispute_lost_sample_xml(@_) },
+        WebService::Braintree::WebhookNotification::Kind::DisputeWon => sub { _dispute_won_sample_xml(@_) }
+      };
 
-  my $templater = $dispatch->{$kind} || sub { _subscription_sample_xml(@_) };
+    my $templater = $dispatch->{$kind} || sub { _subscription_sample_xml(@_) };
 
-  return $templater->($id);
+    return $templater->($id);
 }
 
 sub _transaction_disbursed_sample_xml {
-  my $id = shift;
+    my $id = shift;
 
-  return <<XML
+    return <<XML
     <transaction>
       <id>$id</id>
       <amount>100</amount>
@@ -70,9 +70,9 @@ XML
 };
 
 sub _dispute_opened_sample_xml {
-  my $id = shift;
+    my $id = shift;
 
-  return <<XML
+    return <<XML
     <dispute>
       <amount>250.00</amount>
       <currency-iso-code>USD</currency-iso-code>
@@ -90,9 +90,9 @@ XML
 };
 
 sub _dispute_lost_sample_xml {
-  my $id = shift;
+    my $id = shift;
 
-  return <<XML
+    return <<XML
     <dispute>
       <amount>250.00</amount>
       <currency-iso-code>USD</currency-iso-code>
@@ -110,9 +110,9 @@ XML
 };
 
 sub _dispute_won_sample_xml {
-  my $id = shift;
+    my $id = shift;
 
-  return <<XML
+    return <<XML
     <dispute>
       <amount>250.00</amount>
       <currency-iso-code>USD</currency-iso-code>
@@ -130,9 +130,9 @@ XML
 };
 
 sub _disbursement_exception_sample_xml {
-  my $id = shift;
+    my $id = shift;
 
-  return <<XML
+    return <<XML
     <disbursement>
       <id>$id</id>
       <transaction-ids type="array">
@@ -156,9 +156,9 @@ XML
 };
 
 sub _disbursement_sample_xml {
-  my $id = shift;
+    my $id = shift;
 
-  return <<XML
+    return <<XML
     <disbursement>
       <id>$id</id>
       <transaction-ids type="array">
@@ -182,9 +182,9 @@ XML
 };
 
 sub _merchant_account_approved_sample_xml {
-  my $id = shift;
+    my $id = shift;
 
-  return <<XML
+    return <<XML
     <merchant_account>
       <id>$id</id>
       <master_merchant_account>
@@ -197,9 +197,9 @@ XML
 };
 
 sub _merchant_account_declined_sample_xml {
-  my $id = shift;
+    my $id = shift;
 
-  return <<XML
+    return <<XML
         <api-error-response>
             <message>Credit score is too low</message>
             <errors>
@@ -227,9 +227,9 @@ XML
 };
 
 sub _subscription_sample_xml {
-  my $id = shift;
+    my $id = shift;
 
-  return <<XML
+    return <<XML
     <subscription>
       <id>$id</id>
       <transactions type="array">
@@ -243,7 +243,7 @@ XML
 }
 
 sub _partner_merchant_connected_sample_xml {
-  return <<XML
+    return <<XML
         <partner-merchant>
           <merchant-public-id>public_id</merchant-public-id>
           <public-key>public_key</public-key>
@@ -255,7 +255,7 @@ XML
 }
 
 sub _partner_merchant_disconnected_sample_xml {
-  return <<XML
+    return <<XML
         <partner-merchant>
           <partner-merchant-id>abc123</partner-merchant-id>
         </partner-merchant>
@@ -263,7 +263,7 @@ XML
 }
 
 sub _partner_merchant_declined_sample_xml {
-  return <<XML
+    return <<XML
         <partner-merchant>
           <partner-merchant-id>abc123</partner-merchant-id>
         </partner-merchant>

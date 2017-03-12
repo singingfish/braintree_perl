@@ -8,18 +8,18 @@ use Carp qw(confess);
 has 'gateway' => (is => 'ro');
 
 sub find {
-  my ($self, $token) = @_;
-  $self->_make_request("/payment_methods/paypal_account/$token", "get", undef)->paypal_account;
+    my ($self, $token) = @_;
+    $self->_make_request("/payment_methods/paypal_account/$token", "get", undef)->paypal_account;
 }
 
 sub update {
-  my ($self, $token, $params) = @_;
-  $self->_make_request(
-    "/payment_methods/paypal_account/$token",
-    "put",
-    {
-      paypal_account => $params
-    });
+    my ($self, $token, $params) = @_;
+    $self->_make_request(
+        "/payment_methods/paypal_account/$token",
+        "put",
+        {
+            paypal_account => $params
+        });
 }
 
 __PACKAGE__->meta->make_immutable;

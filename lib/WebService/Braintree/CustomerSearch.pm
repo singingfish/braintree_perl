@@ -31,7 +31,7 @@ $field->multiple_values("ids");
 $field->range("created_at");
 
 sub to_hash {
-  WebService::Braintree::AdvancedSearch->search_to_hash(shift);
+    WebService::Braintree::AdvancedSearch->search_to_hash(shift);
 }
 
 __PACKAGE__->meta->make_immutable;
