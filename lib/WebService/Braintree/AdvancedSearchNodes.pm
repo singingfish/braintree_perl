@@ -1,10 +1,12 @@
 {
     package WebService::Braintree::AdvancedSearchNodes;
+
     use Moose;
 }
 
 {
     package WebService::Braintree::SearchNode;
+
     use Moose;
 
     has 'searcher' => (is => 'rw');
@@ -32,6 +34,7 @@
 
 {
     package WebService::Braintree::IsNode;
+
     use Moose;
     extends ("WebService::Braintree::SearchNode");
 
@@ -45,6 +48,7 @@
 
 {
     package WebService::Braintree::EqualityNode;
+
     use Moose;
     extends ("WebService::Braintree::IsNode");
 
@@ -58,6 +62,7 @@
 
 {
     package WebService::Braintree::KeyValueNode;
+
     use Moose;
     extends ("WebService::Braintree::SearchNode");
 
@@ -81,6 +86,7 @@
 
 {
     package WebService::Braintree::PartialMatchNode;
+
     use Moose;
     extends ("WebService::Braintree::EqualityNode");
 
@@ -99,6 +105,7 @@
 
 {
     package WebService::Braintree::TextNode;
+
     use Moose;
     extends ("WebService::Braintree::PartialMatchNode");
 
@@ -112,6 +119,7 @@
 
 {
     package WebService::Braintree::RangeNode;
+
     use Moose;
     extends ("WebService::Braintree::EqualityNode");
 
@@ -138,6 +146,7 @@
 
 {
     package WebService::Braintree::MultipleValuesNode;
+
     use Carp;
     use Moose;
     use WebService::Braintree::Util;
