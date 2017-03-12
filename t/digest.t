@@ -1,3 +1,4 @@
+#!/usr/bin/env perl
 use lib qw(lib t/lib);
 use Test::More;
 

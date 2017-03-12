@@ -1,3 +1,4 @@
+#!/usr/bin/env perl
 use lib qw(lib test/lib);
 use WebService::Braintree;
 use Test::More;
@@ -13,53 +14,53 @@ $config->private_key("integration_private_key");
 $config = WebService::Braintree->configuration;
 
 subtest "Configuration instance" => sub {
-  is $config->environment, "sandbox", "Config environment";
-  is $config->public_key , "integration_public_key", "Config public key";
-  is $config->merchant_id, "integration_merchant_id", "Config merch id";
-  is $config->private_key, "integration_private_key", "Config private key";
-  is $config->base_merchant_path, "/merchants/integration_merchant_id", "generates base merchant path based on merchant id";
+    is $config->environment, "sandbox", "Config environment";
+    is $config->public_key , "integration_public_key", "Config public key";
+    is $config->merchant_id, "integration_merchant_id", "Config merch id";
+    is $config->private_key, "integration_private_key", "Config private key";
+    is $config->base_merchant_path, "/merchants/integration_merchant_id", "generates base merchant path based on merchant id";
 };
 
 my @examples = (
-  ['sandbox', "https://api.sandbox.braintreegateway.com:443/merchants/integration_merchant_id"],
-  ['production', "https://api.braintreegateway.com:443/merchants/integration_merchant_id"],
-  ['qa', "https://qa-master.braintreegateway.com:443/merchants/integration_merchant_id"]
+    ['sandbox', "https://api.sandbox.braintreegateway.com:443/merchants/integration_merchant_id"],
+    ['production', "https://api.braintreegateway.com:443/merchants/integration_merchant_id"],
+    ['qa', "https://qa-master.braintreegateway.com:443/merchants/integration_merchant_id"]
 );
 
-foreach(@examples) {
-  my($environment, $url) = @$_;
-  $config->environment($environment);
-  is $config->base_merchant_url, $url, "$environment base merchant url";
+foreach (@examples) {
+    my($environment, $url) = @$_;
+    $config->environment($environment);
+    is $config->base_merchant_url, $url, "$environment base merchant url";
 }
 
 my @examples = (
-  ['development', "http://auth.venmo.dev:9292"],
-  ['sandbox', "https://auth.sandbox.venmo.com"],
-  ['production', "https://auth.venmo.com"],
-  ['qa', "https://auth.qa.venmo.com"]
+    ['development', "http://auth.venmo.dev:9292"],
+    ['sandbox', "https://auth.sandbox.venmo.com"],
+    ['production', "https://auth.venmo.com"],
+    ['qa', "https://auth.qa.venmo.com"]
 );
 
-foreach(@examples) {
-  my($environment, $url) = @$_;
-  $config->environment($environment);
-  is $config->auth_url, $url, "$environment auth_url";
+foreach (@examples) {
+    my($environment, $url) = @$_;
+    $config->environment($environment);
+    is $config->auth_url, $url, "$environment auth_url";
 }
 subtest "setting configuration attributes with hash constructor" => sub {
-  my $configuration = WebService::Braintree::Configuration->new(
-      merchant_id => "integration_merchant_id",
-      public_key => "integration_public_key",
-      private_key => "integration_private_key",
-      environment => "development"
-  );
+    my $configuration = WebService::Braintree::Configuration->new(
+        merchant_id => "integration_merchant_id",
+        public_key => "integration_public_key",
+        private_key => "integration_private_key",
+        environment => "development"
+    );
 
-  is $configuration->merchant_id, "integration_merchant_id";
-  is $configuration->public_key, "integration_public_key";
-  is $configuration->private_key, "integration_private_key";
-  is $configuration->environment, "development";
+    is $configuration->merchant_id, "integration_merchant_id";
+    is $configuration->public_key, "integration_public_key";
+    is $configuration->private_key, "integration_private_key";
+    is $configuration->environment, "development";
 };
 
 warning_is {$config->environment("not_valid")} "Assigned invalid value to WebService::Braintree::Configuration::environment",
-  "Bad environment gives a warning";
+    "Bad environment gives a warning";
 
 $config->environment("integration");
 $ENV{'GATEWAY_PORT'} = "8104";

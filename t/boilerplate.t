@@ -1,3 +1,4 @@
+#!/usr/bin/env perl
 #!perl -T
 
 use 5.006;
@@ -31,25 +32,25 @@ sub not_in_file_ok {
 sub module_boilerplate_ok {
     my ($module) = @_;
     not_in_file_ok($module =>
-        'the great new $MODULENAME'   => qr/ - The great new /,
-        'boilerplate description'     => qr/Quick summary of what the module/,
-        'stub function definition'    => qr/function[12]/,
-    );
+                       'the great new $MODULENAME'   => qr/ - The great new /,
+                   'boilerplate description'     => qr/Quick summary of what the module/,
+                   'stub function definition'    => qr/function[12]/,
+               );
 }
 
 TODO: {
-  local $TODO = "Need to replace the boilerplate text";
+    local $TODO = "Need to replace the boilerplate text";
 
-  not_in_file_ok(README =>
-    "The README is used..."       => qr/The README is used/,
-    "'version information here'"  => qr/to provide version information/,
-  );
+    not_in_file_ok(README =>
+                       "The README is used..."       => qr/The README is used/,
+                   "'version information here'"  => qr/to provide version information/,
+               );
 
-  not_in_file_ok(Changes =>
-    "placeholder date/time"       => qr(Date/time)
-  );
+    not_in_file_ok(Changes =>
+                       "placeholder date/time"       => qr(Date/time)
+                   );
 
-  module_boilerplate_ok('lib/WebService/Braintree.pm');
+    module_boilerplate_ok('lib/WebService/Braintree.pm');
 
 
 }
