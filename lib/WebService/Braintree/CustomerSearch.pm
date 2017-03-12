@@ -1,7 +1,7 @@
 package WebService::Braintree::CustomerSearch;
 
 use Moose;
-use WebService::Braintree::AdvancedSearch qw(search_to_hash);
+use WebService::Braintree::AdvancedSearch;
 
 my $field = WebService::Braintree::AdvancedSearchFields->new(metaclass => __PACKAGE__->meta);
 $field->text("address_country_name");

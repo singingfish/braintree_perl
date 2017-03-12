@@ -2,7 +2,7 @@ package WebService::Braintree::CreditCardVerificationSearch;
 
 use Moose;
 use WebService::Braintree::CreditCard::CardType;
-use WebService::Braintree::AdvancedSearch qw(search_to_hash);
+use WebService::Braintree::AdvancedSearch;
 my $meta = __PACKAGE__->meta();
 
 my $field = WebService::Braintree::AdvancedSearchFields->new(metaclass => $meta);
