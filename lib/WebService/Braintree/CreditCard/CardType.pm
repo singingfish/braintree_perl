@@ -1,4 +1,5 @@
 package WebService::Braintree::CreditCard::CardType;
+
 use strict;
 
 use constant AmericanExpress => "American Express";

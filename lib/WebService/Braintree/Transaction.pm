@@ -1,4 +1,5 @@
 package WebService::Braintree::Transaction;
+
 use WebService::Braintree::Transaction::CreatedUsing;
 use WebService::Braintree::Transaction::EscrowStatus;
 use WebService::Braintree::Transaction::Source;

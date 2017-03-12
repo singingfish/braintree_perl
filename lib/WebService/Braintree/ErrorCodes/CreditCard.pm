@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes::CreditCard;
+
 use strict;
 
 use constant BillingAddressConflict                                   => "91701";

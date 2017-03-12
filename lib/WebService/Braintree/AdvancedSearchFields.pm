@@ -1,4 +1,5 @@
 package WebService::Braintree::AdvancedSearchFields;
+
 use Carp;
 use Moose;
 

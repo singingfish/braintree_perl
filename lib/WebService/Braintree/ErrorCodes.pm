@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes;
+
 use strict;
 
 use WebService::Braintree::ErrorCodes::Address;

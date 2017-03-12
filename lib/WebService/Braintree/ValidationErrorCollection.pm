@@ -1,5 +1,6 @@
 package WebService::Braintree::ValidationErrorCollection;
 
+
 use Moose;
 use WebService::Braintree::Util;
 use WebService::Braintree::ValidationError;

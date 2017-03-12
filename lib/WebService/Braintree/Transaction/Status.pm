@@ -1,4 +1,5 @@
 package WebService::Braintree::Transaction::Status;
+
 use strict;
 
 use constant AuthorizationExpired => 'authorization_expired';

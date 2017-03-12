@@ -1,4 +1,5 @@
 package WebService::Braintree::CreditCard::Location;
+
 use strict;
 
 use constant International => "international";

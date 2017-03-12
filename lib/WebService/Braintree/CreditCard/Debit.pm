@@ -1,4 +1,5 @@
 package WebService::Braintree::CreditCard::Debit;
+
 use strict;
 
 use constant Yes => "Yes";

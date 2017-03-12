@@ -1,4 +1,5 @@
 package WebService::Braintree::Dispute::Reason;
+
 use strict;
 
 use constant CancelledRecurringTransaction => "cancelled_recurring_transaction";

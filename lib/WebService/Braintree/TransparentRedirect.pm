@@ -1,4 +1,5 @@
 package WebService::Braintree::TransparentRedirect;
+
 use Moose;
 
 sub confirm {

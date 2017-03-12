@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes::Transaction::Options;
+
 use strict;
 
 use constant SubmitForSettlementIsRequiredForCloning => "91544";

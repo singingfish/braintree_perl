@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes::MerchantAccount::Business::Address;
+
 use strict;
 
 use constant RegionIsInvalid        => "82684";

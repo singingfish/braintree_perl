@@ -1,4 +1,5 @@
 package WebService::Braintree::PaymentMethod;
+
 use Moose;
 extends 'WebService::Braintree::ResultObject';
 

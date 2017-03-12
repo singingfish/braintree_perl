@@ -1,4 +1,5 @@
 package WebService::Braintree::Transaction::EscrowStatus;
+
 use strict;
 
 use constant HoldPending => 'hold_pending';

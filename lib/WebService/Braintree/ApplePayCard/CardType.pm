@@ -1,4 +1,5 @@
 package WebService::Braintree::ApplePayCard::CardType;
+
 use strict;
 
 use constant AmericanExpress => "Apple Pay - American Express";

@@ -1,4 +1,5 @@
 package WebService::Braintree::TransparentRedirectGateway;
+
 use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 

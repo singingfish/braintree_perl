@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes::AltPay;
+
 use strict;
 
 use constant PayPalAccountCannotHaveBothAccessTokenAndConsentCode   => "82903";

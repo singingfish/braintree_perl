@@ -1,4 +1,5 @@
 package WebService::Braintree::CreditCardVerificationSearch;
+
 use Moose;
 use WebService::Braintree::CreditCard::CardType;
 use WebService::Braintree::AdvancedSearch qw(search_to_hash);

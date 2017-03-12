@@ -1,4 +1,5 @@
 package WebService::Braintree::MerchantAccount;
+
 use WebService::Braintree::MerchantAccount::IndividualDetails;
 use WebService::Braintree::MerchantAccount::AddressDetails;
 use WebService::Braintree::MerchantAccount::BusinessDetails;

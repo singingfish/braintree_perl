@@ -1,4 +1,5 @@
 package WebService::Braintree::WebhookNotification::Kind;
+
 use strict;
 
 use constant PartnerMerchantConnected => "partner_merchant_connected";

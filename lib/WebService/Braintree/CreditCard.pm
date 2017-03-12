@@ -1,4 +1,5 @@
 package WebService::Braintree::CreditCard;
+
 use WebService::Braintree::CreditCard::CardType;
 use WebService::Braintree::CreditCard::Location;
 use WebService::Braintree::CreditCard::Prepaid;

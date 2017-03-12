@@ -1,5 +1,6 @@
 package WebService::Braintree::MerchantAccount::AddressDetails;
 
+
 use Moose;
 extends "WebService::Braintree::ResultObject";
 

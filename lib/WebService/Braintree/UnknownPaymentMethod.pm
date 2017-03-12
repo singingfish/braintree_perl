@@ -1,4 +1,5 @@
 package WebService::Braintree::UnknownPaymentMethod;
+
 use Moose;
 extends 'WebService::Braintree::PaymentMethod';
 

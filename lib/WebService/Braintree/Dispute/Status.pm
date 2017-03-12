@@ -1,4 +1,5 @@
 package WebService::Braintree::Dispute::Status;
+
 use strict;
 
 use constant Open => 'open';

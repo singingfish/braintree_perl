@@ -1,4 +1,5 @@
 package WebService::Braintree::TransactionGateway;
+
 use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 use Carp qw(confess);

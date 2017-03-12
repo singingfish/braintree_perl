@@ -1,4 +1,5 @@
 package WebService::Braintree::SettlementBatchSummary;
+
 use Moose;
 extends 'WebService::Braintree::ResultObject';
 

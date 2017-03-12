@@ -18,3 +18,5 @@ tags
 html
 man
 sandbox_config.json
+.build
+test_diffs

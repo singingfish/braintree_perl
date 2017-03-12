@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes::Address;
+
 use strict;
 
 use constant CannotBeBlank                   => "81801";

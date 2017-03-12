@@ -33,10 +33,6 @@ use WebService::Braintree::Configuration;
 WebService::Braintree - A Client Library for wrapping the Braintree Payment
 Services Gateway API
 
-=head1 VERSION
-
-Version 0.001
-
 =head1 IMPORTANT
 
 This is a community fork of the deprecated L<Net:BrainTree> module renamed
@@ -59,8 +55,6 @@ work out how to get the TODO sandbox libraries passing.
 
 
 =cut
-
-our $VERSION = '0.29.0';
 
 my $configuration_instance = WebService::Braintree::Configuration->new;
 

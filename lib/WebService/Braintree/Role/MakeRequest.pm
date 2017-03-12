@@ -1,4 +1,5 @@
 package WebService::Braintree::Role::MakeRequest;
+
 use Moose::Role;
 
 sub _make_request {

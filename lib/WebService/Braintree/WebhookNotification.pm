@@ -1,5 +1,6 @@
 package WebService::Braintree::WebhookNotification;
 
+
 use WebService::Braintree::WebhookNotification::Kind;
 use Moose;
 

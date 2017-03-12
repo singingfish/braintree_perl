@@ -1,4 +1,5 @@
 package WebService::Braintree::CreditCard::CountryOfIssuance;
+
 use strict;
 
 use constant Yes => "Yes";

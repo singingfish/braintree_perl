@@ -1,4 +1,5 @@
 package WebService::Braintree::CustomerGateway;
+
 use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 

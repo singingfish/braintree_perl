@@ -1,4 +1,5 @@
 package WebService::Braintree::Address;
+
 use Moose;
 extends 'WebService::Braintree::ResultObject';
 

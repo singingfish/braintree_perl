@@ -1,4 +1,5 @@
 package WebService::Braintree::Customer;
+
 use Moose;
 extends 'WebService::Braintree::ResultObject';
 

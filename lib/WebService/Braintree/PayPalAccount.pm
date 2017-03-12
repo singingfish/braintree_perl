@@ -1,4 +1,5 @@
 package WebService::Braintree::PayPalAccount;
+
 use Moose;
 extends 'WebService::Braintree::PaymentMethod';
 

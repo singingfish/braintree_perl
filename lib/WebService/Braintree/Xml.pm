@@ -1,4 +1,5 @@
 package WebService::Braintree::Xml;
+
 use strict;
 
 use XML::Simple;

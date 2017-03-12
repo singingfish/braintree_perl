@@ -1,4 +1,5 @@
 package WebService::Braintree::ClientTokenGateway;
+
 use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 

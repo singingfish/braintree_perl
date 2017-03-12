@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes::AuthorizationFingerprint;
+
 use strict;
 
 use constant InvalidCreatedAt                  => "93204";

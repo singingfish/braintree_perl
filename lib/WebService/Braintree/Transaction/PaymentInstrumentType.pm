@@ -1,5 +1,6 @@
 package WebService::Braintree::Transaction::PaymentInstrumentType;
 
+
 use vars qw(@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS );
 use Exporter;
 our @ISA = qw(Exporter);
