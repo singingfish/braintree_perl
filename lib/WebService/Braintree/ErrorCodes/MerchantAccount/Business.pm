@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes::MerchantAccount::Business;
+
 use strict;
 
 use constant DbaNameIsInvalid             => "82646";

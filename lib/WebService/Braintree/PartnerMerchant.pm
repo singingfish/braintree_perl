@@ -1,4 +1,5 @@
 package WebService::Braintree::PartnerMerchant;
+
 use Moose;
 extends 'WebService::Braintree::ResultObject';
 

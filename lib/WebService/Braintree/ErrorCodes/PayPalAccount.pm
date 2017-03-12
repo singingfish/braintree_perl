@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes::PayPalAccount;
+
 use strict;
 
 use constant CannotCloneTransactionWithPayPalAccount => "91573";

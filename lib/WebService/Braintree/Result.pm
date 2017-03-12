@@ -1,4 +1,5 @@
 package WebService::Braintree::Result;
+
 use Moose;
 use Hash::Inflator;
 use WebService::Braintree::Util;

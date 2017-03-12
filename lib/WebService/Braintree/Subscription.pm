@@ -1,4 +1,5 @@
 package WebService::Braintree::Subscription;
+
 use WebService::Braintree::SubscriptionGateway;
 use WebService::Braintree::Subscription::Status;
 

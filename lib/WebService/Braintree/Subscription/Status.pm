@@ -1,4 +1,5 @@
 package WebService::Braintree::Subscription::Status;
+
 use strict;
 
 use constant Active => 'Active';

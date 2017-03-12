@@ -1,4 +1,5 @@
 package WebService::Braintree::CreditCardVerificationGateway;
+
 use Moose;
 use WebService::Braintree::CreditCardVerificationSearch;
 use WebService::Braintree::Util;

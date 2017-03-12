@@ -1,4 +1,5 @@
 package WebService::Braintree::AddressGateway;
+
 use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 

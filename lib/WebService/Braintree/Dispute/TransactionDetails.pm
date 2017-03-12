@@ -1,5 +1,6 @@
 package WebService::Braintree::Dispute::TransactionDetails;
 
+
 use Moose;
 extends 'WebService::Braintree::ResultObject';
 

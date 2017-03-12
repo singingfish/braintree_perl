@@ -1,4 +1,5 @@
 package WebService::Braintree::ApplePayCard;
+
 use WebService::Braintree::ApplePayCard::CardType;
 
 use Moose;

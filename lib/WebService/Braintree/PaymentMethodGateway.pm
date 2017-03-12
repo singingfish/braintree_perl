@@ -1,4 +1,5 @@
 package WebService::Braintree::PaymentMethodGateway;
+
 use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 

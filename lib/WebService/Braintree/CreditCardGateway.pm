@@ -1,4 +1,5 @@
 package WebService::Braintree::CreditCardGateway;
+
 use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 

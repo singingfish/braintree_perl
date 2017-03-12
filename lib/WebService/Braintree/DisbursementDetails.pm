@@ -1,5 +1,6 @@
 package WebService::Braintree::DisbursementDetails;
 
+
 use Moose;
 extends 'WebService::Braintree::ResultObject';
 

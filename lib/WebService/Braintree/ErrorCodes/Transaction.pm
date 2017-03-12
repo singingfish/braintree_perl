@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes::Transaction;
+
 use strict;
 
 use constant AmountCannotBeNegative                            => "81501";

@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes::Customer;
+
 use strict;
 
 use constant CompanyIsTooLong       => "81601";

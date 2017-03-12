@@ -1,4 +1,5 @@
 package WebService::Braintree::ValidationError;
+
 use Moose;
 
 has 'attribute' => (is => 'ro');

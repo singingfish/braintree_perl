@@ -1,5 +1,6 @@
 package WebService::Braintree::PayPalDetails;
 
+
 use Moose;
 extends 'WebService::Braintree::ResultObject';
 

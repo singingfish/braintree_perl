@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes::SettlementBatchSummary;
+
 use strict;
 
 use constant CustomFieldIsInvalid     => "82303";

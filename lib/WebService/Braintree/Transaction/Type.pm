@@ -1,4 +1,5 @@
 package WebService::Braintree::Transaction::Type;
+
 use strict;
 
 use constant Sale => "sale";

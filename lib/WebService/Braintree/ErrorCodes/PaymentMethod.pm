@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes::PaymentMethod;
+
 use strict;
 
 use constant CustomerIdIsRequired           => "93104";

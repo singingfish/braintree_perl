@@ -1,4 +1,5 @@
 package WebService::Braintree::ResourceCollection;
+
 use Moose;
 extends "WebService::Braintree::ResultObject";
 

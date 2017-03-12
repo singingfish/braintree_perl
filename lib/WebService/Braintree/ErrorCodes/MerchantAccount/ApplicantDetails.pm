@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes::MerchantAccount::ApplicantDetails;
+
 use strict;
 
 use constant AccountNumberIsRequired        => "82614";

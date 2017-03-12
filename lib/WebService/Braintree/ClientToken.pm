@@ -1,5 +1,6 @@
 package WebService::Braintree::ClientToken;
 
+
 use constant DEFAULT_VERSION => "2";
 
 sub generate {

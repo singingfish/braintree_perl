@@ -1,4 +1,5 @@
 package WebService::Braintree::CreditCard::Healthcare;
+
 use strict;
 
 use constant Yes => "Yes";

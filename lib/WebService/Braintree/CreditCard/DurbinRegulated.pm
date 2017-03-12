@@ -1,4 +1,5 @@
 package WebService::Braintree::CreditCard::DurbinRegulated;
+
 use strict;
 
 use constant Yes => "Yes";

@@ -1,4 +1,5 @@
 package WebService::Braintree::Validations;
+
 use strict;
 
 use WebService::Braintree::Util;

@@ -1,4 +1,5 @@
 package WebService::Braintree::PayPalAccountGateway;
+
 use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 

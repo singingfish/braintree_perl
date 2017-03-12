@@ -1,4 +1,5 @@
 package WebService::Braintree::MerchantAccount::IndividualDetails;
+
 use WebService::Braintree::MerchantAccount::AddressDetails;
 
 use Moose;

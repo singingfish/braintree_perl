@@ -1,4 +1,5 @@
 package WebService::Braintree::Util;
+
 use strict;
 
 use vars qw(@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS );

@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes::ClientToken;
+
 use strict;
 
 use constant CustomerDoesNotExist                            => "92804";

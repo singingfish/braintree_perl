@@ -1,4 +1,5 @@
 package WebService::Braintree::ErrorCodes::Descriptor;
+
 use strict;
 
 use constant DynamicDescriptorsDisabled        => "92203";

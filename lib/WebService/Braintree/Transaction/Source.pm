@@ -1,4 +1,5 @@
 package WebService::Braintree::Transaction::Source;
+
 use strict;
 
 use constant Api => "api";

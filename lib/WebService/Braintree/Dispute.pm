@@ -1,4 +1,5 @@
 package WebService::Braintree::Dispute;
+
 use WebService::Braintree::Dispute::TransactionDetails;
 use WebService::Braintree::Dispute::Status;
 use WebService::Braintree::Dispute::Reason;

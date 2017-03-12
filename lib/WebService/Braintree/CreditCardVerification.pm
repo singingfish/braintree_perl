@@ -1,4 +1,5 @@
 package WebService::Braintree::CreditCardVerification;
+
 use WebService::Braintree::CreditCard;
 use WebService::Braintree::CreditCard::CardType;
 

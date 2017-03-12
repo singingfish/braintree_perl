@@ -1,4 +1,5 @@
 package WebService::Braintree::SubscriptionSearch;
+
 use Moose;
 use WebService::Braintree::AdvancedSearch qw(search_to_hash);
 
