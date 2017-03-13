@@ -96,10 +96,15 @@ This class is now the only one that is not immutable in the codebase.
 Unpicking how to make this mutable is problematic.
 
 =item L<WebService::Braintree::AdvancedSearchFields>
+
 =item L<WebService::Braintree::SubscriptionSearch>
+
 =item L<WebService::Braintree::CreditCardVerificationSearch>
+
 =item L<WebService::Braintree::CustomerSearch>
+
 =item L<WebService::Braintree::Result>
+
 =item L<WebService::Braintree::TransactionSearch>
 
 =back
