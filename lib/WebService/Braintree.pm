@@ -78,7 +78,7 @@ Patches welcome!
 
 =item Sandbox tests fail
 
-Some of this is likely needed because the sandbox account needs to be set
+Some of this is likely because the sandbox account needs to be set
 up just right, and some may be because the paypal test integration server
 is emulating stateful transactions.
 
@@ -93,7 +93,8 @@ difficult to understand:
 =item L<WebService::Braintree::ResultObject>
 
 This class is now the only one that is not immutable in the codebase.
-Unpicking how to make this mutable is problematic.
+Unpicking how to make this immutable is problematic.  Once this package is
+immutable a port to L<Moo> is likely straightforward.
 
 =item L<WebService::Braintree::AdvancedSearchFields>
 
@@ -108,6 +109,13 @@ Unpicking how to make this mutable is problematic.
 =item L<WebService::Braintree::TransactionSearch>
 
 =back
+
+Also, having stared at the internals of some objects in the perl debugger
+for a bit, I fear there may be memory leaks, but I have not investigated
+this closely.  It's also possible that the way that several of the above
+methods use a C<$field> variable in package lexical scope that this module
+may not be fork-safe.  These concerns also apply to L<Net::Braintree> (only
+it has a bigger memory footprint).
 
 =back
 
