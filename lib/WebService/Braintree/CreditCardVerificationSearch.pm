@@ -3,9 +3,9 @@ package WebService::Braintree::CreditCardVerificationSearch;
 use Moose;
 use WebService::Braintree::CreditCard::CardType;
 use WebService::Braintree::AdvancedSearch;
-my $meta = __PACKAGE__->meta();
 
-my $field = WebService::Braintree::AdvancedSearchFields->new(metaclass => $meta);
+
+my $field = WebService::Braintree::AdvancedSearchFields->new(metaclass => __PACKAGE__->meta);
 $field->text("id");
 $field->text("credit_card_cardholder_name");
 $field->equality("credit_card_expiration_date");

@@ -3,11 +3,12 @@ package WebService::Braintree::Disbursement;
 
 use Moose;
 extends "WebService::Braintree::ResultObject";
-my $meta = __PACKAGE__->meta;
+
+has  merchant_account => (is => 'rw');
 
 sub BUILD {
     my ($self, $attributes) = @_;
-    $meta->add_attribute('merchant_account', is => 'rw');
+
     $self->merchant_account(WebService::Braintree::MerchantAccount->new($attributes->{merchant_account}));
     delete($attributes->{merchant_account});
     $self->set_attributes_from_hash($self, $attributes);
@@ -21,4 +22,6 @@ sub transactions {
                                                });
 }
 
+
+__PACKAGE__->meta->make_immutable;
 1;

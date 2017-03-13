@@ -8,19 +8,23 @@ use WebService::Braintree::Transaction::Type;
 
 use Moose;
 extends "WebService::Braintree::ResultObject";
-my $meta = __PACKAGE__->meta;
+
+
+has  subscription => (is => 'rw');
+has  disbursement_details => (is => 'rw');
+has  paypal_details => (is => 'rw');
+
 
 sub BUILD {
     my ($self, $attributes) = @_;
     my $sub_objects = { 'disputes' => 'WebService::Braintree::Dispute'};
-    $meta->add_attribute('subscription', is => 'rw');
+
     $self->subscription(WebService::Braintree::Subscription->new($attributes->{subscription})) if ref($attributes->{subscription}) eq 'HASH';
     delete($attributes->{subscription});
-    $meta->add_attribute('disbursement_details', is => 'rw');
+
     $self->disbursement_details(WebService::Braintree::DisbursementDetails->new($attributes->{disbursement_details})) if ref($attributes->{disbursement_details}) eq 'HASH';
     delete($attributes->{disbursement_details});
 
-    $meta->add_attribute('paypal_details', is => 'rw');
     $self->paypal_details(WebService::Braintree::PayPalDetails->new($attributes->{paypal})) if ref($attributes->{paypal}) eq 'HASH';
     delete($attributes->{paypal});
 
@@ -107,4 +111,5 @@ sub is_disbursed {
     $self->disbursement_details->is_valid();
 };
 
+__PACKAGE__->meta->make_immutable;
 1;
