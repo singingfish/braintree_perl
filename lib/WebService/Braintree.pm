@@ -37,7 +37,7 @@ WebService::Braintree - A Client Library for wrapping the Braintree Payment Serv
 =head2 FORK
 
 This is a fork of the original vendor-issued L<Net::Braintree>.  While the
-original is depreacted, it continues to work. However, it contains a number
+original is deprecated, it continues to work. However, it contains a number
 of code-style and maintainability problems.  This fork was produced to
 address some of those problems and to provide a community driven basis for
 going forward.
@@ -51,7 +51,7 @@ L<https://developers.braintreepayments.com/ruby/sdk/server/overview>.
 
 You can also look over the test suite for guidance of usage, especially the
 C<xt/sandbox> tests.  Not all of these tests work (ones marked
-C<todo_skip>.  This is because they are an adaptation of code used against
+C<todo_skip>).  This is because they are an adaptation of code used against
 Braintree's private integration server.  Care has been taken that the same
 sandbox tests that fail in this module also fail for L<Net::Braintree>, and
 in the same manner.
