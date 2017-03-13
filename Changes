@@ -1,5 +1,5 @@
 Revision history for WebService-Braintree
-0.30.1 13/3/17
+0.31.0 13/3/17
         Typofixes and a few more docs.
 0.30.0  13/3/17
         Rename to WebService::Braintree
