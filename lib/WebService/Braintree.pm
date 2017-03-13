@@ -34,10 +34,27 @@ use WebService::Braintree::Configuration;
 
 WebService::Braintree - A Client Library for wrapping the Braintree Payment Services Gateway API
 
-=head1 DEPRECATED
+=head2 FORK
 
-This library is deprecated; current integrations are supported, but no new feature development is planned at this time.
-For more details see: https://support.braintreepayments.com/customer/portal/articles/1763061-status-of-the-perl-client-library
+This is a fork of the original vendor-issued L<Net::Braintree>.  While the
+original is depreacted, it continues to work. However, it contains a number
+of code-style and maintainability problems.  This fork was produced to
+address some of those problems and to provide a community driven basis for
+going forward.
+
+=head2 DOCUMENTATION
+
+The module is sparesly documented at best.  The public facing API is very
+similar to the ruby libraries which are documented at
+L<https://developers.braintreepayments.com/ruby/sdk/server/overview>.
+
+
+You can also look over the test suite for guidance of usage, especially the
+C<xt/sandbox> tests.  Not all of these tests work (ones marked
+C<todo_skip>.  This is because they are an adaptation of code used against
+Braintree's private integration server.  Care has been taken that the same
+sandbox tests that fail in this module also fail for L<Net::Braintree>, and
+in the same manner.
 
 =cut
 
@@ -45,40 +62,57 @@ my $configuration_instance = WebService::Braintree::Configuration->new;
 
 sub configuration { return $configuration_instance; }
 
-=head1 SUPPORT
 
-You can find documentation for this module with the perldoc command.
+=head2 ISSUES
 
-    perldoc WebService::Braintree
+The bugtracker is at
+L<https://github.com/braintree/braintree_perl/issues>.
 
+Patches welcome!
 
-You can also look for information at:
+=head2 TODO/WISHLIST/ROADMAP
 
 =over 4
 
-=item * RT: CPAN's request tracker (report bugs here)
+=item There is no pod documentation.
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Net-Braintree>
+=item Sandbox tests fail
 
-=item * AnnoCPAN: Annotated CPAN documentation
+Some of this is likely needed because the sandbox account needs to be set
+up just right, and some may be because the paypal test integration server
+is emulating stateful transactions.
 
-L<http://annocpan.org/dist/Net-Braintree>
+=item Excessive metaobject wrangling
 
-=item * CPAN Ratings
+The usage of L<Moose> in this code is subomtimal.  In particular the
+following classes use the metaobject in a way that makes what is happening
+difficult to understand:
 
-L<http://cpanratings.perl.org/d/Net-Braintree>
+=over 4
 
-=item * Search CPAN
+=item L<WebService::Braintree::ResultObject>
 
-L<http://search.cpan.org/dist/Net-Braintree/>
+This class is now the only one that is not immutable in the codebase.
+Unpicking how to make this mutable is problematic.
+
+=item L<WebService::Braintree::AdvancedSearchFields>
+=item L<WebService::Braintree::SubscriptionSearch>
+=item L<WebService::Braintree::CreditCardVerificationSearch>
+=item L<WebService::Braintree::CustomerSearch>
+=item L<WebService::Braintree::Result>
+=item L<WebService::Braintree::TransactionSearch>
 
 =back
 
+=back
 
-=head1 ACKNOWLEDGEMENTS
+=head2 ACKNOWLEDGEMENTS
 
+Thanks to the staff at Braintree for endorsing this fork.
 
-=head1 LICENSE AND COPYRIGHT
+=head2 LICENSE AND COPYRIGHT
+
+Copyright 2017 Kieren Diment <zarquon@cpan.org>
 
 Copyright 2011-2014 Braintree, a division of PayPal, Inc.
 
