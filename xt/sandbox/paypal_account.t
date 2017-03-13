@@ -152,8 +152,8 @@ TODO: {
 
         my $paypal_account = WebService::Braintree::PayPalAccount->find($token);
         my @subscription_ids = map { $_->id; } @{$paypal_account->subscriptions};
-        ok ($subscription1->id ~~ @subscription_ids);
-        ok ($subscription2->id ~~ @subscription_ids);
+        ok (grep { $subscription1->id eq $_} @subscription_ids);
+        ok (grep {$subscription2->id eq $_ } @subscription_ids);
     };
 }
 ;
