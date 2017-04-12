@@ -1,4 +1,8 @@
 Revision history for Net-Braintree
+0.4.0   2016-4-12
+        Fix dist to point to self rather than where forked from.
+        Activate github issues for dist
+        Minor dzil version issue.
 0.29.0  06/23/16
         Add additional deprecation warnings in documentation
         Fix typo in WebService::Braintree::ErrorCodes::MerchantAccount::ApplicantDetails::Address
