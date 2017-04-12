@@ -1,156 +1,156 @@
 {
-  package WebService::Braintree::AdvancedSearchNodes;
+    package WebService::Braintree::AdvancedSearchNodes;
 
-  use Moose;
+    use Moose;
 }
 
 {
-  package WebService::Braintree::SearchNode;
+    package WebService::Braintree::SearchNode;
 
-  use Moose;
+    use Moose;
 
-  has 'searcher' => (is => 'rw');
-  has 'name' => (is => 'rw');
+    has 'searcher' => (is => 'rw');
+    has 'name' => (is => 'rw');
 
-  has 'criteria' => (is => 'rw', default => sub {shift->default_criteria()});
+    has 'criteria' => (is => 'rw', default => sub {shift->default_criteria()});
 
-  sub default_criteria {
-    return {};
-  }
+    sub default_criteria {
+        return {};
+    }
 
-  sub active {
-    my $self = shift;
-    return %{$self->criteria};
-  }
+    sub active {
+        my $self = shift;
+        return %{$self->criteria};
+    }
 
-  sub add_node {
-    my ($self, $operator, $operand) = @_;
-    $self->criteria->{$operator} = $operand;
-    return $self->searcher;
-  }
-  __PACKAGE__->meta->make_immutable;
-  1;
+    sub add_node {
+        my ($self, $operator, $operand) = @_;
+        $self->criteria->{$operator} = $operand;
+        return $self->searcher;
+    }
+    __PACKAGE__->meta->make_immutable;
+    1;
 }
 
 {
-  package WebService::Braintree::IsNode;
+    package WebService::Braintree::IsNode;
 
-  use Moose;
-  extends ("WebService::Braintree::SearchNode");
+    use Moose;
+    extends ("WebService::Braintree::SearchNode");
 
-  sub is {
-    my ($self, $operand) = @_;
-    return $self->add_node("is", $operand);
-  }
-  __PACKAGE__->meta->make_immutable;
-  1;
+    sub is {
+        my ($self, $operand) = @_;
+        return $self->add_node("is", $operand);
+    }
+    __PACKAGE__->meta->make_immutable;
+    1;
 }
 
 {
-  package WebService::Braintree::EqualityNode;
+    package WebService::Braintree::EqualityNode;
 
-  use Moose;
-  extends ("WebService::Braintree::IsNode");
+    use Moose;
+    extends ("WebService::Braintree::IsNode");
 
-  sub is_not {
-    my ($self, $operand) = @_;
-    return $self->add_node("is_not", $operand);
-  }
-  __PACKAGE__->meta->make_immutable;
-  1;
+    sub is_not {
+        my ($self, $operand) = @_;
+        return $self->add_node("is_not", $operand);
+    }
+    __PACKAGE__->meta->make_immutable;
+    1;
 }
 
 {
-  package WebService::Braintree::KeyValueNode;
+    package WebService::Braintree::KeyValueNode;
 
-  use Moose;
-  extends ("WebService::Braintree::SearchNode");
+    use Moose;
+    extends ("WebService::Braintree::SearchNode");
 
-  sub default_criteria {
-    return "";
-  }
+    sub default_criteria {
+        return "";
+    }
 
-  sub active {
-    my $self = shift;
-    return $self->criteria;
-  }
+    sub active {
+        my $self = shift;
+        return $self->criteria;
+    }
 
-  sub is {
-    my ($self, $operand) = @_;
-    $self->criteria($operand);
-    return $self->searcher;
-  }
-  __PACKAGE__->meta->make_immutable;
-  1;
+    sub is {
+        my ($self, $operand) = @_;
+        $self->criteria($operand);
+        return $self->searcher;
+    }
+    __PACKAGE__->meta->make_immutable;
+    1;
 }
 
 {
-  package WebService::Braintree::PartialMatchNode;
+    package WebService::Braintree::PartialMatchNode;
 
-  use Moose;
-  extends ("WebService::Braintree::EqualityNode");
+    use Moose;
+    extends ("WebService::Braintree::EqualityNode");
 
-  sub starts_with {
-    my ($self, $operand) = @_;
-    return $self->add_node("starts_with", $operand);
-  }
+    sub starts_with {
+        my ($self, $operand) = @_;
+        return $self->add_node("starts_with", $operand);
+    }
 
-  sub ends_with {
-    my ($self, $operand) = @_;
-    return $self->add_node("ends_with", $operand);
-  }
-  __PACKAGE__->meta->make_immutable;
-  1;
+    sub ends_with {
+        my ($self, $operand) = @_;
+        return $self->add_node("ends_with", $operand);
+    }
+    __PACKAGE__->meta->make_immutable;
+    1;
 }
 
 {
-  package WebService::Braintree::TextNode;
+    package WebService::Braintree::TextNode;
 
-  use Moose;
-  extends ("WebService::Braintree::PartialMatchNode");
+    use Moose;
+    extends ("WebService::Braintree::PartialMatchNode");
 
-  sub contains {
-    my ($self, $operand) = @_;
-    return $self->add_node("contains", $operand);
-  }
-  __PACKAGE__->meta->make_immutable;
-  1;
+    sub contains {
+        my ($self, $operand) = @_;
+        return $self->add_node("contains", $operand);
+    }
+    __PACKAGE__->meta->make_immutable;
+    1;
 }
 
 {
-  package WebService::Braintree::RangeNode;
+    package WebService::Braintree::RangeNode;
 
-  use Moose;
-  extends ("WebService::Braintree::EqualityNode");
+    use Moose;
+    extends ("WebService::Braintree::EqualityNode");
 
-  use overload ( '>=' => 'min', '<=' => 'max');
+    use overload ( '>=' => 'min', '<=' => 'max');
 
-  sub min {
-    my ($self, $operand) = @_;
-    return $self->add_node("min", $operand);
-  }
+    sub min {
+        my ($self, $operand) = @_;
+        return $self->add_node("min", $operand);
+    }
 
-  sub max {
-    my ($self, $operand) = @_;
-    return $self->add_node("max", $operand);
-  }
+    sub max {
+        my ($self, $operand) = @_;
+        return $self->add_node("max", $operand);
+    }
 
-  sub between {
-    my ($self, $min, $max) = @_;
-    $self->max($max);
-    $self->min($min);
-  }
-  __PACKAGE__->meta->make_immutable;
-  1;
+    sub between {
+        my ($self, $min, $max) = @_;
+        $self->max($max);
+        $self->min($min);
+    }
+    __PACKAGE__->meta->make_immutable;
+    1;
 }
 
 {
-  package WebService::Braintree::MultipleValuesNode;
+    package WebService::Braintree::MultipleValuesNode;
 
-  use Carp;
-  use Moose;
-  use WebService::Braintree::Util;
-  extends ("WebService::Braintree::SearchNode");
+    use Carp;
+    use Moose;
+    use WebService::Braintree::Util;
+    extends ("WebService::Braintree::SearchNode");
 
     has 'allowed_values' => (is => 'rw');
 

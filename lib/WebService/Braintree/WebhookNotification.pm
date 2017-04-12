@@ -6,9 +6,18 @@ use Moose;
 
 extends 'WebService::Braintree::ResultObject';
 
+has  subscription => (is => 'rw');
+has  merchant_account => (is => 'rw');
+has  disbursement => (is => 'rw');
+has  transaction => (is => 'rw');
+has  partner_merchant => (is => 'rw');
+has  dispute => (is => 'rw');
+has  errors => (is => 'rw');
+has  message => (is => 'rw');
+
+
 sub BUILD {
     my ($self, $attributes) = @_;
-    my $meta = __PACKAGE__->meta;
 
     my $wrapper_node = $attributes->{subject};
 
@@ -17,38 +26,36 @@ sub BUILD {
     }
 
     if (ref($wrapper_node->{subscription}) eq 'HASH') {
-        $meta->add_attribute('subscription', is => 'rw');
+
         $self->subscription(WebService::Braintree::Subscription->new($wrapper_node->{subscription}));
     }
 
     if (ref($wrapper_node->{merchant_account}) eq 'HASH') {
-        $meta->add_attribute('merchant_account', is => 'rw');
+
         $self->merchant_account(WebService::Braintree::MerchantAccount->new($wrapper_node->{merchant_account}));
     }
 
     if (ref($wrapper_node->{disbursement}) eq 'HASH') {
-        $meta->add_attribute('disbursement', is => 'rw');
+
         $self->disbursement(WebService::Braintree::Disbursement->new($wrapper_node->{disbursement}));
     }
 
     if (ref($wrapper_node->{transaction}) eq 'HASH') {
-        $meta->add_attribute('transaction', is => 'rw');
+
         $self->transaction(WebService::Braintree::Transaction->new($wrapper_node->{transaction}));
     }
 
     if (ref($wrapper_node->{partner_merchant}) eq 'HASH') {
-        $meta->add_attribute('partner_merchant', is => 'rw');
+
         $self->partner_merchant(WebService::Braintree::PartnerMerchant->new($wrapper_node->{partner_merchant}));
     }
 
     if (ref($wrapper_node->{dispute}) eq 'HASH') {
-        $meta->add_attribute('dispute', is => 'rw');
+
         $self->dispute(WebService::Braintree::Dispute->new($wrapper_node->{dispute}));
     }
 
     if (ref($wrapper_node->{errors}) eq 'HASH') {
-        $meta->add_attribute('errors', is => 'rw');
-        $meta->add_attribute('message', is => 'rw');
         $self->errors(WebService::Braintree::ValidationErrorCollection->new($wrapper_node->{errors}));
         $self->message($wrapper_node->{message});
     }
@@ -71,4 +78,5 @@ sub gateway {
     return WebService::Braintree->configuration->gateway;
 }
 
+__PACKAGE__->meta->make_immutable;
 1;

@@ -14,10 +14,10 @@ use WebService::Braintree::CreditCard::IssuingBank;
 use Moose;
 extends 'WebService::Braintree::PaymentMethod';
 
+has  billing_address => (is => 'rw');
+
 sub BUILD {
     my ($self, $attributes) = @_;
-    my $meta = __PACKAGE__->meta;
-    $meta->add_attribute('billing_address', is => 'rw');
     $self->billing_address(WebService::Braintree::Address->new($attributes->{billing_address})) if ref($attributes->{billing_address}) eq 'HASH';
     delete($attributes->{billing_address});
     $self->set_attributes_from_hash($self, $attributes);
@@ -71,4 +71,5 @@ sub is_venmo_sdk {
     return $self->venmo_sdk;
 }
 
+__PACKAGE__->meta->make_immutable;
 1;

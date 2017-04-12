@@ -3,12 +3,10 @@ package WebService::Braintree::ResultObject;
 use WebService::Braintree::Util qw(is_arrayref is_hashref);
 use Moose;
 
-my $meta = __PACKAGE__->meta;
-
 sub set_attributes_from_hash {
     my ($self, $target, $attributes) = @_;
     while (my($attribute, $value) = each(%$attributes)) {
-        $meta->add_attribute($attribute, is => 'rw');
+        __PACKAGE__->meta->add_attribute($attribute, is => 'rw');
         $target->$attribute($self->set_attr_value($value));
     }
 }
@@ -32,7 +30,7 @@ sub set_attr_value {
 sub setup_sub_objects {
     my($self, $target, $params, $sub_objects) = @_;
     while (my($attribute, $class) = each(%$sub_objects)) {
-        $meta->add_attribute($attribute, is => 'rw');
+        __PACKAGE__->meta->add_attribute($attribute, is => 'rw');
         if (is_arrayref($params->{$attribute})) {
             my $new_array = [];
             foreach my $element (@{$params->{$attribute}}) {
