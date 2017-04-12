@@ -83,7 +83,7 @@ is emulating stateful transactions.
 
 =item Excessive metaobject wrangling
 
-The usage of L<Moose> in this code is subomtimal.  In particular the
+The usage of L<Moose> in this code is sub-opimtimal.  In particular the
 following classes use the metaobject in a way that makes what is happening
 difficult to understand:
 
@@ -94,14 +94,33 @@ difficult to understand:
 This class is now the only one that is not immutable in the codebase.
 Unpicking how to make this mutable is problematic.
 
+The constructors for the following should be fixed to be explicit (requires
+understanding of what ResultObject is doing):
+
 =item L<WebService::Braintree::AdvancedSearchFields>
+
 =item L<WebService::Braintree::SubscriptionSearch>
+
 =item L<WebService::Braintree::CreditCardVerificationSearch>
+
 =item L<WebService::Braintree::CustomerSearch>
+
 =item L<WebService::Braintree::Result>
+
 =item L<WebService::Braintree::TransactionSearch>
 
 =back
+
+Also, having stared at the internals of some objects in the perl debugger
+for a bit, I fear there may be memory leaks, but I have not investigated
+this closely.  It's also possible that the way that several of the above
+methods use a C<$field> variable in package lexical scope that this module
+may not be fork-safe.  These concerns also apply to L<Net::Braintree> (only
+it has a bigger memory footprint).
+
+=item Sandbox tests
+
+One of the sandbox tests is really really slow.
 
 =back
 
