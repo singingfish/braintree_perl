@@ -1,12 +1,6 @@
 Revision history for WebService-Braintree
-0.31.0 13/3/17
-        Typofixes and a few more docs.
-0.30.0  13/3/17
-        Rename to WebService::Braintree
-        A fair number of code-quality improvments.
-        Make integration tests work as best as possible in the sandbox.
-        Make all Moose packages that can be immutable, immutable.
-Revision history for Net-Braintree
+0.6     1206-4-14
+        Issues has wrong link in pod.
 0.4.0   2016-4-12
         Fix dist to point to self rather than where forked from.
         Activate github issues for dist

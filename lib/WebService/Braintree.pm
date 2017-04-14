@@ -65,7 +65,7 @@ sub configuration { return $configuration_instance; }
 =head2 ISSUES
 
 The bugtracker is at
-L<https://github.com/braintree/braintree_perl/issues>.
+L<https://github.com/singingfish/braintree_perl/issues>.
 
 Patches welcome!
 
