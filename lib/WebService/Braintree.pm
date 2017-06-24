@@ -69,6 +69,39 @@ L<https://github.com/singingfish/braintree_perl/issues>.
 
 Patches welcome!
 
+=head2 CONTRIBUTING
+
+Contributions are welcome. The process:
+
+=over 4
+
+=item Submissions
+
+Please fork this repository on Github, create a branch, then submit a pull
+request from that branch to the master of this repository. All other
+submissions will be summarily rejected.
+
+=item Developer Environment
+
+We use Docker to encapsulate the developer environment. There is a Bash script
+in the root called C<< run_tests >> that provides an entrypoint to how this
+project uses Docker. The sequence is:
+
+=over 4
+
+=item run_tests build [ version, ... ]
+
+=item run_tests test [ version, ... ]
+
+=item run_tests cover [ version, ... ]
+
+=back
+
+You can optionally select a Perl version or versions (5.10 through 5.24) to
+run the command against.
+
+=back
+
 =head2 TODO/WISHLIST/ROADMAP
 
 =over 4

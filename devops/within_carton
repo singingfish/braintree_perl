@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+if [[ $1 == "bash" ]]; then
+  /bin/bash
+  exit
+fi
+
+echo "Starting tests"
+if [[ $1 == "cover" ]]; then
+  shift
+  dzil cover "$@"
+else
+  # The Dockerfile.test sets the default CMD to "prove -lrs"
+  dzil run "$@"
+fi
