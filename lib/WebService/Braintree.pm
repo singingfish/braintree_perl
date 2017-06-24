@@ -100,6 +100,49 @@ project uses Docker. The sequence is:
 You can optionally select a Perl version or versions (5.10 through 5.24) to
 run the command against.
 
+This Bash script has been tested to work in Linux, OSX, and GitBash on Windows.
+
+=back
+
+=item Running the tests in xt/
+
+The tests in C<< t/ >> are unit tests. The tests in C<< xt/ >> are E2E tests
+that run against Braintree's sandbox / integration environment. To run them,
+you will need to have a Braintree sandbox account.
+
+=over 4
+
+=item Signup
+
+Navigate to L<https://www.braintreepayments.com/sandbox>. Enter your first name,
+last name, Comany name of "WebService::Braintree", your country, and your email
+address.
+
+=item Activate your account
+
+You will receive an email to the address you provided which will contain a link.
+Click on it and you'll sent to a page where you will be asked for a password.
+
+=item Create a sandbox_config.json
+
+On the dashboard page of your new sandbox account, three are three values you
+will need to put into a C<< sandbox_config.json >>. The format of the file must
+be:
+
+    {
+      "merchant_id": "<< value 1 >>",
+      "public_key": "<< value 2 >>",
+      "private_key": "<< value 3 >>"
+    }
+
+replacing what's in the double-quotes with the appropriate values from your
+Braintree sandbox's dashboard.
+
+=item Run the tests
+
+You can now run the integration tests with C<< run_tests integration >>. These
+tests will take between 5 and 10 minutes.
+
 =back
 
 =head2 TODO/WISHLIST/ROADMAP
