@@ -89,26 +89,27 @@ project uses Docker. The sequence is:
 
 =over 4
 
-=item run_tests build [ version, ... ]
+=item run_tests build [ command ]
 
-=item run_tests test [ version, ... ]
+=item run_tests test [ command ]
 
-=item run_tests cover [ version, ... ]
+=item run_tests integration [ command ]
+
+=item run_tests cover
 
 =back
 
 You can optionally select a Perl version or versions (5.10 through 5.24) to
-run the command against.
+run the command against by setting the C<< PERL_VERSIONS >> environment
+variable. Use a space to separate multiple versions.
 
 This Bash script has been tested to work in Linux, OSX, and GitBash on Windows.
-
-=back
 
 =item Running the tests in xt/
 
 The tests in C<< t/ >> are unit tests. The tests in C<< xt/ >> are E2E tests
 that run against Braintree's sandbox / integration environment. To run them,
-you will need to have a Braintree sandbox account.
+you will need to have a Braintree sandbox account linked to Paypal.
 
 =over 4
 
@@ -138,10 +139,36 @@ be:
 replacing what's in the double-quotes with the appropriate values from your
 Braintree sandbox's dashboard.
 
+=item Link your Paypal Sandbox Account
+
+You'll need to follow the instructions at L<< https://developers.braintreepayments.com/guides/paypal/testing-go-live/ruby#linked-paypal-testing >>. This is
+required for some of the integration tests to pass.
+
+Within Setting > Processing, select "Link your sandbox" within the PayPal
+section.
+
+Once at the Paypal Developer Dashboard:
+
+=over 4
+
+=item * My Apps & Credentials
+
+=item * Rest Apps
+
+=item * Create new App
+
+=item * Give it a name
+
+=item * Copy the information requested back to Braintree
+
+=back
+
 =item Run the tests
 
 You can now run the integration tests with C<< run_tests integration >>. These
-tests will take between 5 and 10 minutes.
+tests will take between 5 and 20 minutes.
+
+=back
 
 =back
 

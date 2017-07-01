@@ -14,16 +14,15 @@ all_versions="5.10 5.14 5.16 5.18 5.20 5.22 5.24"
 # with Docker. Without this, Docker cannot mount volumes properly.
 export MSYS_NO_PATHCONV=1
 
+versions=${PERL_VERSIONS:-${all_versions}}
 if [[ "$1" == "pull" ]]; then
   shift
-  versions=${@:-"${all_versions}"}
   for version in ${versions}; do
     docker pull perl:${version}
   done
 elif [[ "$1" == "build" ]]; then
   shift
   mkdir -p build_log
-  versions=${@:-"${all_versions}"}
   for version in ${versions}; do
     echo "Running build for perl-${version}"
     set +e
@@ -37,7 +36,7 @@ elif [[ "$1" == "build" ]]; then
   done
 elif [[ "$1" == "test" ]]; then
   shift
-  versions=${@:-"${all_versions}"}
+  test_command="${@:-""}"
   for version in ${versions}; do
     echo "Running tests against perl-${version}"
     MSYS_NO_PATHCONV=1 \
@@ -45,7 +44,8 @@ elif [[ "$1" == "test" ]]; then
       --rm \
       -v $(pwd)/lib:/app/lib \
       -v $(pwd)/t:/app/t \
-      ${container}:${version} #prove -lv xt/sandbox/address.t
+      ${container}:${version} \
+        $test_command
   done
 elif [[ "$1" == "integration" ]]; then
   shift
@@ -54,7 +54,7 @@ elif [[ "$1" == "integration" ]]; then
     exit 1
   fi
 
-  versions=${@:-"${all_versions}"}
+  test_command="${@:-"prove -lrs xt/"}"
   for version in ${versions}; do
     echo "Running integration tests against perl-${version}"
     # We have to add volumes for xt/ and sandbox_config.json
@@ -65,19 +65,27 @@ elif [[ "$1" == "integration" ]]; then
       -v $(pwd)/t:/app/t \
       -v $(pwd)/xt:/app/xt \
       -v $(pwd)/sandbox_config.json:/app/sandbox_config.json \
-      ${container}:${version} prove -lrs xt/
+      ${container}:${version} \
+        $test_command
   done
 elif [[ "$1" == "cover" ]]; then
   shift
-  versions=${@:-"${all_versions}"}
   for version in ${versions}; do
     echo "Running test coverage against perl-${version}"
+
+    rm -rf cover_db cover_db_${version}
+    mkdir cover_db
+
     MSYS_NO_PATHCONV=1 \
     docker run \
       --rm \
       -v $(pwd)/lib:/app/lib \
       -v $(pwd)/t:/app/t \
-      ${container}:${version} cover
+      -v $(pwd)/cover_db:/app/cover_db \
+      ${container}:${version} \
+        cover
+
+    mv cover_db cover_db_${version}
   done
 elif [[ "$1" == "release" ]]; then
   shift
@@ -115,6 +123,6 @@ elif [[ "$1" == "release" ]]; then
     ${container}:${tag} \
       -c "carton exec perl Makefile.PL && make dist && cpan-upload *.tar.gz"
 else
-  >&2 echo "${ME}: <pull | build | test | cover | release> [version, ...]"
+  >&2 echo "${ME}: <pull | build | test | cover | release> [command]"
   exit 1
 fi

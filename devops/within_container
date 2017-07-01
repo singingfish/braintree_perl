@@ -11,6 +11,7 @@ echo "Starting tests"
 if [[ $1 == "cover" ]]; then
   shift
   dzil cover "$@"
+  mv .build/*/cover_db/* cover_db
 else
   # The Dockerfile.test sets the default CMD to "prove -lrs"
   dzil run "$@"
