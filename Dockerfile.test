@@ -1,6 +1,8 @@
 FROM perl:{{version}}
 MAINTAINER Rob Kinyon rob.kinyon@gmail.com
 
+RUN apt-get update && apt-get install -y sudo
+
 RUN curl -L http://cpanmin.us | perl - App::cpanminus
 RUN cpanm \
   Carton \
@@ -11,7 +13,9 @@ RUN cpanm \
   Dist::Zilla::App::Command::cover
 
 ENV app /app
-RUN mkdir -p $app
+# We need to have /app open to everyone because we don't know what user we
+# will be when we run.
+RUN mkdir -p $app && chmod 777 /app
 WORKDIR $app
 
 COPY "devops/MyConfig.pm" "/root/.cpan/CPAN/MyConfig.pm"
