@@ -27,5 +27,5 @@ RUN cpanm $(dzil listdeps) \
 
 COPY "devops/within_container" "/usr/local/bin/within_container"
 
-ENTRYPOINT [ "/usr/local/bin/within_carton" ]
+ENTRYPOINT [ "/usr/local/bin/within_container" ]
 CMD [ "prove", "-lrs" ]
