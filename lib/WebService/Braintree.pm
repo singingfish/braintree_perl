@@ -14,6 +14,7 @@ use WebService::Braintree::Dispute;
 use WebService::Braintree::MerchantAccount;
 use WebService::Braintree::PartnerMerchant;
 use WebService::Braintree::PaymentMethod;
+use WebService::Braintree::PaymentMethodNonce;
 use WebService::Braintree::PayPalAccount;
 use WebService::Braintree::PayPalDetails;
 use WebService::Braintree::ResourceCollection;
@@ -36,15 +37,15 @@ Services Gateway API
 =head2 FORK
 
 This is a fork of the original vendor-issued L<Net::Braintree>.  While the
-original is depreacted, it continues to work. However, it contains a number
+original is deprecated, it continues to work.  However, it contains a number
 of code-style and maintainability problems.  This fork was produced to
 address some of those problems and to provide a community driven basis for
 going forward.
 
 =head2 DOCUMENTATION
 
-The module is sparesly documented at best.  The public facing API is very
-similar to the ruby libraries which are documented at
+The module is sparsely documented, at best.  The public facing API is very
+similar to the Ruby libraries which are documented at
 L<https://developers.braintreepayments.com/ruby/sdk/server/overview>.
 
 
@@ -55,12 +56,109 @@ Braintree's private integration server.  Care has been taken that the same
 sandbox tests that fail in this module also fail for L<Net::Braintree>, and
 in the same manner.
 
+=head2 GENERAL STYLE
+
+In general, clients of this library will not instantiate any objects.  Every
+call you make will be a class method.  Some methods will return objects.  In
+those cases, those objects will be documented for you.
+
 =cut
 
 my $configuration_instance = WebService::Braintree::Configuration->new;
 
 sub configuration { return $configuration_instance; }
 
+=head2 CONFIGURATION
+
+You will need to set some configuration.
+
+    use WebService::Braintree;
+
+    my $conf = WebService::Braintree->configuration;
+    $conf->environment( 'sandbox' );
+    $conf->merchant_id( 'use_your_merchant_id' );
+    $conf->public_key( 'use_your_public_key' );
+    $conf->private_key( 'use_your_private_key' );
+
+Please see L<WebService::Braintree::Configuration/> for more information.
+
+=head3 Client Tokens
+
+In general, your server code (that uses this library) will be interacting with
+a client-side SDK (such as for Mobile or Javascript).  That library will need a
+client token in order to interact with Braintree.  This token will be all the
+client-side needs, regardless of whether your server is pointing at the sandbox
+or to production.
+
+This token is created with L<WebService::Braintree::ClientToken/generate>.
+
+=head2 INTERFACE
+
+There are twelve classes that you will interface with.  Please see their
+respective documentation for more detail on how to use them.
+
+=head3 L<WebService::Braintree::Address>
+
+Create, update, delete, and find addresses.
+
+=head3 L<WebService::Braintree::ClientToken>
+
+Generate client tokens.  These are used for client-side SDKs to take actions.
+
+=head3 L<WebService::Braintree::CreditCard>
+
+Create, update, delete, and find credit cards.
+
+=head3 L<WebService::Braintree::CreditCardVerification>
+
+Find and list credit card verifications.
+
+=head3 L<WebService::Braintree::Customer>
+
+Create, update, delete, and find customers.
+
+=head3 L<WebService::Braintree::MerchantAccount>
+
+Create, update, and find merchant accounts.
+
+=head3 L<WebService::Braintree::PaymentMethod>
+
+Create, update, delete, and find payment methods.
+
+=head3 L<WebService::Braintree::PaymentMethodNonce>
+
+Create and find payment method nonces.
+
+=head3 L<WebService::Braintree::PayPalAccount>
+
+Find and update PayPal accounts.
+
+=head3 L<WebService::Braintree::SettlementBatchSummary>
+
+Generate settlement batch summaries.
+
+=head3 L<WebService::Braintree::Subscription>
+
+Create, update, cancel, find, and handle charges for subscriptions.
+
+=head3 L<WebService::Braintree::Transaction>
+
+Create, manage, and search for transactions.  This is the workhorse class and it
+has many methods.
+
+=head3 L<WebService::Braintree::TransparentRedirect>
+
+Manage the transparent redirection of ????.
+
+B<NOTE>: This class needs significant help in documentation.
+
+=head2 SEARCHING
+
+Several of the class interfaces provide a C<< search() >> method.  This method
+is unique in that it takes a subroutine reference (subref) instead of a hashref
+or other parameters.
+
+Documentation for this is forthcoming.
 
 =head2 ISSUES
 
@@ -71,21 +169,21 @@ Patches welcome!
 
 =head2 CONTRIBUTING
 
-Contributions are welcome. The process:
+Contributions are welcome.  The process:
 
 =over 4
 
 =item Submissions
 
 Please fork this repository on Github, create a branch, then submit a pull
-request from that branch to the master of this repository. All other
+request from that branch to the master of this repository.  All other
 submissions will be summarily rejected.
 
 =item Developer Environment
 
-We use Docker to encapsulate the developer environment. There is a Bash script
+We use Docker to encapsulate the developer environment.  There is a Bash script
 in the root called C<< run_tests >> that provides an entrypoint to how this
-project uses Docker. The sequence is:
+project uses Docker.  The sequence is:
 
 =over 4
 
@@ -101,21 +199,21 @@ project uses Docker. The sequence is:
 
 You can optionally select a Perl version or versions (5.10 through 5.24) to
 run the command against by setting the C<< PERL_VERSIONS >> environment
-variable. Use a space to separate multiple versions.
+variable.  Use a space to separate multiple versions.
 
 This Bash script has been tested to work in Linux, OSX, and GitBash on Windows.
 
 =item Running the tests in xt/
 
-The tests in C<< t/ >> are unit tests. The tests in C<< xt/ >> are E2E tests
-that run against Braintree's sandbox / integration environment. To run them,
+The tests in C<< t/ >> are unit tests.  The tests in C<< xt/ >> are E2E tests
+that run against Braintree's sandbox / integration environment.  To run them,
 you will need to have a Braintree sandbox account linked to Paypal.
 
 =over 4
 
 =item Signup
 
-Navigate to L<https://www.braintreepayments.com/sandbox>. Enter your first name,
+Navigate to L<https://www.braintreepayments.com/sandbox>.  Enter your first name,
 last name, Comany name of "WebService::Braintree", your country, and your email
 address.
 
@@ -127,7 +225,7 @@ Click on it and you'll sent to a page where you will be asked for a password.
 =item Create a sandbox_config.json
 
 On the dashboard page of your new sandbox account, three are three values you
-will need to put into a C<< sandbox_config.json >>. The format of the file must
+will need to put into a C<< sandbox_config.json >>.  The format of the file must
 be:
 
     {
@@ -141,7 +239,7 @@ Braintree sandbox's dashboard.
 
 =item Link your Paypal Sandbox Account
 
-You'll need to follow the instructions at L<< https://developers.braintreepayments.com/guides/paypal/testing-go-live/ruby#linked-paypal-testing >>. This is
+You'll need to follow the instructions at L<< https://developers.braintreepayments.com/guides/paypal/testing-go-live/ruby#linked-paypal-testing >>.  This is
 required for some of the integration tests to pass.
 
 Within Setting > Processing, select "Link your sandbox" within the PayPal
@@ -165,7 +263,7 @@ Once at the Paypal Developer Dashboard:
 
 =item Run the tests
 
-You can now run the integration tests with C<< run_tests integration >>. These
+You can now run the integration tests with C<< run_tests integration >>.  These
 tests will take between 5 and 20 minutes.
 
 =back
@@ -247,3 +345,4 @@ See http://dev.perl.org/licenses/ for more information.
 =cut
 
 1; # End of WebService::Braintree
+__END__
