@@ -69,6 +69,109 @@ L<https://github.com/singingfish/braintree_perl/issues>.
 
 Patches welcome!
 
+=head2 CONTRIBUTING
+
+Contributions are welcome. The process:
+
+=over 4
+
+=item Submissions
+
+Please fork this repository on Github, create a branch, then submit a pull
+request from that branch to the master of this repository. All other
+submissions will be summarily rejected.
+
+=item Developer Environment
+
+We use Docker to encapsulate the developer environment. There is a Bash script
+in the root called C<< run_tests >> that provides an entrypoint to how this
+project uses Docker. The sequence is:
+
+=over 4
+
+=item run_tests build [ command ]
+
+=item run_tests test [ command ]
+
+=item run_tests integration [ command ]
+
+=item run_tests cover
+
+=back
+
+You can optionally select a Perl version or versions (5.10 through 5.24) to
+run the command against by setting the C<< PERL_VERSIONS >> environment
+variable. Use a space to separate multiple versions.
+
+This Bash script has been tested to work in Linux, OSX, and GitBash on Windows.
+
+=item Running the tests in xt/
+
+The tests in C<< t/ >> are unit tests. The tests in C<< xt/ >> are E2E tests
+that run against Braintree's sandbox / integration environment. To run them,
+you will need to have a Braintree sandbox account linked to Paypal.
+
+=over 4
+
+=item Signup
+
+Navigate to L<https://www.braintreepayments.com/sandbox>. Enter your first name,
+last name, Comany name of "WebService::Braintree", your country, and your email
+address.
+
+=item Activate your account
+
+You will receive an email to the address you provided which will contain a link.
+Click on it and you'll sent to a page where you will be asked for a password.
+
+=item Create a sandbox_config.json
+
+On the dashboard page of your new sandbox account, three are three values you
+will need to put into a C<< sandbox_config.json >>. The format of the file must
+be:
+
+    {
+      "merchant_id": "<< value 1 >>",
+      "public_key": "<< value 2 >>",
+      "private_key": "<< value 3 >>"
+    }
+
+replacing what's in the double-quotes with the appropriate values from your
+Braintree sandbox's dashboard.
+
+=item Link your Paypal Sandbox Account
+
+You'll need to follow the instructions at L<< https://developers.braintreepayments.com/guides/paypal/testing-go-live/ruby#linked-paypal-testing >>. This is
+required for some of the integration tests to pass.
+
+Within Setting > Processing, select "Link your sandbox" within the PayPal
+section.
+
+Once at the Paypal Developer Dashboard:
+
+=over 4
+
+=item * My Apps & Credentials
+
+=item * Rest Apps
+
+=item * Create new App
+
+=item * Give it a name
+
+=item * Copy the information requested back to Braintree
+
+=back
+
+=item Run the tests
+
+You can now run the integration tests with C<< run_tests integration >>. These
+tests will take between 5 and 20 minutes.
+
+=back
+
+=back
+
 =head2 TODO/WISHLIST/ROADMAP
 
 =over 4
