@@ -67,7 +67,7 @@ ever want to use this.
 
 =item sandbox
 
-This is when you're using your local Braintree sandbox for testing.
+This is when you're using your Braintree sandbox for testing.
 
 =item qa
 

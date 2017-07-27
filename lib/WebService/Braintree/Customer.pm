@@ -121,32 +121,14 @@ This returns an arrayref of all available payment methods across all types.
 
 =cut
 
-#sub __payment_methods {
-#    my $self = shift;
-#
-#    my @methods = map {
-#        @{$self->$_ // []}
-#    } $self->payment_types;
-#
-#    return \@methods;
-#}
-
 sub payment_methods {
     my $self = shift;
-    my @pmt_methods;
-    if (defined($self->credit_cards)) {
-        foreach my $credit_card (@{$self->credit_cards}) {
-            push @pmt_methods, $credit_card;
-        }
-    }
 
-    if (defined($self->paypal_accounts)) {
-        foreach my $paypal_account (@{$self->paypal_accounts}) {
-            push @pmt_methods, $paypal_account;
-        }
-    }
+    my @methods = map {
+        @{$self->$_ // []}
+    } $self->payment_types;
 
-    return \@pmt_methods;
+    return \@methods;
 }
 
 __PACKAGE__->meta->make_immutable;
