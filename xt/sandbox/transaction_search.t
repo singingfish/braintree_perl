@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
+
 use lib qw(lib t/lib);
+
 use Test::More;
 use Time::HiRes qw(gettimeofday);
 use WebService::Braintree;
@@ -7,6 +9,8 @@ use WebService::Braintree::Nonce;
 use WebService::Braintree::SandboxValues::TransactionAmount;
 use WebService::Braintree::Util;
 use WebService::Braintree::TestHelper qw(sandbox);
+
+require 't/lib/WebService/Braintree/Nonce.pm';
 
 my $credit_card_number = "5431111111111111";
 
@@ -243,7 +247,7 @@ subtest "amount - range" => sub {
         credit_card => {
             number => $credit_card_number,
             expiration_date => "01/2000",
-            cardholder_name => "Name"
+            cardholder_name => "Name",
         }
     })->transaction;
 
@@ -259,7 +263,7 @@ subtest "amount - range" => sub {
 };
 
 TODO: {
-    todo_skip "Test consistently fails  against sandbox environment ", 5;
+    todo_skip "Test consistently fails against sandbox environment ", 6;
 
     subtest "disbursement_date - range - max and min" => sub {
         my $search_result = WebService::Braintree::Transaction->search(sub {
@@ -279,7 +283,6 @@ TODO: {
             $search->id->is("deposittransaction");
             $search->disbursement_date->is(WebService::Braintree::TestHelper::parse_datetime("2013-04-10 00:00:00"));
         });
-
     };
 
     ok contains("deposittransaction", $search_result->ids);
@@ -307,7 +310,6 @@ TODO: {
         ok contains("disputedtransaction", $search_result->ids);
         is scalar @{$search_result->ids}, 1;
     };
-
 }
 ;
 
@@ -356,7 +358,7 @@ subtest "paypal" => sub {
     subtest "search on paypal fields" => sub {
         my $result = WebService::Braintree::Transaction->sale({
             amount => WebService::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
-            payment_method_nonce => WebService::Braintree::Nonce::paypal_one_time_payment()
+            payment_method_nonce => WebService::Braintree::Nonce->paypal_one_time_payment(),
         });
 
         ok $result->is_success;
@@ -410,7 +412,7 @@ sub create_sale {
             locality => "Locality",
             postal_code => "12345",
             region => "IL",
-            street_address => "Street"
+            street_address => "Street",
         },
         customer => {
             company => "Company",
@@ -423,7 +425,7 @@ sub create_sale {
         },
         options => {
             store_in_vault => "true",
-            submit_for_settlement => "true"
+            submit_for_settlement => "true",
         },
         order_id => "myorder",
         shipping => {
@@ -435,7 +437,7 @@ sub create_sale {
             locality => "Company",
             postal_code => "54321",
             region => "IL",
-            street_address => "Address"
+            street_address => "Address",
         }
     });
 
