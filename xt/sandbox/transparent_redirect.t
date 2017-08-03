@@ -38,7 +38,6 @@ subtest "gets the right transaction data" => sub {
     is ($transaction->amount, "50.00", "amount should be 50.00");
 };
 
-
 subtest "create customer data" => sub {
     my $customer_create_tr_params = {redirect_url => "http://example.com"};
     my $customer_params = {
@@ -57,7 +56,6 @@ subtest "create customer data" => sub {
     is($result->customer->first_name, "Sally", "First name is accepted");
     is($result->customer->last_name, "Sitwell", "Last name is accepted");
 };
-
 
 subtest "update customer" => sub {
     my $customer = WebService::Braintree::Customer->new();

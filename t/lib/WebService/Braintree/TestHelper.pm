@@ -9,6 +9,7 @@ use Test::More;
 
 use lib qw(lib t/lib);
 
+use Data::Dumper;
 use DateTime::Format::Strptime;
 use HTTP::Request;
 use JSON;
@@ -24,6 +25,8 @@ use WebService::Braintree;
 use WebService::Braintree::ClientApiHTTP;
 use WebService::Braintree::ClientToken;
 use WebService::Braintree::Util;
+
+use Test::Deep;
 
 use Exporter;
 our @ISA = qw(Exporter);
@@ -42,36 +45,90 @@ our @EXPORT = qw(
 our @EXPORT_OK = qw(
 );
 
+{
+    my $config;
+    sub config {
+        return $config;
+    }
 
-my $config;
-sub config {
-    return $config;
+    sub import {
+        my ($class, $env) = @_;
+        $env ||= 'integration';
+        $class->export_to_level(1, @EXPORT);
+
+        $config = WebService::Braintree->configuration;
+        $config->environment($env);
+        if ($env eq 'sandbox') {
+            my $conf_file = 'sandbox_config.json';
+            die "Can not run sandbox tests without $conf_file in distribution root" unless -e $conf_file;
+            my $sandbox = decode_json( do { local $/; open my($f), $conf_file; <$f>} );
+            $config->public_key($sandbox->{public_key});
+            $config->merchant_id($sandbox->{merchant_id});
+            $config->private_key($sandbox->{private_key});
+        }
+    }
 }
 
-sub import {
-    my ($class, $env) = @_;
-    $env ||= 'integration';
-    $class->export_to_level(1, @EXPORT);
+# The sandbox must have specific items in it with specific values.
+sub verify_sandbox {
+    my %required_plans = (
+        integration_trialless_plan => superhashof(bless {
+            price => '12.34',
+            number_of_billing_cycles => undef,
+            billing_day_of_month => undef,
+            trial_period => 0,
+            add_ons => [],
+            discounts => [],
+        }, 'WebService::Braintree::Plan'),
+        integration_plan_with_add_ons_and_discounts => superhashof(bless {
+            price => '1.00',
+            number_of_billing_cycles => undef,
+            billing_day_of_month => undef,
+            trial_period => 1,
+            add_ons => [
+                superhashof(bless {
+                    id => 'increase_30',
+                    amount => '30.00',
+                    never_expires => 1,
+                }, 'Hash::Inflator'),
+            ],
+            discounts => [
+                superhashof(bless {
+                    id => 'discount_15',
+                    amount => '15.00',
+                    never_expires => 1,
+                }, 'Hash::Inflator'),
+            ],
+        }, 'WebService::Braintree::Plan'),
+    );
+    my %plans = map {
+        $_->id => $_
+    } @{WebService::Braintree::Plan->all};
 
-    $config = WebService::Braintree->configuration;
-    $config->environment($env);
-    if ($env eq 'sandbox') {
-        my $conf_file = 'sandbox_config.json';
-        die "Can not run sandbox tests without $conf_file in distribution root" unless -e $conf_file;
-        my $sandbox = decode_json( do { local $/; open my($f), $conf_file; <$f>} );
-        $config->public_key($sandbox->{public_key});
-        $config->merchant_id($sandbox->{merchant_id});
-        $config->private_key($sandbox->{private_key});
-    }
-};
+    return unless cmp_deeply(\%plans, superhashof(\%required_plans));
+
+    my %required_merchants = (
+        sandbox_master_merchant_account => superhashof(bless {
+            id => 'sandbox_master_merchant_account',
+            status => 'active',
+            default => 1,
+            sub_merchant_account => 0,
+        }, 'WebService::Braintree::MerchantAccount'),
+    );
+    my %merchants = map {
+        $_->id => $_
+    } @{WebService::Braintree::MerchantAccount->all};
+
+    return unless cmp_deeply(\%merchants, superhashof(\%required_merchants));
+
+    return 1;
+}
 
 use constant NON_DEFAULT_MERCHANT_ACCOUNT_ID => 'sandbox_credit_card_non_default';
 
 use constant TRIALLESS_PLAN_ID => 'integration_trialless_plan';
 
-sub three_d_secure_merchant_account_id {
-    'three_d_secure_merchant_account';
-}
+use constant THREE_D_SECURE_MERCHANT => 'three_d_secure_merchant_account';
 
 sub not_ok {
     my($predicate, $message) = @_;
@@ -103,7 +160,9 @@ sub settle {
     my $http = WebService::Braintree::HTTP->new(config => WebService::Braintree->configuration);
     my $response = $http->put("/transactions/${transaction_id}/settle");
 
-    return WebService::Braintree::Result->new(response => $response);
+    my $x = WebService::Braintree::Result->new(response => $response);
+    die Dumper($x) unless $x->is_success;
+    return $x;
 }
 
 sub settlement_decline {
@@ -111,7 +170,9 @@ sub settlement_decline {
     my $http = WebService::Braintree::HTTP->new(config => WebService::Braintree->configuration);
     my $response = $http->put("/transactions/${transaction_id}/settlement_decline");
 
-    return WebService::Braintree::Result->new(response => $response);
+    my $x = WebService::Braintree::Result->new(response => $response);
+    die Dumper($x) unless $x->is_success;
+    return $x;
 }
 
 sub settlement_pending {
@@ -119,14 +180,19 @@ sub settlement_pending {
     my $http = WebService::Braintree::HTTP->new(config => WebService::Braintree->configuration);
     my $response = $http->put("/transactions/${transaction_id}/settlement_pending");
 
-    return WebService::Braintree::Result->new(response => $response);
+    my $x = WebService::Braintree::Result->new(response => $response);
+    die Dumper($x) unless $x->is_success;
+    return $x;
 }
 
 sub create_settled_transaction {
     my ($params) = shift;
-    my $sale   = WebService::Braintree::Transaction->sale($params);
+
+    my $sale = WebService::Braintree::Transaction->sale($params);
+    die Dumper($sale) unless $sale->is_success;
+
     my $submit = WebService::Braintree::Transaction->submit_for_settlement($sale->transaction->id);
-    my $http   = WebService::Braintree::HTTP->new(config => WebService::Braintree->configuration);
+    die Dumper($submit) unless $submit->is_success;
 
     return settle($sale->transaction->id);
 }
@@ -146,17 +212,24 @@ sub create_escrowed_transaction {
     });
     my $http       = WebService::Braintree::HTTP->new(config => WebService::Braintree->configuration);
     my $settlement = $http->put('/transactions/' . $sale->transaction->id . '/settle');
+    die Dumper($settlement) if $settlement->{api_error_response};
+
     my $escrow     = $http->put('/transactions/' . $sale->transaction->id . '/escrow');
+    die Dumper($escrow) if $escrow->{api_error_response};
 
     return WebService::Braintree::Result->new(response => $escrow);
 }
 
 sub create_3ds_verification {
     my ($merchant_account_id, $params) = @_;
+
     my $http = WebService::Braintree::HTTP->new(config => WebService::Braintree->configuration);
     my $response = $http->post("/three_d_secure/create_verification/$merchant_account_id", {
         three_d_secure_verification => $params,
     });
+
+    die Dumper($response) if $response->{api_error_response};
+
     return $response->{three_d_secure_verification}->{three_d_secure_token};
 }
 

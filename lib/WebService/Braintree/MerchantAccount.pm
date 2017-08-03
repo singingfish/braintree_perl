@@ -5,7 +5,7 @@ use strictures 1;
 
 =head1 NAME
 
-WebService::Braintree::Customer
+WebService::Braintree::MerchantAccount
 
 =head1 PURPOSE
 
@@ -41,6 +41,17 @@ This takes a merchant_account_id returns the merchant account (if it exists).
 sub find {
     my ($class, $merchant_account_id) = @_;
     $class->gateway->merchant_account->find($merchant_account_id);
+}
+
+=head2 all()
+
+This returns all the merchant accounts.
+
+=cut
+
+sub all {
+    my $class = shift;
+    $class->gateway->merchant_account->all;
 }
 
 =head2 update()

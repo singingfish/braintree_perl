@@ -32,15 +32,13 @@ my $disbursement_params = {
 
 subtest "Transactions" => sub {
     subtest "retrieves transactions associated with the disbursement" => sub {
+        plan skip_all => 'sandbox_sub_merchant_account is unauthorized';
+
         my $disbursement = WebService::Braintree::Disbursement->new($disbursement_params);
         my $transactions = $disbursement->transactions();
         isnt $transactions, undef;
 
-        TODO: {
-            todo_skip "Tests consistently fail in sandbox environment", 1;
-
-            is($transactions->first()->id(), "sub_merchant_transaction");
-        }
+        is($transactions->first()->id(), "sub_merchant_transaction");
     };
 };
 

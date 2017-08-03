@@ -370,7 +370,6 @@ subtest "card with negative card type indentifiers" => sub {
     is $result->credit_card->durbin_regulated, WebService::Braintree::CreditCard::DurbinRegulated::No;
 };
 
-
 subtest "card without card type identifiers" => sub {
     my $credit_card_params = {
         customer_id => $customer_create->customer->id,

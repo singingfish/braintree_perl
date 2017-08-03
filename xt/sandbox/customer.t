@@ -137,10 +137,6 @@ subtest "Create:S2S" => sub {
 
         ok $result->is_success;
     };
-
-    subtest "with invalid attributes" => sub {
-        plan skip_all => 'pending';
-    };
 };
 
 subtest "delete" => sub {
