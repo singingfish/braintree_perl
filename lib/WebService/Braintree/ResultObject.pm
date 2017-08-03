@@ -5,6 +5,7 @@ use strictures 1;
 
 use Moose;
 use WebService::Braintree::Util qw(is_arrayref is_hashref);
+use Scalar::Util qw(blessed);
 
 sub set_attributes_from_hash {
     my ($self, $target, $attributes) = @_;
@@ -17,7 +18,10 @@ sub set_attributes_from_hash {
 sub set_attr_value {
     my ($self, $value) = @_;
 
-    if (is_hashref($value)) {
+    if (blessed($value)) {
+        return $value;
+    }
+    elsif (is_hashref($value)) {
         return Hash::Inflator->new($value);
     } elsif (is_arrayref($value)) {
         my $new_array = [];
