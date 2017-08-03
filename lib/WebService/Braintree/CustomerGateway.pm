@@ -5,9 +5,8 @@ with 'WebService::Braintree::Role::MakeRequest';
 
 use Carp qw(confess);
 use WebService::Braintree::Validations qw(verify_params customer_signature);
-use WebService::Braintree::Util qw(validate_id);
+use WebService::Braintree::Util qw(to_instance_array validate_id);
 use WebService::Braintree::Result;
-use WebService::Braintree::Util;
 
 has 'gateway' => (is => 'ro');
 

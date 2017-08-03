@@ -4,7 +4,7 @@ use Test::More;
 
 use lib qw(lib t/lib);
 
-use WebService::Braintree::Xml;
+use WebService::Braintree::Xml qw(hash_to_xml xml_to_hash);
 use WebService::Braintree::TestHelper;
 
 sub check_round_trip {

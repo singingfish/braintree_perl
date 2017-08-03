@@ -3,9 +3,8 @@ package WebService::Braintree::TransactionGateway;
 use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 use Carp qw(confess);
-use WebService::Braintree::Util qw(validate_id);
+use WebService::Braintree::Util qw(validate_id to_instance_array);
 use WebService::Braintree::Validations qw(verify_params transaction_signature clone_transaction_signature transaction_search_results_signature);
-use WebService::Braintree::Util;
 
 has 'gateway' => (is => 'ro');
 

@@ -1,7 +1,8 @@
 package WebService::Braintree::ResultObject;
 
-use WebService::Braintree::Util qw(is_arrayref is_hashref);
 use Moose;
+use WebService::Braintree::Util qw(is_arrayref is_hashref);
+use Scalar::Util qw(blessed);
 
 sub set_attributes_from_hash {
     my ($self, $target, $attributes) = @_;
@@ -14,7 +15,10 @@ sub set_attributes_from_hash {
 sub set_attr_value {
     my ($self, $value) = @_;
 
-    if (is_hashref($value)) {
+    if (blessed($value)) {
+        return $value;
+    }
+    elsif (is_hashref($value)) {
         return Hash::Inflator->new($value);
     } elsif (is_arrayref($value)) {
         my $new_array = [];
@@ -25,6 +29,17 @@ sub set_attr_value {
     } else {
         return $value;
     }
+}
+
+sub build_sub_object {
+    my $self = shift;
+    my ($attributes, %options) = @_;
+    my ($method, $class, $key) = @options{qw/method class key/};
+
+    if (is_hashref($attributes->{$key})) {
+        $self->$method( "WebService::Braintree::${class}"->new($attributes->{$key}) );
+    }
+    delete($attributes->{$key});
 }
 
 sub setup_sub_objects {

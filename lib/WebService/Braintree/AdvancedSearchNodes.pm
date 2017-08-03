@@ -149,7 +149,7 @@
 
     use Carp;
     use Moose;
-    use WebService::Braintree::Util;
+    use WebService::Braintree::Util qw(difference_arrays);
     extends ("WebService::Braintree::SearchNode");
 
     has 'allowed_values' => (is => 'rw');

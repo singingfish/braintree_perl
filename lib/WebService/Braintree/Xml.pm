@@ -2,14 +2,15 @@ package WebService::Braintree::Xml;
 
 use strict;
 
-use XML::Simple;
-use vars qw(@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS );
+use vars qw(@ISA @EXPORT_OK);
 use Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw(hash_to_xml xml_to_hash array collect_from_array);
-our @EXPORT_OK = qw();
-use WebService::Braintree::Util;
+our @EXPORT_OK = qw(hash_to_xml xml_to_hash);
+
+use XML::Simple;
+
 use DateTime::Format::Atom;
+use WebService::Braintree::Util qw(is_arrayref is_hashref);
 use XML::LibXML;
 
 sub hash_to_xml {

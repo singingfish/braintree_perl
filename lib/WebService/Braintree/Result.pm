@@ -2,7 +2,9 @@ package WebService::Braintree::Result;
 
 use Moose;
 use Hash::Inflator;
-use WebService::Braintree::Util;
+#use WebService::Braintree::Util;
+
+# XXX: Why only these classes?
 use WebService::Braintree::ValidationErrorCollection;
 use WebService::Braintree::CreditCardVerification;
 use WebService::Braintree::Nonce;
@@ -20,7 +22,7 @@ my $response_objects = {
         credit_card => "WebService::Braintree::CreditCard",
         paypal_account => "WebService::Braintree::PayPalAccount"
     },
-    payment_method_nonce => "WebService::Braintree::Nonce",
+    payment_method_nonce => 'WebService::Braintree::Nonce',
     settlement_batch_summary => "WebService::Braintree::SettlementBatchSummary",
     subscription => "WebService::Braintree::Subscription",
     transaction => "WebService::Braintree::Transaction",

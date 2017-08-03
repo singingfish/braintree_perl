@@ -5,7 +5,7 @@ use Test::More;
 use lib qw(lib t/lib);
 
 use WebService::Braintree;
-use WebService::Braintree::Xml;
+use WebService::Braintree::Xml qw(xml_to_hash);
 use WebService::Braintree::TestHelper;
 
 subtest "should survive some deep parsing" => sub {

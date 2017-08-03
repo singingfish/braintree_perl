@@ -147,7 +147,7 @@ subtest 'sample_notification builds a sample notification for dispute won', sub 
     is $webhook_notification->dispute->id, 'my_id';
 };
 
-subtest 'sample_notification builds a sample notification for disbursement', sub {
+subtest 'sample_notification builds a sample notification for disbursement exception', sub {
     my ($signature, $payload) = WebService::Braintree::WebhookTesting->sample_notification(
         WebService::Braintree::WebhookNotification::Kind::DisbursementException,
         'my_id',
@@ -163,7 +163,7 @@ subtest 'sample_notification builds a sample notification for disbursement', sub
     is $webhook_notification->disbursement->merchant_account->id, 'merchant_account_token';
 };
 
-subtest 'sample_notification builds a sample notification for disbursement exception', sub {
+subtest 'sample_notification builds a sample notification for disbursement', sub {
     my ($signature, $payload) = WebService::Braintree::WebhookTesting->sample_notification(
         WebService::Braintree::WebhookNotification::Kind::Disbursement,
         'my_id',

@@ -7,6 +7,8 @@ use Carp qw(confess);
 
 has 'gateway' => (is => 'ro');
 
+use WebService::Braintree::Util qw(validate_id);
+
 sub create {
     my ($self, $params) = @_;
     $self->_make_request("/payment_methods", 'post', {payment_method => $params});
@@ -24,7 +26,7 @@ sub delete {
 
 sub find {
     my ($self, $token) = @_;
-    if (!defined($token) || WebService::Braintree::Util::trim($token) eq "") {
+    if (!validate_id($token)) {
         confess "NotFoundError";
     }
 

@@ -3,11 +3,13 @@ package WebService::Braintree::PaymentMethodNonceGateway;
 use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 
+use WebService::Braintree::Util qw(validate_id);
+
 has 'gateway' => (is => 'ro');
 
 sub create {
     my ($self, $token) = @_;
-    if (!defined($token) || WebService::Braintree::Util::trim($token) eq "") {
+    if (!validate_id($token)) {
         confess "NotFoundError";
     }
     my $response = $self->_make_request("/payment_methods/${token}/nonces", 'post');
@@ -16,7 +18,7 @@ sub create {
 
 sub find {
     my ($self, $token) = @_;
-    if (!defined($token) || WebService::Braintree::Util::trim($token) eq "") {
+    if (!validate_id($token)) {
         confess "NotFoundError";
     }
 
