@@ -37,8 +37,8 @@ subtest "can find duplicate credit cards given payment method token" => sub {
                                                                 });
 
     not_ok $search_result->is_empty;
-    ok contains($customer1->id, $search_result->ids);
-    ok contains($customer2->id, $search_result->ids);
+    ok grep { $_ eq $customer1->id } @{$search_result->ids};
+    ok grep { $_ eq $customer2->id } @{$search_result->ids};
 };
 
 subtest "can search on text fields" => sub {
@@ -59,7 +59,7 @@ subtest "can search on credit card number (partial match)" => sub {
 
     not_ok $search_result->is_empty;
 
-    ok contains("1111", [map { $_->last_4 } @{$search_result->first->credit_cards}]);
+    ok grep { $_ eq "1111" } map { $_->last_4 } @{$search_result->first->credit_cards};
 };
 
 subtest "can search on ids (multiple values)" => sub {
@@ -85,7 +85,7 @@ subtest "can search on created_at (range field)" => sub {
                                                                 });
 
     not_ok $search_result->is_empty;
-    ok contains($new_customer->id, $search_result->ids);
+    ok grep { $_ eq $new_customer->id } @{$search_result->ids};
 };
 
 subtest "can search on address (text field)" => sub {
@@ -107,7 +107,7 @@ subtest "can search on address (text field)" => sub {
                                                                 });
 
     not_ok $search_result->is_empty;
-    ok contains($new_customer->id, $search_result->ids);
+    ok grep { $_ eq $new_customer->id } @{$search_result->ids};
 };
 
 subtest "gets all customers" => sub {

@@ -80,21 +80,6 @@ TODO: {
 }
 ;
 
-subtest "Processor declined rejection" => sub {
-    my $result = WebService::Braintree::Transaction->sale({
-        amount => "2001.00",
-        credit_card => {
-            number => "4111111111111111",
-            expiration_date => "05/16"
-        }
-    });
-    not_ok $result->is_success;
-    is($result->message, "Insufficient Funds");
-    is($result->transaction->processor_response_code, "2001");
-    is($result->transaction->processor_response_text, "Insufficient Funds");
-    is($result->transaction->additional_processor_response, "2001 : Insufficient Funds");
-};
-
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 1;
 
@@ -115,6 +100,10 @@ TODO: {
 }
 ;
 
+################################################################################
+# Testing note:
+# The "billing_address_id" test is order-dependent on the "Processor declined rejection" test.
+#
 subtest "billing_address_id" => sub {
     my $customer_result = WebService::Braintree::Customer->create();
     my $address_result = WebService::Braintree::Address->create({
@@ -133,6 +122,23 @@ subtest "billing_address_id" => sub {
     ok $result->is_success;
     is $result->transaction->billing_details->first_name, "Jenna";
 };
+
+subtest "Processor declined rejection" => sub {
+    my $result = WebService::Braintree::Transaction->sale({
+        amount => "2001.00",
+        credit_card => {
+            number => "4111111111111111",
+            expiration_date => "05/16"
+        }
+    });
+    not_ok $result->is_success;
+    is($result->message, "Insufficient Funds");
+    is($result->transaction->processor_response_code, "2001");
+    is($result->transaction->processor_response_text, "Insufficient Funds");
+    is($result->transaction->additional_processor_response, "2001 : Insufficient Funds");
+};
+#
+################################################################################
 
 subtest "with payment method nonce" => sub {
     subtest "it can create a transaction" => sub {
@@ -1024,6 +1030,5 @@ subtest "paypal" => sub {
         is($transaction->processor_settlement_response_text, "Settlement Declined");
     };
 };
-
 
 done_testing();
