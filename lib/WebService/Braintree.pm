@@ -14,7 +14,6 @@ use WebService::Braintree::Dispute;
 use WebService::Braintree::MerchantAccount;
 use WebService::Braintree::PartnerMerchant;
 use WebService::Braintree::PaymentMethod;
-use WebService::Braintree::PaymentMethodNonce;
 use WebService::Braintree::PayPalAccount;
 use WebService::Braintree::PayPalDetails;
 use WebService::Braintree::ResourceCollection;
@@ -124,10 +123,6 @@ Create, update, and find merchant accounts.
 =head3 L<WebService::Braintree::PaymentMethod>
 
 Create, update, delete, and find payment methods.
-
-=head3 L<WebService::Braintree::PaymentMethodNonce>
-
-Create and find payment method nonces.
 
 =head3 L<WebService::Braintree::PayPalAccount>
 
