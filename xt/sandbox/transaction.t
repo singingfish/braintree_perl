@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
+
 use lib qw(lib t/lib);
+
 use Test::More;
 use WebService::Braintree;
 use WebService::Braintree::TestHelper qw(sandbox);
@@ -14,16 +16,18 @@ use WebService::Braintree::Test;
 use WebService::Braintree::Transaction::Status;
 use WebService::Braintree::Transaction::PaymentInstrumentType;
 
+require 't/lib/WebService/Braintree/Nonce.pm';
+
 my $transaction_params = {
     amount => "50.00",
     credit_card => {
         number => "5431111111111111",
-        expiration_date => "05/12"
+        expiration_date => "05/12",
     },
     descriptor => {
         name => "abc*def",
         phone => "1234567890",
-        url => "ebay.com"
+        url => "ebay.com",
     }
 };
 
@@ -51,12 +55,12 @@ TODO: {
             amount => "5.00",
             credit_card => {
                 number => "4000111111111511",
-                expiration_date => "05/16"
+                expiration_date => "05/16",
             },
             descriptor => {
                 name => "abcdef",
                 phone => "12345678",
-                url => "12345678901234"
+                url => "12345678901234",
             }
         });
         not_ok $result->is_success;
@@ -70,7 +74,7 @@ TODO: {
             amount => "5.00",
             credit_card => {
                 number => "4000111111111511",
-                expiration_date => "05/16"
+                expiration_date => "05/16",
             }
         });
         not_ok $result->is_success;
@@ -88,10 +92,10 @@ TODO: {
             amount => "50.00",
             credit_card => {
                 number => "5431111111111111",
-                expiration_date => "05/12"
+                expiration_date => "05/12",
             },
             custom_fields => {
-                store_me => "please!"
+                store_me => "please!",
             }
         });
         ok $result->is_success;
@@ -116,7 +120,7 @@ subtest "billing_address_id" => sub {
         billing_address_id => $address_result->address->id,
         credit_card => {
             number => "5431111111111111",
-            expiration_date => "05/12"
+            expiration_date => "05/12",
         },
     });
     ok $result->is_success;
@@ -128,7 +132,7 @@ subtest "Processor declined rejection" => sub {
         amount => "2001.00",
         credit_card => {
             number => "4111111111111111",
-            expiration_date => "05/16"
+            expiration_date => "05/16",
         }
     });
     not_ok $result->is_success;
@@ -146,7 +150,7 @@ subtest "with payment method nonce" => sub {
 
         my $result = WebService::Braintree::Transaction->sale({
             amount => "50.00",
-            payment_method_nonce => $nonce
+            payment_method_nonce => $nonce,
         });
 
         ok $result->is_success;
@@ -160,7 +164,7 @@ subtest "with payment method nonce" => sub {
             subtest "it can create a transaction with a fake apple pay nonce" => sub {
                 my $result = WebService::Braintree::Transaction->sale({
                     amount => "50.00",
-                    payment_method_nonce => WebService::Braintree::Nonce::apple_pay_visa
+                    payment_method_nonce => WebService::Braintree::Nonce->apple_pay_visa,
                 });
 
                 ok $result->is_success;
@@ -193,7 +197,7 @@ TODO: {
                     expiration_date => "05/09",
                 },
                 merchant_account_id => $merchant_account_id,
-                three_d_secure_token => $three_d_secure_token
+                three_d_secure_token => $three_d_secure_token,
             });
 
             ok $result->is_success;
@@ -208,7 +212,7 @@ TODO: {
                     expiration_date => "05/09",
                 },
                 merchant_account_id => $merchant_account_id,
-                three_d_secure_token => "nonexistent_three_d_secure_token"
+                three_d_secure_token => "nonexistent_three_d_secure_token",
             });
 
             not_ok $result->is_success;
@@ -232,7 +236,7 @@ TODO: {
                 expiration_date => "05/20",
             },
             merchant_account_id => $merchant_account_id,
-            three_d_secure_token => $three_d_secure_token
+            three_d_secure_token => $three_d_secure_token,
         });
 
         not_ok $result->is_success;
@@ -253,9 +257,9 @@ subtest "Service Fee" => sub {
                 merchant_account_id => "sandbox_sub_merchant_account",
                 credit_card => {
                     number => "5431111111111111",
-                    expiration_date => "05/12"
+                    expiration_date => "05/12",
                 },
-                service_fee_amount => "10.00"
+                service_fee_amount => "10.00",
             });
             ok $result->is_success;
             is($result->transaction->service_fee_amount, "10.00");
@@ -267,9 +271,9 @@ subtest "Service Fee" => sub {
                 merchant_account_id => "sandbox_credit_card",
                 credit_card => {
                     number => "5431111111111111",
-                    expiration_date => "05/12"
+                    expiration_date => "05/12",
                 },
-                service_fee_amount => "10.00"
+                service_fee_amount => "10.00",
             });
             not_ok $result->is_success;
             my $expected_error_code = WebService::Braintree::ErrorCodes::Transaction::ServiceFeeAmountNotAllowedOnMasterMerchantAccount;
@@ -282,7 +286,7 @@ subtest "Service Fee" => sub {
                 merchant_account_id => "sandbox_sub_merchant_account",
                 credit_card => {
                     number => "5431111111111111",
-                    expiration_date => "05/12"
+                    expiration_date => "05/12",
                 }
             });
             not_ok $result->is_success;
@@ -301,9 +305,9 @@ subtest "Service Fee" => sub {
                 merchant_account_id => "sandbox_sub_merchant_account",
                 credit_card => {
                     number => "5431111111111111",
-                    expiration_date => "05/12"
+                    expiration_date => "05/12",
                 },
-                service_fee_amount => "10.00"
+                service_fee_amount => "10.00",
             });
             not_ok $result->is_success;
             my $expected_error_code = WebService::Braintree::ErrorCodes::Transaction::ServiceFeeIsNotAllowedOnCredits;
@@ -324,11 +328,11 @@ TODO: {
                 merchant_account_id => "sandbox_sub_merchant_account",
                 credit_card => {
                     number => "5431111111111111",
-                    expiration_date => "05/12"
+                    expiration_date => "05/12",
                 },
                 service_fee_amount => "10.00",
                 options => {
-                    hold_in_escrow => 'true'
+                    hold_in_escrow => 'true',
                 }
             });
             ok $result->is_success;
@@ -341,17 +345,17 @@ TODO: {
                 merchant_account_id => "sandbox_credit_card",
                 credit_card => {
                     number => "5431111111111111",
-                    expiration_date => "05/12"
+                    expiration_date => "05/12",
                 },
                 service_fee_amount => "10.00",
                 options => {
-                    hold_in_escrow => 'true'
+                    hold_in_escrow => 'true',
                 }
             });
             not_ok $result->is_success;
             is($result->errors->for("transaction")->on("base")->[0]->code,
-               WebService::Braintree::ErrorCodes::Transaction::CannotHoldInEscrow
-             );
+                WebService::Braintree::ErrorCodes::Transaction::CannotHoldInEscrow,
+            );
         }
     };
 
@@ -362,9 +366,9 @@ TODO: {
                 merchant_account_id => "sandbox_sub_merchant_account",
                 credit_card => {
                     number => "5431111111111111",
-                    expiration_date => "05/12"
+                    expiration_date => "05/12",
                 },
-                service_fee_amount => "10.00"
+                service_fee_amount => "10.00",
             });
             my $hold_result = WebService::Braintree::Transaction->hold_in_escrow($result->transaction->id);
             ok $hold_result->is_success;
@@ -376,14 +380,14 @@ TODO: {
                 merchant_account_id => "sandbox_credit_card",
                 credit_card => {
                     number => "5431111111111111",
-                    expiration_date => "05/12"
+                    expiration_date => "05/12",
                 }
             });
             my $hold_result = WebService::Braintree::Transaction->hold_in_escrow($result->transaction->id);
             not_ok $hold_result->is_success;
             is($hold_result->errors->for("transaction")->on("base")->[0]->code,
-               WebService::Braintree::ErrorCodes::Transaction::CannotHoldInEscrow
-             );
+                WebService::Braintree::ErrorCodes::Transaction::CannotHoldInEscrow,
+            );
         };
     };
 }
@@ -398,8 +402,8 @@ TODO: {
             my $result = WebService::Braintree::Transaction->release_from_escrow($response->transaction->id);
             ok $result->is_success;
             is($result->transaction->escrow_status,
-               WebService::Braintree::Transaction::EscrowStatus::ReleasePending
-             );
+                WebService::Braintree::Transaction::EscrowStatus::ReleasePending,
+            );
         };
     };
 
@@ -409,14 +413,14 @@ TODO: {
             merchant_account_id => "sandbox_credit_card",
             credit_card => {
                 number => "5431111111111111",
-                expiration_date => "05/12"
+                expiration_date => "05/12",
             }
         });
         my $result = WebService::Braintree::Transaction->release_from_escrow($sale->transaction->id);
         not_ok $result->is_success;
         is($result->errors->for("transaction")->on("base")->[0]->code,
-           WebService::Braintree::ErrorCodes::Transaction::CannotReleaseFromEscrow
-         );
+            WebService::Braintree::ErrorCodes::Transaction::CannotReleaseFromEscrow,
+        );
     };
 }
 ;
@@ -438,8 +442,8 @@ TODO: {
             my $result = WebService::Braintree::Transaction->cancel_release($escrowed->transaction->id);
             not_ok $result->is_success;
             is($result->errors->for("transaction")->on("base")->[0]->code,
-               WebService::Braintree::ErrorCodes::Transaction::CannotCancelRelease
-             );
+                WebService::Braintree::ErrorCodes::Transaction::CannotCancelRelease,
+            );
         };
     };
 }
@@ -455,7 +459,7 @@ TODO: {
             fraud_merchant_id => "456",
             credit_card => {
                 number => "5431111111111111",
-                expiration_date => "05/12"
+                expiration_date => "05/12",
             },
         });
         ok $result->is_success;
@@ -469,7 +473,7 @@ subtest "Sale" => sub {
             amount => WebService::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
             credit_card => {
                 number => WebService::Braintree::SandboxValues::CreditCardNumber::VISA,
-                expiration_date => "05/2009"
+                expiration_date => "05/2009",
             }
         });
 
@@ -482,7 +486,7 @@ subtest "Sale" => sub {
         my $nonce = WebService::Braintree::TestHelper::generate_one_time_paypal_nonce();
         my $result = WebService::Braintree::Transaction->sale({
             amount => WebService::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
-            payment_method_nonce => $nonce
+            payment_method_nonce => $nonce,
         });
 
         ok $result->is_success;
@@ -494,7 +498,7 @@ subtest "Sale" => sub {
         my $nonce = WebService::Braintree::TestHelper::generate_one_time_paypal_nonce();
         my $result = WebService::Braintree::Transaction->sale({
             amount => WebService::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
-            payment_method_nonce => $nonce
+            payment_method_nonce => $nonce,
         });
 
         ok $result->is_success;
@@ -757,7 +761,7 @@ TODO: {
             amount => "50.00",
             credit_card => {
                 number => "5431111111111111",
-                expiration_date  => "05/12"
+                expiration_date  => "05/12",
             }
         });
 
@@ -797,7 +801,7 @@ TODO: {
             recurring => "true",
             credit_card => {
                 number => "5431111111111111",
-                expiration_date => "05/12"
+                expiration_date => "05/12",
             }
         });
 
@@ -830,7 +834,7 @@ subtest "Card Type Indicators" => sub {
 subtest "Venmo Sdk Payment Method Code" => sub {
     my $result = WebService::Braintree::Transaction->sale({
         amount => "50.00",
-        venmo_sdk_payment_method_code => WebService::Braintree::Test::VenmoSdk::VisaPaymentMethodCode
+        venmo_sdk_payment_method_code => WebService::Braintree::Test::VenmoSdk::VisaPaymentMethodCode,
     });
 
     ok $result->is_success;
@@ -843,10 +847,10 @@ subtest "Venmo Sdk Session" => sub {
         amount => "50.00",
         credit_card => {
             number => "5431111111111111",
-            expiration_date => "08/2012"
+            expiration_date => "08/2012",
         },
         options => {
-            venmo_sdk_session => WebService::Braintree::Test::VenmoSdk::Session
+            venmo_sdk_session => WebService::Braintree::Test::VenmoSdk::Session,
         }
     });
 
@@ -861,7 +865,7 @@ subtest "paypal" => sub {
 
         my $result = WebService::Braintree::Transaction->sale({
             amount => "10.00",
-            payment_method_nonce => $nonce
+            payment_method_nonce => $nonce,
         });
 
         ok $result->is_success;
@@ -881,7 +885,7 @@ subtest "paypal" => sub {
             amount => "10.00",
             payment_method_nonce => $nonce,
             paypal_account => {
-                payee_email => "payee\@example.com"
+                payee_email => 'payee@example.com',
             }
         });
 
@@ -927,7 +931,7 @@ subtest "paypal" => sub {
             amount => WebService::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
             payment_method_nonce => $nonce,
             options => {
-                store_in_vault => "true"
+                store_in_vault => "true",
             }
         });
 
@@ -949,7 +953,7 @@ subtest "paypal" => sub {
             amount => WebService::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
             payment_method_nonce => $nonce,
             options => {
-                store_in_vault => "true"
+                store_in_vault => "true",
             }
         });
 
@@ -989,7 +993,7 @@ subtest "paypal" => sub {
         ok $result->is_success;
         my $settlement_result = WebService::Braintree::Transaction->submit_for_settlement($result->transaction->id);
         ok $settlement_result->is_success;
-        ok $settlement_result->transaction->status eq WebService::Braintree::Transaction::Status::Settling
+        ok $settlement_result->transaction->status eq WebService::Braintree::Transaction::Status::Settling;
     };
 
     subtest "refund a paypal transaction" => sub {
@@ -1000,7 +1004,7 @@ subtest "paypal" => sub {
             amount => WebService::Braintree::SandboxValues::TransactionAmount::AUTHORIZE,
             payment_method_nonce => $nonce,
             options => {
-                submit_for_settlement => "true"
+                submit_for_settlement => "true",
             }
         });
 
@@ -1014,9 +1018,9 @@ subtest "paypal" => sub {
     subtest "paypal transaction returns settlement response code" => sub {
         my $result = WebService::Braintree::Transaction->sale({
             amount => "10.00",
-            payment_method_nonce => WebService::Braintree::Nonce::paypal_future_payment,
+            payment_method_nonce => WebService::Braintree::Nonce->paypal_future_payment,
             options => {
-                submit_for_settlement => "true"
+                submit_for_settlement => "true",
             }
         });
         ok $result->is_success;
