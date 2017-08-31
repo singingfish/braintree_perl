@@ -39,8 +39,8 @@ sub search {
     my $params = $block->($search)->to_hash;
     my $response = $self->gateway->http->post("/customers/advanced_search_ids", {search => $params});
     return WebService::Braintree::ResourceCollection->new()->init($response, sub {
-                                                                      $self->fetch_customers($search, shift);
-                                                                  });
+        $self->fetch_customers($search, shift);
+    });
 }
 
 sub all {

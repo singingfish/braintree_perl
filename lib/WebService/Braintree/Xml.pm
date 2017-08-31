@@ -69,11 +69,11 @@ sub scrubbed {
     my $tree = shift;
     if (is_hashref($tree)) {
         return collect_from_hash($tree);
-    }
-    if (is_arrayref($tree)) {
+    } elsif (is_arrayref($tree)) {
         return collect_from_array($tree);
+    } else {
+      return $tree;
     }
-    return $tree;
 }
 
 sub collect_from_array {
