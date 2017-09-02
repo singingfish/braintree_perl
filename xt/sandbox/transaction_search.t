@@ -195,6 +195,8 @@ subtest "source - multiple value field" => sub {
     });
 
     ok grep { $_ eq $find->id } @{$search_result->ids};
+
+    # There are >5300 transactions. This generates N+1 API calls.
     #my @results = ();
     #$search_result->each(sub { push(@results, shift->id); });
     #ok grep { $_ eq $find->id } @results;
