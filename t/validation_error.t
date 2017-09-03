@@ -1,8 +1,11 @@
-#!/usr/bin/env perl
+# vim: sw=4 ts=4 ft=perl
+
+use Test::More;
+
 use lib qw(lib t/lib);
+
 use WebService::Braintree;
 use WebService::Braintree::TestHelper;
-use Test::More;
 
 BEGIN { use_ok('WebService::Braintree::ValidationError') };
 

@@ -1,10 +1,15 @@
-#!/usr/bin/env perl
-use lib qw(lib t/lib);
+# vim: sw=4 ts=4 ft=perl
+
 use Test::More;
+
+use lib qw(lib t/lib);
+
 use WebService::Braintree::TestHelper;
 
 subtest "validation" => sub {
-    should_throw("ArgumentError", sub { WebService::Braintree::Address->create({customer_id => "cutomer_id", invalid_key => "foo"}) });
+    should_throw("ArgumentError", sub {
+        WebService::Braintree::Address->create({customer_id => "cutomer_id", invalid_key => "foo"});
+    });
 };
 
 subtest "instance methods" => sub {

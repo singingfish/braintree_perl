@@ -1,6 +1,9 @@
-#!/usr/bin/env perl
-use lib qw(lib t/lib);
+# vim: sw=4 ts=4 ft=perl
+
 use Test::More;
+
+use lib qw(lib t/lib);
+
 use WebService::Braintree::Xml;
 use WebService::Braintree::TestHelper;
 
@@ -80,16 +83,32 @@ subtest "Nested Arrays" => sub {
 </subscription>';
     my $result = xml_to_hash($nested_arrays);
 
-    is_deeply $result, {subscription => {transactions =>
-                                             [{id => "5hpp5g", statuses => [{id => 1123}, {id => 2211}, {id  => 3342}]},
-                                              {id => "4aee2h"}]}};
+    is_deeply $result, {
+        subscription => {
+            transactions => [
+                {
+                    id => "5hpp5g",
+                    statuses => [
+                        {id => 1123},
+                        {id => 2211},
+                        {id  => 3342},
+                    ],
+                },
+                {
+                    id => "4aee2h",
+                },
+            ],
+        },
+    };
 };
 
 subtest "Normalize Hash Keys" => sub {
     is_deeply(xml_to_hash("<this-key>this value</this-key>"), {"this_key" => "this value"});
     is_deeply(xml_to_hash('<nested><this-key>this value</this-key></nested>'), {"nested" => {"this_key" => "this value"}});
-    is_deeply(xml_to_hash('<parent-keys type="array"><parent-key><this-key>this value</this-key></parent-key></parent-keys>'),
-              {"parent_keys" => [{"this_key" => "this value"}]});
+    is_deeply(
+        xml_to_hash('<parent-keys type="array"><parent-key><this-key>this value</this-key></parent-key></parent-keys>'),
+        {"parent_keys" => [{"this_key" => "this value"}]},
+    );
 };
 
 subtest "attribute conversion" => sub {
@@ -116,4 +135,3 @@ subtest "attribute conversion" => sub {
 };
 
 done_testing();
-
