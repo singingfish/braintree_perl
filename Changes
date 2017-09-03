@@ -1,5 +1,6 @@
 Revision history for WebService-Braintree
 0.94    YYYY-DD-MM
+        Comment out some low value sandbox tests that take excessively long PR # 12
         Does not support perl < 5.10.1
 0.93    2017-08-26
         Fix sandbox test failures.  Thanks ROBK.
