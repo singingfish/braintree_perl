@@ -45,3 +45,4 @@ use constant VerificationMerchantAccountIdIsInvalid                   => "91728"
 use constant VenmoSDKPaymentMethodCodeCardTypeIsNotAccepted           => "91726";
 
 1;
+__END__

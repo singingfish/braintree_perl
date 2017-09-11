@@ -32,7 +32,8 @@ sub find {
     return $response->payment_method;
 }
 
-
 __PACKAGE__->meta->make_immutable;
+
 1;
+__END__
 

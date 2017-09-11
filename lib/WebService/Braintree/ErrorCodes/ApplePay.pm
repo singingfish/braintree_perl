@@ -22,3 +22,4 @@ use constant MerchantKeysNotConfigured                        => "93516";
 use constant CertificateInvalid                               => "93517";
 
 1;
+__END__

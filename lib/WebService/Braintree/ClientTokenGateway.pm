@@ -28,9 +28,10 @@ sub _conditionally_verify_params {
         verify_params($params, client_token_signature_with_customer_id);
     } else {
         verify_params($params, client_token_signature_without_customer_id);
-  };
+    }
 }
 
 __PACKAGE__->meta->make_immutable;
-1;
 
+1;
+__END__

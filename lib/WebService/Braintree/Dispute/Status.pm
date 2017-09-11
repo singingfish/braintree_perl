@@ -7,3 +7,4 @@ use constant Won => 'won';
 use constant Lost => 'lost';
 
 1;
+__END__

@@ -62,8 +62,7 @@ sub fetch_customers {
     return to_instance_array($attrs, "WebService::Braintree::Customer");
 }
 
-
 __PACKAGE__->meta->make_immutable;
+
 1;
-
-
+__END__

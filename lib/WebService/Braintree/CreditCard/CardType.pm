@@ -31,4 +31,6 @@ use constant All => [
     Visa,
     Unknown
 ];
+
 1;
+__END__

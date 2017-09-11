@@ -25,3 +25,4 @@ use constant QuantityIsInvalid                            => "92001";
 use constant QuantityMustBeGreaterThanZero                => "92010";
 
 1;
+__END__

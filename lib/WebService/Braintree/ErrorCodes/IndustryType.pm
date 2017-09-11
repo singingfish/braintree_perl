@@ -11,3 +11,4 @@ use constant IndustryTypeIsInvalid              => "93401";
 use constant UnknownDataField                   => "93407";
 
 1;
+__END__

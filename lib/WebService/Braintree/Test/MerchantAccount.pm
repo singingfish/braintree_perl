@@ -13,3 +13,4 @@ use constant BankRejectedUpdateFundingInformation => "bank_rejected__update";
 use constant BankRejectedNone => "bank_rejected__none";
 
 1;
+__END__

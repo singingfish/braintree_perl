@@ -10,3 +10,4 @@ use constant TaxIdMustBeBlank             => "82672";
 use constant LegalNameIsInvalid           => "82677";
 
 1;
+__END__

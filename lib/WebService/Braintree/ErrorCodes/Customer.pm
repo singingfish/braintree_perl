@@ -23,3 +23,4 @@ use constant WebsiteFormatIsInvalid => "81616";
 use constant WebsiteIsTooLong       => "81615";
 
 1;
+__END__

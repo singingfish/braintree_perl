@@ -21,3 +21,4 @@ use constant DeclinedSsnInvalid                     => "82624";
 use constant DeclinedSsnMatchesDeceased             => "82625";
 
 1;
+__END__

@@ -7,3 +7,4 @@ use constant SettlementDateIsInvalid  => "82302";
 use constant SettlementDateIsRequired => "82301";
 
 1;
+__END__

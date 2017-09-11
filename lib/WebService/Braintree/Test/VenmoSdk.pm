@@ -19,3 +19,4 @@ use constant InvalidSession => "stub-invalid-session";
 use constant Session => "stub-session";
 
 1;
+__END__

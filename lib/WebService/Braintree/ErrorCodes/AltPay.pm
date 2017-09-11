@@ -33,3 +33,4 @@ use constant SepaMandateLocaleIsUnsupported                         => "93311";
 use constant SepaMandateTypeIsRequired                              => "93304";
 
 1;
+__END__

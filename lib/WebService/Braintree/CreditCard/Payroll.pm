@@ -7,3 +7,4 @@ use constant No => "No";
 use constant Unknown => "Unknown";
 
 1;
+__END__
