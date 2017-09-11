@@ -1,9 +1,9 @@
-#!/usr/bin/env perl
+# vim: sw=4 ts=4 ft=perl
+
+use Test::More;
 
 use lib qw(lib t/lib);
 
-use Test::More;
-use Time::HiRes qw(gettimeofday);
 use WebService::Braintree;
 use WebService::Braintree::TestHelper qw(sandbox);
 use WebService::Braintree::Util;
@@ -13,12 +13,13 @@ use DateTime::Duration;
 my $unique_company = "company" . generate_unique_integer();
 my $unique_token = "token" . generate_unique_integer();
 my $result = create_customer($unique_company, $unique_token);
+# XXX Add a BAIL_OUT here?
 ok($result->is_success, "customer created successfully");
 my $customer = WebService::Braintree::Customer->find($result->customer->id);
 
 subtest "find customer with all matching fields" => sub {
     my $criteria = make_search_criteria($unique_company, $unique_token);
-    my $search_result = perform_search($criteria);
+    my $search_result = perform_search(Customer => $criteria);
     ok $search_result->is_success;
     not_ok $search_result->is_empty;
     is substr($search_result->first->credit_cards->[0]->last_4, 0, 4), 1111;
@@ -77,8 +78,10 @@ subtest "can search on ids (multiple values)" => sub {
 subtest "can search on created_at (range field)" => sub {
     my $unique_company = "company" . generate_unique_integer();
     my $unique_token = "token" . generate_unique_integer();
+
     my $result = create_customer($unique_company, $unique_token);
     ok $result->is_success;
+
     my $new_customer = WebService::Braintree::Customer->find($result->customer->id);
     my $search_result = WebService::Braintree::Customer->search(sub {
         my $search = shift;
@@ -117,11 +120,15 @@ subtest "gets all customers" => sub {
     ok scalar @{$customers->ids} > 1;
 };
 
+done_testing();
+
 sub create_customer {
+    my ($company, $token) = @_;
+
     my $customer_attributes = {
         first_name => "NotInFaker",
         last_name => "O'Toole",
-        company => shift,
+        company => $company,
         email => "timmy\@example.com",
         fax => "3145551234",
         phone => "5551231234",
@@ -130,7 +137,7 @@ sub create_customer {
             cardholder_name => "NotIn Tool",
             number => "5431111111111111",
             expiration_date => "05/2010",
-            token => shift,
+            token => $token,
             billing_address => {
                 first_name => "Thomas",
                 last_name => "Otool",
@@ -146,23 +153,14 @@ sub create_customer {
     return WebService::Braintree::Customer->create($customer_attributes);
 }
 
-sub perform_search {
-    my($criteria) = @_;
-    WebService::Braintree::Customer->search(sub {
-        my $search = shift;
-        while (my($key, $value) = each(%$criteria)) {
-            $search->$key->is($value);
-        }
-        return $search;
-    });
-}
-
 sub make_search_criteria {
+    my ($company, $token) = @_;
+
     return {
         first_name => "NotInFaker",
         last_name => "O'Toole",
-        company => shift,
-        email => "timmy\@example.com",
+        company => $company,
+        email => 'timmy@example.com',
         phone => "5551231234",
         fax => "3145551234",
         website => "http://example.com",
@@ -174,15 +172,9 @@ sub make_search_criteria {
         address_locality => "Chicago",
         address_region => "Illinois",
         address_country_name => "United States of America",
-        payment_method_token => shift,
+        payment_method_token => $token,
         cardholder_name => "NotIn Tool",
         credit_card_expiration_date => "05/2010",
         credit_card_number => "5431111111111111",
     };
 }
-
-sub generate_unique_integer {
-    return int(gettimeofday * 1000);
-}
-
-done_testing();

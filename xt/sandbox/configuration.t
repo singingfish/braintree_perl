@@ -1,6 +1,9 @@
-#!/usr/bin/env perl
-use lib qw(lib t/lib);
+# vim: sw=4 ts=4 ft=perl
+
 use Test::More;
+
+use lib qw(lib t/lib);
+
 use WebService::Braintree;
 use WebService::Braintree::TestHelper qw(sandbox);
 
@@ -11,22 +14,30 @@ subtest "default integration configuration" => sub {
         amount => "10.00",
         credit_card => {
             number => "5431111111111111",
-            expiration_date => "05/12"
-        }});
+            expiration_date => "05/12",
+        },
+    });
 
-    ok $result->is_success;
+    ok($result->is_success)
+        or diag $result->message;
     is $result->transaction->amount, "10.00";
 };
 
 subtest "configuration two" => sub {
-
     my $config = WebService::Braintree::Configuration->new;
+
     $config->environment("sandbox");
     $config->public_key("it_should_explode");
     $config->merchant_id(WebService::Braintree::TestHelper->config->merchant_id);
     $config->private_key("with_these_values");
+
     my $gateway = $config->gateway;
-    should_throw("AuthenticationError", sub { $gateway->transaction->create({type => "sale", amount => "10.00"}) });
+    should_throw("AuthenticationError", sub {
+        $gateway->transaction->create({
+            type => "sale",
+            amount => "10.00",
+        });
+    });
 };
 
 done_testing();

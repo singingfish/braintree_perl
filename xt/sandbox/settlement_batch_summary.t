@@ -1,6 +1,9 @@
-#!/usr/bin/env perl
-use lib qw(lib t/lib);
+# vim: sw=4 ts=4 ft=perl
+
 use Test::More;
+
+use lib qw(lib t/lib);
+
 use WebService::Braintree;
 use WebService::Braintree::TestHelper qw(sandbox);
 
@@ -28,8 +31,8 @@ TODO: {
             amount => "50.00",
             credit_card => {
                 number => "5431111111111111",
-                expiration_date => "05/12"
-            }
+                expiration_date => "05/12",
+            },
         };
 
         my $settlement_date = WebService::Braintree::TestHelper::now_in_eastern;
@@ -55,8 +58,8 @@ TODO: {
                 expiration_date => "05/12"
             },
             custom_fields => {
-                store_me => "custom_value"
-            }
+                store_me => "custom_value",
+            },
         };
 
         my $settlement_date = WebService::Braintree::TestHelper::now_in_eastern;
@@ -74,5 +77,5 @@ TODO: {
         ok($mastercard_records[0]->{amount_settled} >= $transaction_params->{amount});
     };
 }
-;
+
 done_testing();

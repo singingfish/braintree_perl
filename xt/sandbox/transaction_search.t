@@ -1,9 +1,9 @@
-#!/usr/bin/env perl
+# vim: sw=4 ts=4 ft=perl
+
+use Test::More;
 
 use lib qw(lib t/lib);
 
-use Test::More;
-use Time::HiRes qw(gettimeofday);
 use WebService::Braintree;
 use WebService::Braintree::Nonce;
 use WebService::Braintree::SandboxValues::TransactionAmount;
@@ -32,12 +32,14 @@ subtest "doesn't return duplicate ids in paginated searches" => sub {
                 number => $credit_card_number,
                 expiration_date => "01/2000",
             },
-            customer => { first_name => "FirstName_" . $name,}
+            customer => {
+                first_name => "FirstName_" . $name,
+            },
         });
     }
-    ;
+
     my $criteria = make_search_criteria($name);
-    my $results = perform_search($criteria);
+    my $results = perform_search(Transaction => $criteria);
     my $result_count = $results->maximum_size;
     my $counter = 0;
     $results->each(sub { $counter += 1; });
@@ -54,7 +56,7 @@ subtest "find transaction with all matching equality fields" => sub {
 subtest "results 'first'" => sub {
     subtest "when empty" => sub {
         my $finds_nothing = make_search_criteria("invalid_unique_thing");
-        my $empty_result = perform_search($finds_nothing);
+        my $empty_result = perform_search(Transaction => $finds_nothing);
 
         is_deeply $empty_result->ids, [];
         is $empty_result->first(), undef;
@@ -69,11 +71,11 @@ subtest "results 'first'" => sub {
 
     subtest "multiple results" => sub {
         my $unique = generate_unique_integer() . "multiple_results";
-        my $sale1 = create_sale($unique);
-        my $sale2 = create_sale($unique);
+        my $sale1 = create_sale($unique, $credit_card_number);
+        my $sale2 = create_sale($unique, $credit_card_number);
 
         my $criteria = make_search_criteria($unique);
-        my $search_result = perform_search($criteria);
+        my $search_result = perform_search(Transaction => $criteria);
 
         is scalar @{$search_result->ids}, 2;
         ok contains($sale1->transaction->id, $search_result->ids);
@@ -86,7 +88,7 @@ subtest "results 'first'" => sub {
 subtest "result 'each'" => sub {
     subtest "when empty" => sub {
         my $finds_nothing = make_search_criteria("invalid_unique_thing");
-        my $empty_result = perform_search($finds_nothing);
+        my $empty_result = perform_search(Transaction => $finds_nothing);
 
         is_deeply $empty_result->ids, [];
         ok $empty_result->is_empty;
@@ -105,11 +107,11 @@ subtest "result 'each'" => sub {
 
     subtest "multiple results" => sub {
         my $unique = generate_unique_integer() . "each::multiple_results";
-        my $sale1 = create_sale($unique);
-        my $sale2 = create_sale($unique);
+        my $sale1 = create_sale($unique, $credit_card_number);
+        my $sale2 = create_sale($unique, $credit_card_number);
 
         my $criteria = make_search_criteria($unique);
-        my $search_result = perform_search($criteria);
+        my $search_result = perform_search(Transaction => $criteria);
 
         is scalar @{$search_result->ids}, 2;
         my @results = ();
@@ -123,7 +125,7 @@ subtest "result 'each'" => sub {
 
 subtest "credit_card_card_type - multiple value field" => sub {
     my $unique = generate_unique_integer() . "status";
-    my $sale1 = create_sale($unique);
+    my $sale1 = create_sale($unique, $credit_card_number);
 
     my $find = WebService::Braintree::Transaction->find($sale1->transaction->id)->transaction;
 
@@ -158,7 +160,7 @@ subtest "status - multiple value field - passing invalid status" => sub {
 
 subtest "status - multiple value field" => sub {
     my $unique = generate_unique_integer() . "status";
-    my $sale1 = create_sale($unique);
+    my $sale1 = create_sale($unique, $credit_card_number);
 
     my $find = WebService::Braintree::Transaction->find($sale1->transaction->id)->transaction;
 
@@ -184,7 +186,7 @@ subtest "source - multiple value field - passing invalid source" => sub {
 
 subtest "source - multiple value field" => sub {
     my $unique = generate_unique_integer() . "status";
-    my $sale1 = create_sale($unique);
+    my $sale1 = create_sale($unique, $credit_card_number);
 
     my $find = WebService::Braintree::Transaction->find($sale1->transaction->id)->transaction;
     my $search_result = WebService::Braintree::Transaction->search(sub {
@@ -209,7 +211,7 @@ subtest "type - multiple value field - passing invalid type" => sub {
 
 subtest "type - multiple value field" => sub {
     my $unique = generate_unique_integer() . "status";
-    my $sale1 = create_sale($unique);
+    my $sale1 = create_sale($unique, $credit_card_number);
 
     my $find = WebService::Braintree::Transaction->find($sale1->transaction->id)->transaction;
     my $search_result = WebService::Braintree::Transaction->search(sub {
@@ -225,7 +227,7 @@ subtest "type - multiple value field" => sub {
 
 subtest "credit card number - partial match" => sub {
     my $unique = generate_unique_integer() . "ccnum";
-    my $sale1 = create_sale($unique);
+    my $sale1 = create_sale($unique, $credit_card_number);
 
     my $find = WebService::Braintree::Transaction->find($sale1->transaction->id)->transaction;
 
@@ -239,7 +241,7 @@ subtest "credit card number - partial match" => sub {
 
 subtest "amount - range" => sub {
     my $unique = generate_unique_integer() . "range";
-    my $sale1 = create_sale($unique);
+    my $sale1 = create_sale($unique, $credit_card_number);
 
     my $sale2 = WebService::Braintree::Transaction->sale({
         amount => "4.00",
@@ -284,8 +286,9 @@ TODO: {
         });
     };
 
-    ok contains("deposittransaction", $search_result->ids);
-    is scalar @{$search_result->ids}, 1;
+    # XXX Where is $search_result defined within this scope??!
+    #ok contains("deposittransaction", $search_result->ids);
+    #is scalar @{$search_result->ids}, 1;
 
     subtest "dispute_date - range - max and min" => sub {
         my $search_result = WebService::Braintree::Transaction->search(sub {
@@ -310,12 +313,11 @@ TODO: {
         is scalar @{$search_result->ids}, 1;
     };
 }
-;
 
 subtest "merchant_account_id" => sub {
     subtest "bogus id" => sub {
         my $unique = generate_unique_integer() . "range";
-        my $transaction = create_sale($unique)->transaction;
+        my $transaction = create_sale($unique, $credit_card_number)->transaction;
 
         my $search_result = WebService::Braintree::Transaction->search(sub {
             my $search = shift;
@@ -328,7 +330,7 @@ subtest "merchant_account_id" => sub {
 
     subtest "valid id" => sub {
         my $unique = generate_unique_integer() . "range";
-        my $transaction = create_sale($unique)->transaction;
+        my $transaction = create_sale($unique, $credit_card_number)->transaction;
 
         my $search_result = WebService::Braintree::Transaction->search(sub {
             my $search = shift;
@@ -341,7 +343,7 @@ subtest "merchant_account_id" => sub {
 
     subtest "mix of valid and invalid ids" => sub {
         my $unique = generate_unique_integer() . "range";
-        my $transaction = create_sale($unique)->transaction;
+        my $transaction = create_sale($unique, $credit_card_number)->transaction;
 
         my $search_result = WebService::Braintree::Transaction->search(sub {
             my $search = shift;
@@ -377,23 +379,25 @@ subtest "all" => sub {
     ok scalar @{$transactions->ids} > 1;
 };
 
+done_testing();
+
 sub find_one_result {
     my $unique = shift;
-    my $transaction = WebService::Braintree::Transaction->find(create_sale($unique)->transaction->id)->transaction;
+    my $transaction = WebService::Braintree::Transaction->find(
+        create_sale($unique, $credit_card_number)->transaction->id,
+    )->transaction;
 
     my $criteria = make_search_criteria($unique);
-    my $search_result = perform_search($criteria);
+    my $search_result = perform_search(Transaction => $criteria);
 
     ok $search_result->is_success;
     return ($search_result, $transaction);
 }
 
-sub generate_unique_integer {
-    return int(gettimeofday * 1000);
-}
-
 sub create_sale {
-    my $name = "FirstName_" . shift;
+    my ($name, $credit_card_number) = @_;
+
+    $name = "FirstName_" . $name;
 
     my $sale = WebService::Braintree::Transaction->sale({
         amount => "5.00",
@@ -415,7 +419,7 @@ sub create_sale {
         },
         customer => {
             company => "Company",
-            email => "smith\@example.com",
+            email => 'smith@example.com',
             fax => "1111111111",
             first_name => $name,
             last_name => "LastName",
@@ -443,22 +447,10 @@ sub create_sale {
     return $sale;
 }
 
-sub perform_search {
-    my($criteria) = @_;
-    WebService::Braintree::Transaction->search( sub {
-        my $search = shift;
-        while (my($key, $value) = each(%$criteria)) {
-            $search->$key->is($value);
-        }
-
-        return $search;
-    });
-}
-
 sub make_search_criteria {
+    my ($name) = @_;
+
     return {
-        customer_first_name => "FirstName_" . shift,
+        customer_first_name => "FirstName_" . $name,
     };
 }
-
-done_testing();

@@ -14,6 +14,7 @@ use HTTP::Request;
 use JSON;
 use LWP::UserAgent;
 use MIME::Base64;
+use Time::HiRes qw(gettimeofday);
 use Try::Tiny;
 use URI::Escape;
 
@@ -24,8 +25,20 @@ use WebService::Braintree::Util;
 
 use Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw(create_escrowed_transaction create_settled_transaction not_ok should_throw should_throw_containing simulate_form_post_for_tr make_subscription_past_due NON_DEFAULT_MERCHANT_ACCOUNT_ID);
-our @EXPORT_OK = qw();
+our @EXPORT = qw(
+    create_escrowed_transaction
+    create_settled_transaction
+    generate_unique_integer
+    make_subscription_past_due
+    not_ok
+    perform_search
+    should_throw
+    should_throw_containing
+    simulate_form_post_for_tr
+    NON_DEFAULT_MERCHANT_ACCOUNT_ID
+);
+our @EXPORT_OK = qw(
+);
 
 
 my $config;
@@ -345,6 +358,25 @@ sub generate_decoded_client_token {
     my $decoded_client_token = decode_base64($encoded_client_token);
 
     $decoded_client_token;
+}
+
+sub generate_unique_integer {
+    return int(gettimeofday * 1000);
+}
+
+sub perform_search {
+    my ($class, $criteria) = @_;
+
+    # XXX Why don't I use return here?
+    "WebService::Braintree::${class}"->search(sub {
+        my $search = shift;
+
+        while (my($key, $value) = each(%$criteria)) {
+            $search->$key->is($value);
+        }
+
+        return $search;
+    });
 }
 
 1;

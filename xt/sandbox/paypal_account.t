@@ -1,8 +1,9 @@
-#!/usr/bin/env perl
+# vim: sw=4 ts=4 ft=perl
+
+use Test::More;
 
 use lib qw(lib t/lib);
 
-use Test::More;
 use Data::GUID;
 use WebService::Braintree;
 use WebService::Braintree::Nonce;
@@ -48,8 +49,8 @@ subtest "Find" => sub {
         });
 
         should_throw("NotFoundError", sub {
-                         WebService::Braintree::PayPalAccount->find($customer_result->customer->credit_cards->[0]->token);
-                     });
+            WebService::Braintree::PayPalAccount->find($customer_result->customer->credit_cards->[0]->token);
+        });
     };
 };
 
@@ -69,8 +70,8 @@ subtest "Delete" => sub {
 
     subtest "raises a NotFoundError for unknown token" => sub {
         should_throw("NotFoundError", sub {
-                         WebService::Braintree::PayPalAccount->delete(" ");
-                     });
+            WebService::Braintree::PayPalAccount->delete(" ");
+        });
     };
 };
 
@@ -117,7 +118,7 @@ subtest "Update" => sub {
             {
                 options => {
                     make_default => "true",
-                }
+                },
             });
 
         ok $update_result->is_success;
@@ -156,10 +157,9 @@ TODO: {
 
         my $paypal_account = WebService::Braintree::PayPalAccount->find($token);
         my @subscription_ids = map { $_->id; } @{$paypal_account->subscriptions};
-        ok (grep { $subscription1->id eq $_} @subscription_ids);
-        ok (grep {$subscription2->id eq $_ } @subscription_ids);
+        ok (grep { $subscription1->id eq $_ } @subscription_ids);
+        ok (grep { $subscription2->id eq $_ } @subscription_ids);
     };
 }
-;
 
 done_testing();

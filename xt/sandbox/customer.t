@@ -1,8 +1,9 @@
-#!/usr/bin/env perl
+# vim: sw=4 ts=4 ft=perl
+
+use Test::More;
 
 use lib qw(lib t/lib);
 
-use Test::More;
 use WebService::Braintree;
 use WebService::Braintree::Nonce;
 use WebService::Braintree::TestHelper qw(sandbox);
@@ -33,8 +34,8 @@ my $customer_with_cc_and_billing = {
             region => "Illinois",
             postal_code => "60647",
             country_code_alpha2 => "US",
-        }
-    }
+        },
+    },
 };
 
 subtest "Create:S2S" => sub {
@@ -60,7 +61,7 @@ subtest "Create:S2S" => sub {
             last_name => "Doe",
             credit_card => {
                 venmo_sdk_payment_method_code => WebService::Braintree::Test::VenmoSdk::VisaPaymentMethodCode,
-            }
+            },
         });
 
         ok $result->is_success;
@@ -75,7 +76,7 @@ subtest "Create:S2S" => sub {
             last_name => "Doe",
             credit_card => {
                 payment_method_nonce => $nonce,
-            }
+            },
         });
 
         ok $result->is_success;
@@ -103,8 +104,8 @@ subtest "Create:S2S" => sub {
                 expiration_date => "08/2012",
                 options => {
                     venmo_sdk_session => WebService::Braintree::Test::VenmoSdk::Session,
-                }
-            }
+                },
+            },
         });
 
         ok $result->is_success;
@@ -127,8 +128,8 @@ subtest "Create:S2S" => sub {
                     region => "Illinois",
                     postal_code => "60647",
                     country_code_alpha2 => "US",
-                }
-            }
+                },
+            },
         });
 
         ok $result->is_success;
@@ -147,7 +148,9 @@ subtest "delete" => sub {
     };
 
     subtest "customer doesn't exist" => sub {
-        should_throw("NotFoundError", sub { WebService::Braintree::Customer->delete("foo") }, "throws NotFoundError if customer doesn't exist");
+        should_throw("NotFoundError", sub {
+            WebService::Braintree::Customer->delete("foo");
+        }, "throws NotFoundError if customer doesn't exist");
     };
 };
 
@@ -160,7 +163,9 @@ subtest "find" => sub {
     };
 
     subtest "doesn't exist" => sub {
-        should_throw("NotFoundError", sub { WebService::Braintree::Customer->find("foo") }, "throws NotFoundError if customer doesn't exist");
+        should_throw("NotFoundError", sub {
+            WebService::Braintree::Customer->find("foo");
+        }, "throws NotFoundError if customer doesn't exist");
     };
 };
 
@@ -188,8 +193,10 @@ subtest "update" => sub {
             credit_card => {
                 number => "4009348888881881",
                 expiration_date => "09/2013",
-                options => { update_existing_token => $create->customer->credit_cards->[0]->token }
-            }
+                options => {
+                    update_existing_token => $create->customer->credit_cards->[0]->token,
+                },
+            },
         });
 
         ok $update->is_success;
@@ -201,25 +208,36 @@ subtest "update" => sub {
         my $update = WebService::Braintree::Customer->update($create->customer->id, {
             credit_card => {
                 number => "4009348888881881",
-                options => {update_existing_token => $create->customer->credit_cards->[0]->token },
+                options => {
+                    update_existing_token => $create->customer->credit_cards->[0]->token,
+                },
                 billing_address => {
                     street_address => "4 E Main St",
-                    options => { update_existing => "true" }
-                }
-            }
-        }
-                                                         );
+                    options => {
+                        update_existing => "true",
+                    },
+                },
+            },
+        });
 
         ok $update->is_success, "update billing address";
         is $update->customer->addresses->[0]->street_address, "4 E Main St", "update billing street address";
     };
 
     subtest "doesn't exist" => sub {
-        should_throw("NotFoundError", sub { WebService::Braintree::Customer->update("baz", {first_name => "Timmy"}) }, "throws error if customer doesn't exist");
+        should_throw("NotFoundError", sub {
+            WebService::Braintree::Customer->update("baz", {
+                first_name => "Timmy",
+            });
+        }, "throws error if customer doesn't exist");
     };
 
     subtest "invalid params" => sub {
-        should_throw("ArgumentError", sub { WebService::Braintree::Customer->update('foo', {"invalid_param" => "1"})}, "throws arg error");
+        should_throw("ArgumentError", sub {
+            WebService::Braintree::Customer->update('foo', {
+                "invalid_param" => "1",
+            });
+        }, "throws arg error");
     };
 
     subtest "update accepts payment method nonce" => sub {
@@ -251,10 +269,10 @@ subtest "Search" => sub {
 
         my $customer = $customer_result->customer;
         my $search_result = WebService::Braintree::Customer->search(sub {
-                                                                        my $search = shift;
-                                                                        $search->id->is($customer->id);
-                                                                        $search->paypal_account_email->is($customer->paypal_accounts->[0]->email);
-                                                                    });
+            my $search = shift;
+            $search->id->is($customer->id);
+            $search->paypal_account_email->is($customer->paypal_accounts->[0]->email);
+        });
 
         is($search_result->maximum_size, 1);
     };

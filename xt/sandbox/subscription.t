@@ -1,13 +1,23 @@
-#!/usr/bin/env perl
-use lib qw(lib t/lib);
+# vim: sw=4 ts=4 ft=perl
+
 use Test::More;
+
+use lib qw(lib t/lib);
+
 use WebService::Braintree::Nonce;
 use WebService::Braintree::TestHelper qw(sandbox);
 use WebService::Braintree;
 use WebService::Braintree::ErrorCodes::Descriptor;
 
-my $customer = WebService::Braintree::Customer->create({first_name => "Fred", last_name => "Fredson"});
-my $card     = WebService::Braintree::CreditCard->create({number => "5431111111111111", expiration_date => "05/12", customer_id => $customer->customer->id});
+my $customer = WebService::Braintree::Customer->create({
+    first_name => "Fred",
+    last_name => "Fredson",
+});
+my $card = WebService::Braintree::CreditCard->create({
+    number => "5431111111111111",
+    expiration_date => "05/12",
+    customer_id => $customer->customer->id,
+});
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 1;
@@ -50,8 +60,8 @@ TODO: {
             descriptor => {
                 name => "abc*def",
                 phone => "1234567890",
-                url => "ebay.com"
-            }
+                url => "ebay.com",
+            },
         });
         ok $result->is_success;
         my $transaction = $result->subscription->transactions->[0];
@@ -67,8 +77,8 @@ TODO: {
             descriptor => {
                 name => "abc",
                 phone => "12345678",
-                url => "12345678901234"
-            }
+                url => "12345678901234",
+            },
         });
         not_ok $result->is_success;
         is($result->errors->for("subscription")->for("descriptor")->on("name")->[0]->code, WebService::Braintree::ErrorCodes::Descriptor::NameFormatIsInvalid);
@@ -81,14 +91,18 @@ TODO: {
             payment_method_token => $card->credit_card->token,
             plan_id => "integration_plan_with_add_ons_and_discounts",
             discounts => {
-                add => [{ inherited_from_id => "discount_15"}]
+                add => [{
+                    inherited_from_id => "discount_15"
+                }],
             },
             add_ons => {
-                add => [{ inherited_from_id => "increase_30" }],
+                add => [{
+                    inherited_from_id => "increase_30",
+                }],
             },
             options => {
-                do_not_inherit_add_ons_or_discounts => 'true'
-            }
+                do_not_inherit_add_ons_or_discounts => 'true',
+            },
         });
 
         ok $result->is_success;
@@ -112,7 +126,7 @@ TODO: {
         my $nonce = WebService::Braintree::TestHelper::get_nonce_for_new_card("4111111111111111", $customer->customer->id);
         my $subscription_params = {
             payment_method_nonce => $nonce,
-            plan_id => "integration_trialless_plan"
+            plan_id => "integration_trialless_plan",
         };
         my $result = WebService::Braintree::Subscription->create($subscription_params);
 
@@ -131,7 +145,7 @@ TODO: {
         my $customer = $customer_result->customer;
         my $subscription_result = WebService::Braintree::Subscription->create({
             payment_method_token => $customer->paypal_accounts->[0]->token,
-            plan_id => "integration_trialless_plan"
+            plan_id => "integration_trialless_plan",
         });
 
         ok $subscription_result->is_success;
@@ -142,7 +156,7 @@ TODO: {
     subtest "retry charge" => sub {
         my $subscription = WebService::Braintree::Subscription->create({
             plan_id => "integration_trialless_plan",
-            payment_method_token => $card->credit_card->token
+            payment_method_token => $card->credit_card->token,
         })->subscription;
 
         make_subscription_past_due($subscription->id);
@@ -153,7 +167,6 @@ TODO: {
         is $retry->transaction->amount, $subscription->price;
     };
 }
-;
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 1;
@@ -161,7 +174,7 @@ TODO: {
         my $result = WebService::Braintree::Subscription->create({
             payment_method_token => $card->credit_card->token,
             plan_id => "integration_trialless_plan",
-            price => "2000.00"
+            price => "2000.00",
         });
 
         not_ok $result->is_success;
@@ -171,7 +184,7 @@ TODO: {
     subtest "with a subscription" => sub {
         my $create = WebService::Braintree::Subscription->create({
             payment_method_token => $card->credit_card->token,
-            plan_id => "integration_trialless_plan"
+            plan_id => "integration_trialless_plan",
         });
 
         subtest "find" => sub {
@@ -180,7 +193,9 @@ TODO: {
             is $result->trial_period, 0;
             is $result->plan_id, "integration_trialless_plan";
 
-            should_throw("NotFoundError", sub { WebService::Braintree::Subscription->find("asdlkfj") });
+            should_throw("NotFoundError", sub {
+                WebService::Braintree::Subscription->find("asdlkfj");
+            });
         };
 
         subtest "update" => sub {
@@ -189,7 +204,11 @@ TODO: {
             ok $result->is_success;
             is $result->subscription->price, "50.00";
 
-            should_throw("NotFoundError", sub { WebService::Braintree::Subscription->update("asdlkfj", {price => "50.00"}) });
+            should_throw("NotFoundError", sub {
+                WebService::Braintree::Subscription->update("asdlkfj", {
+                    price => "50.00",
+                });
+            });
         };
     };
     subtest "update payment method with payment method nonce" => sub {
@@ -213,5 +232,5 @@ TODO: {
         is $result->message, "Subscription has already been canceled."
     };
 }
-;
+
 done_testing();
