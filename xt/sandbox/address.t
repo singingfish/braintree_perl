@@ -1,6 +1,9 @@
-#!/usr/bin/env perl
-use lib qw(lib t/lib);
+# vim: sw=4 ts=4 ft=perl
+
 use Test::More;
+
+use lib qw(lib t/lib);
+
 use WebService::Braintree;
 use WebService::Braintree::TestHelper qw/sandbox/;
 
@@ -18,7 +21,7 @@ subtest "create" => sub {
         locality => "Chicago",
         region => "Illinois",
         postal_code => "60622",
-        country_code_alpha2 => "US"
+        country_code_alpha2 => "US",
     });
 
     ok $result->is_success;
@@ -27,7 +30,12 @@ subtest "create" => sub {
 };
 
 subtest "Create without customer ID" => sub {
-    should_throw("NotFoundError", sub { WebService::Braintree::Address->create({ customer_id => "foo", first_name => "walter" }) });
+    should_throw("NotFoundError", sub {
+        WebService::Braintree::Address->create({
+            customer_id => "foo",
+            first_name => "walter",
+        });
+    });
 };
 
 subtest "Create without any fields"  => sub {
@@ -42,7 +50,7 @@ subtest "Create without any fields"  => sub {
 subtest "with a customer" => sub {
     my $create_result = WebService::Braintree::Address->create({
         customer_id => $customer->customer->id,
-        first_name => "Walter"
+        first_name => "Walter",
     });
 
     subtest "find" => sub {
@@ -51,20 +59,25 @@ subtest "with a customer" => sub {
     };
 
     subtest "not found" =>  sub {
-        should_throw("NotFoundError", sub {WebService::Braintree::Address->find("not_found", "dne")}, "Catches Not Found");
+        should_throw("NotFoundError", sub {
+            WebService::Braintree::Address->find("not_found", "dne");
+        }, "Catches Not Found");
     };
 
     subtest "Update" => sub {
         my $result = WebService::Braintree::Address->update(
             $customer->customer->id,
             $create_result->address->id,
-            {first_name => "Ivar"});
+            { first_name => "Ivar" },
+        );
         ok $result->is_success;
         is $result->address->first_name, "Ivar";
     };
 
     subtest "Update non-existant" => sub {
-        should_throw "NotFoundError", sub { WebService::Braintree::Address->update("abc", "123") };
+        should_throw "NotFoundError", sub {
+            WebService::Braintree::Address->update("abc", "123");
+        };
     };
 
     subtest "delete existing" => sub {
@@ -73,9 +86,10 @@ subtest "with a customer" => sub {
 
         ok $result->is_success;
 
-        should_throw "NotFoundError", sub { WebService::Braintree::Address->update($customer->customer->id, $create->address->id) };
+        should_throw "NotFoundError", sub {
+            WebService::Braintree::Address->update($customer->customer->id, $create->address->id);
+        };
     };
-
 };
 
 

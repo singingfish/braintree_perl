@@ -1,5 +1,7 @@
-#!/usr/bin/env perl
+# vim: sw=4 ts=4 ft=perl
+
 use lib qw(lib t/lib);
+
 use Test::More;
 use WebService::Braintree;
 use WebService::Braintree::TestHelper;
@@ -9,14 +11,14 @@ subtest "each" => sub {
     my $resource_collection = WebService::Braintree::ResourceCollection->new();
     my $response = {search_results => {ids => [1,2,3,4,5], page_size => 2}};
     $resource_collection->init($response, sub {
-                                   $page_counter = $page_counter + 1;
-                                   return [$page_counter];
-                               });
+        $page_counter = $page_counter + 1;
+        return [$page_counter];
+    });
 
     @page_counts = ();
     $resource_collection->each(sub {
-                                   push(@page_counts, shift);
-                               });
+        push(@page_counts, shift);
+    });
 
     is $resource_collection->maximum_size, 5;
     is_deeply(\@page_counts, [1, 2, 3]);

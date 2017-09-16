@@ -14,3 +14,4 @@ use constant ANY                => "any";
 use constant UNKNOWN            => "unknown";
 
 1;
+__END__

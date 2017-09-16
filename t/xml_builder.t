@@ -1,6 +1,9 @@
-#!/usr/bin/env perl
-use lib qw(lib t/lib);
+# vim: sw=4 ts=4 ft=perl
+
 use Test::More;
+
+use lib qw(lib t/lib);
+
 use WebService::Braintree::Xml;
 use WebService::Braintree::TestHelper;
 
@@ -10,13 +13,13 @@ sub check_round_trip {
     my $xml = hash_to_xml($data);
     is_deeply xml_to_hash($xml), $data
 }
+
 subtest "generated simple xml" => sub {
     check_round_trip({key => "value"});
     check_round_trip({key => {subkey => "value2", subkey2 => "value3"}});
     check_round_trip({key => {subkey => {subsubkey => "value3"}}});
     check_round_trip({keys => [{subkey => "value"}]}, 1);
     check_round_trip({root => {keys => [{subkey => "value"}, {subkey2 => "value2"}]}}, 1);
-
 };
 
 subtest "generate arrays correctly" => sub {
@@ -34,4 +37,3 @@ subtest "generate arrays correctly" => sub {
 };
 
 done_testing();
-

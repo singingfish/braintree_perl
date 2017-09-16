@@ -1,9 +1,12 @@
-#!/usr/bin/env perl
 #!perl -T
+# vim: sw=4 ts=4 ft=perl
+
+use Test::More;
+
+use lib qw(lib t/lib);
 
 use strict;
 use warnings;
-use Test::More;
 
 # Ensure a recent version of Test::Pod
 my $min_tp = 1.22;

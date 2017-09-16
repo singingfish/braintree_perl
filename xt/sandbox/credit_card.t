@@ -1,7 +1,10 @@
-#!/usr/bin/env perl
-use lib qw(lib t/lib);
-use JSON;
+# vim: sw=4 ts=4 ft=perl
+
 use Test::More;
+
+use lib qw(lib t/lib);
+
+use JSON;
 use WebService::Braintree;
 use WebService::Braintree::CreditCardNumbers::CardTypeIndicators;
 use WebService::Braintree::CreditCardDefaults;
@@ -9,7 +12,10 @@ use WebService::Braintree::ErrorCodes::CreditCard;
 use WebService::Braintree::Test;
 use WebService::Braintree::TestHelper qw(sandbox);
 
-my $customer_create = WebService::Braintree::Customer->create({first_name => "Walter", last_name => "Weatherman"});
+my $customer_create = WebService::Braintree::Customer->create({
+    first_name => "Walter",
+    last_name => "Weatherman",
+});
 
 subtest "Create with S2S" => sub {
     my $credit_card_params = {
@@ -52,9 +58,11 @@ subtest "Create with security params" => sub {
 };
 
 subtest "Failure Cases" => sub {
-    my $result = WebService::Braintree::CreditCard->create({customer_id => "dne",
-                                                            number => '5431111111111111',
-                                                            expiration_date => "12/15"});
+    my $result = WebService::Braintree::CreditCard->create({
+        customer_id => "dne",
+        number => '5431111111111111',
+        expiration_date => "12/15",
+    });
 
     not_ok $result->is_success;
     is $result->message, "Customer ID is invalid.", "Customer not found";
@@ -63,13 +71,13 @@ subtest "Failure Cases" => sub {
 subtest "Create with Fail on Duplicate Payment Method" => sub {
     my $customer_id = $customer_create->customer->id;
 
-    my $credit_card_params =  {
+    my $credit_card_params = {
         customer_id => $customer_id,
         number => "5431111111111111",
         expiration_date => "12/15",
         options => {
-            fail_on_duplicate_payment_method => 1
-        }
+            fail_on_duplicate_payment_method => 1,
+        },
     };
 
     WebService::Braintree::CreditCard->create($credit_card_params);
@@ -90,8 +98,8 @@ subtest "Create with Billing Address" => sub {
             locality => "Chicago",
             region => "Illinois",
             postal_code => "60647",
-            country_code_alpha2 => "US"
-        }
+            country_code_alpha2 => "US",
+        },
     };
 
     my $result = WebService::Braintree::CreditCard->create($credit_card_params);
@@ -102,28 +110,40 @@ subtest "Create with Billing Address" => sub {
 };
 
 subtest "delete" => sub {
-
     subtest "existing card" => sub {
-        my $card = WebService::Braintree::CreditCard->create({number => "5431111111111111", expiration_date => "12/15", customer_id => $customer_create->customer->id});
+        my $card = WebService::Braintree::CreditCard->create({
+            number => "5431111111111111",
+            expiration_date => "12/15",
+            customer_id => $customer_create->customer->id,
+        });
         my $result = WebService::Braintree::CreditCard->delete($card->credit_card->token);
         ok $result->is_success;
     };
 
     subtest "not found" => sub {
-        should_throw("NotFoundError", sub { WebService::Braintree::CreditCard->delete("notAToken") });
+        should_throw("NotFoundError", sub {
+            WebService::Braintree::CreditCard->delete("notAToken");
+        });
     };
-
 };
 
 subtest "find" => sub {
     subtest "card exists" => sub {
-        my $card = WebService::Braintree::CreditCard->create({number => "5431111111111111", expiration_date => "12/15", customer_id => $customer_create->customer->id});
+        my $card = WebService::Braintree::CreditCard->create({
+            number => "5431111111111111",
+            expiration_date => "12/15",
+            customer_id => $customer_create->customer->id,
+        });
         my $result = WebService::Braintree::CreditCard->find($card->credit_card->token);
         is $result->last_4, "1111";
         is $result->expiration_month, "12";
     };
 
-    subtest "card does not exist" => sub { should_throw("NotFoundError", sub { WebService::Braintree::CreditCard->find("notAToken") }); };
+    subtest "card does not exist" => sub {
+        should_throw("NotFoundError", sub {
+            WebService::Braintree::CreditCard->find("notAToken");
+        });
+    };
 };
 
 subtest "from_nonce" => sub {
@@ -136,13 +156,17 @@ subtest "from_nonce" => sub {
     };
 
     subtest "fails if nonce is empty" => sub {
-        should_throw("NotFoundError", sub { WebService::Braintree::CreditCard->from_nonce("") });
+        should_throw("NotFoundError", sub {
+            WebService::Braintree::CreditCard->from_nonce("");
+        });
     };
 
     subtest "fails if nonce points to a shared card" => sub {
         my $nonce = WebService::Braintree::TestHelper::get_nonce_for_new_card("4111111111111111", "");
 
-        should_throw_containing("not found", sub { WebService::Braintree::CreditCard->from_nonce($nonce) });
+        should_throw_containing("not found", sub {
+            WebService::Braintree::CreditCard->from_nonce($nonce);
+        });
     };
 
     subtest "fails if nonce is locked" => sub {
@@ -171,7 +195,9 @@ subtest "from_nonce" => sub {
         ok $response->is_success;
         my $nonce = decode_json($response->content)->{"paymentMethods"}[0]{"nonce"};
 
-        should_throw_containing("locked", sub { WebService::Braintree::CreditCard->from_nonce($nonce) });
+        should_throw_containing("locked", sub {
+            WebService::Braintree::CreditCard->from_nonce($nonce);
+        });
     };
 
     subtest "fails if nonce is already consumed" => sub {
@@ -179,7 +205,9 @@ subtest "from_nonce" => sub {
         my $nonce = WebService::Braintree::TestHelper::get_nonce_for_new_card("4111111111111111", $customer->id);
 
         WebService::Braintree::CreditCard->from_nonce($nonce);
-        should_throw_containing("consumed", sub { WebService::Braintree::CreditCard->from_nonce($nonce) });
+        should_throw_containing("consumed", sub {
+            WebService::Braintree::CreditCard->from_nonce($nonce);
+        });
     };
 };
 
@@ -197,19 +225,24 @@ subtest "update" => sub {
     };
 
     subtest "not found" => sub {
-        should_throw("NotFoundError", sub { WebService::Braintree::CreditCard->update("notAToken", {number => "1234567890123456"})});
+        should_throw("NotFoundError", sub {
+            WebService::Braintree::CreditCard->update("notAToken", {
+                number => "1234567890123456",
+            });
+        });
     };
 
 };
 
+# Consider merging the following subtests in a loop
 subtest "debit" => sub {
     my $credit_card_params = {
         customer_id => $customer_create->customer->id,
         number => WebService::Braintree::CreditCardNumbers::CardTypeIndicators::Debit,
         expiration_date => "12/15",
         options => {
-            verify_card => 1
-        }
+            verify_card => 1,
+        },
     };
 
     my $result = WebService::Braintree::CreditCard->create($credit_card_params);
@@ -222,8 +255,8 @@ subtest "payroll" => sub {
         number => WebService::Braintree::CreditCardNumbers::CardTypeIndicators::Payroll,
         expiration_date => "12/15",
         options => {
-            verify_card => 1
-        }
+            verify_card => 1,
+        },
     };
 
     my $result = WebService::Braintree::CreditCard->create($credit_card_params);
@@ -236,8 +269,8 @@ subtest "healthcare" => sub {
         number => WebService::Braintree::CreditCardNumbers::CardTypeIndicators::Healthcare,
         expiration_date => "12/15",
         options => {
-            verify_card => 1
-        }
+            verify_card => 1,
+        },
     };
 
     my $result = WebService::Braintree::CreditCard->create($credit_card_params);
@@ -250,8 +283,8 @@ subtest "commercial" => sub {
         number => WebService::Braintree::CreditCardNumbers::CardTypeIndicators::Commercial,
         expiration_date => "12/15",
         options => {
-            verify_card => 1
-        }
+            verify_card => 1,
+        },
     };
 
     my $result = WebService::Braintree::CreditCard->create($credit_card_params);
@@ -264,8 +297,8 @@ subtest "durbin_regulated" => sub {
         number => WebService::Braintree::CreditCardNumbers::CardTypeIndicators::DurbinRegulated,
         expiration_date => "12/15",
         options => {
-            verify_card => 1
-        }
+            verify_card => 1,
+        },
     };
 
     my $result = WebService::Braintree::CreditCard->create($credit_card_params);
@@ -278,8 +311,8 @@ subtest "prepaid" => sub {
         number => WebService::Braintree::CreditCardNumbers::CardTypeIndicators::Prepaid,
         expiration_date => "12/15",
         options => {
-            verify_card => 1
-        }
+            verify_card => 1,
+        },
     };
 
     my $result = WebService::Braintree::CreditCard->create($credit_card_params);
@@ -292,8 +325,8 @@ subtest "issuing_bank" => sub {
         number => WebService::Braintree::CreditCardNumbers::CardTypeIndicators::IssuingBank,
         expiration_date => "12/15",
         options => {
-            verify_card => 1
-        }
+            verify_card => 1,
+        },
     };
 
     my $result = WebService::Braintree::CreditCard->create($credit_card_params);
@@ -306,13 +339,14 @@ subtest "country_of_issuance" => sub {
         number => WebService::Braintree::CreditCardNumbers::CardTypeIndicators::CountryOfIssuance,
         expiration_date => "12/15",
         options => {
-            verify_card => 1
-        }
+            verify_card => 1,
+        },
     };
 
     my $result = WebService::Braintree::CreditCard->create($credit_card_params);
     is $result->credit_card->country_of_issuance, WebService::Braintree::CreditCardDefaults::CountryOfIssuance;
 };
+### TO HERE
 
 subtest "card with negative card type indentifiers" => sub {
     my $credit_card_params = {
@@ -320,8 +354,8 @@ subtest "card with negative card type indentifiers" => sub {
         number => WebService::Braintree::CreditCardNumbers::CardTypeIndicators::No,
         expiration_date => "12/15",
         options => {
-            verify_card => 1
-        }
+            verify_card => 1,
+        },
     };
 
     my $result = WebService::Braintree::CreditCard->create($credit_card_params);
@@ -340,8 +374,8 @@ subtest "card without card type identifiers" => sub {
         number => WebService::Braintree::CreditCardNumbers::CardTypeIndicators::Unknown,
         expiration_date => "12/15",
         options => {
-            verify_card => 1
-        }
+            verify_card => 1,
+        },
     };
 
     my $result = WebService::Braintree::CreditCard->create($credit_card_params);
@@ -358,7 +392,7 @@ subtest "card without card type identifiers" => sub {
 subtest "Venmo Sdk Payment Method Code" => sub {
     my $result = WebService::Braintree::CreditCard->create({
         customer_id => $customer_create->customer->id,
-        venmo_sdk_payment_method_code => WebService::Braintree::Test::VenmoSdk::generate_test_payment_method_code("4111111111111111")
+        venmo_sdk_payment_method_code => WebService::Braintree::Test::VenmoSdk::generate_test_payment_method_code("4111111111111111"),
     });
 
     ok $result->is_success;
@@ -370,7 +404,7 @@ subtest "Venmo Sdk Payment Method Code" => sub {
 subtest "Invalid Venmo Sdk Payment Method Code" => sub {
     my $result = WebService::Braintree::CreditCard->create({
         customer_id => $customer_create->customer->id,
-        venmo_sdk_payment_method_code => WebService::Braintree::Test::VenmoSdk::InvalidPaymentMethodCode
+        venmo_sdk_payment_method_code => WebService::Braintree::Test::VenmoSdk::InvalidPaymentMethodCode,
     });
 
     not_ok $result->is_success;
@@ -384,8 +418,8 @@ subtest "Valid Venmo Sdk Session" => sub {
         number => "5431111111111111",
         expiration_date => "12/15",
         options =>  {
-            venmo_sdk_session => WebService::Braintree::Test::VenmoSdk::Session
-        }
+            venmo_sdk_session => WebService::Braintree::Test::VenmoSdk::Session,
+        },
     });
 
     ok $result->is_success;
@@ -398,8 +432,8 @@ subtest "Invalid Venmo Sdk Session" => sub {
         number => "5431111111111111",
         expiration_date => "12/15",
         options =>  {
-            venmo_sdk_session => WebService::Braintree::Test::VenmoSdk::InvalidSession
-        }
+            venmo_sdk_session => WebService::Braintree::Test::VenmoSdk::InvalidSession,
+        },
     });
 
     ok $result->is_success;

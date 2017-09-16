@@ -99,5 +99,6 @@ sub build_tr_data {
 }
 
 __PACKAGE__->meta->make_immutable;
-1;
 
+1;
+__END__

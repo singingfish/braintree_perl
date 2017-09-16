@@ -1,6 +1,9 @@
-#!/usr/bin/env perl
-use lib qw(lib t/lib);
+# vim: sw=4 ts=4 ft=perl
+
 use Test::More;
+
+use lib qw(lib t/lib);
+
 use WebService::Braintree;
 use WebService::Braintree::TestHelper qw(sandbox);
 use WebService::Braintree::Test;
@@ -21,7 +24,7 @@ my $disbursement_params = {
     exception_message => "invalid_account_number",
     follow_up_action => "update",
     retry => "false",
-    success => "false"
+    success => "false",
 };
 
 subtest "Transactions" => sub {
@@ -29,12 +32,12 @@ subtest "Transactions" => sub {
         my $disbursement = WebService::Braintree::Disbursement->new($disbursement_params);
         my $transactions = $disbursement->transactions();
         isnt $transactions, undef;
-      TODO: {
+
+        TODO: {
             todo_skip "Tests consistently fail in sandbox environment", 1;
 
             is($transactions->first()->id(), "sub_merchant_transaction");
         }
-        ;  
     };
 };
 

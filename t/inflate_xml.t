@@ -1,9 +1,12 @@
-#!/usr/bin/env perl
+# vim: sw=4 ts=4 ft=perl
+
+use Test::More;
+
 use lib qw(lib t/lib);
+
 use WebService::Braintree;
 use WebService::Braintree::Xml;
 use WebService::Braintree::TestHelper;
-use Test::More;
 
 subtest "should survive some deep parsing" => sub {
     my $xml = q{

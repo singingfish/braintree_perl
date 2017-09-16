@@ -1,7 +1,9 @@
-#!/usr/bin/env perl
-use lib qw(lib t/lib);
+# vim: sw=4 ts=4 ft=perl
+
 use Test::More;
-use Time::HiRes qw(gettimeofday);
+
+use lib qw(lib t/lib);
+
 use WebService::Braintree;
 use WebService::Braintree::TestHelper qw(sandbox);
 use WebService::Braintree::CreditCardNumbers::CardTypeIndicators;
@@ -14,8 +16,8 @@ subtest "card verification is returned by result objects" => sub {
         number => "4000111111111115",
         expiration_date => "12/15",
         options => {
-            verify_card => 1
-        }
+            verify_card => 1,
+        },
     };
 
     my $result = WebService::Braintree::CreditCard->create($credit_card_params);
@@ -31,8 +33,8 @@ subtest "finds credit card verification" => sub {
         number => "4000111111111115",
         expiration_date => "12/15",
         options => {
-            verify_card => 1
-        }
+            verify_card => 1,
+        },
     };
 
     my $result = WebService::Braintree::CreditCard->create($credit_card_params);
@@ -44,27 +46,28 @@ subtest "finds credit card verification" => sub {
 };
 
 subtest "Card Type Indicators" => sub {
-    my $cardholder_name = "Tom Smith" . gettimeofday;
+    my $cardholder_name = "Tom Smith" . generate_unique_integer();
     my $credit_card_params = {
         customer_id => $customer_create->customer->id,
         number => WebService::Braintree::CreditCardNumbers::CardTypeIndicators::Unknown,
         expiration_date => "12/15",
         cardholder_name => $cardholder_name,
         options => {
-            verify_card => 1
-        }
+            verify_card => 1,
+        },
     };
 
     my $result = WebService::Braintree::CreditCard->create($credit_card_params);
 
-    my $search_results = WebService::Braintree::CreditCardVerification->search( sub {
-                                                                                    my $search = shift;
-                                                                                    $search->credit_card_cardholder_name->is($cardholder_name);
-                                                                                });
+    my $search_results = WebService::Braintree::CreditCardVerification->search(sub {
+        my $search = shift;
+        $search->credit_card_cardholder_name->is($cardholder_name);
+    });
 
     is $search_results->maximum_size, 1;
     my $credit_card = $search_results->first->credit_card;
 
+    # XXX Replace this with a loop and camel-casing.
     is($credit_card->{'prepaid'}, WebService::Braintree::CreditCard::Prepaid::Unknown);
     is($credit_card->{'commercial'}, WebService::Braintree::CreditCard::Commercial::Unknown);
     is($credit_card->{'debit'}, WebService::Braintree::CreditCard::Debit::Unknown);

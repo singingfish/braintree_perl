@@ -10,3 +10,4 @@ use constant VerifyCardRequiresCustomerId                    => "92802";
 use constant UnsupportedVersion                              => "92806";
 
 1;
+__END__

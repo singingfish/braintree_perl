@@ -171,3 +171,4 @@ sub force_array {
 }
 
 1;
+__END__

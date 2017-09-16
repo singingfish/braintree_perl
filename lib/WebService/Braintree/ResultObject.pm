@@ -52,3 +52,4 @@ sub shipping_details { shift->shipping; }
 sub subscription_details { shift->subscription; }
 
 1;
+__END__

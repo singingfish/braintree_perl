@@ -14,3 +14,4 @@ use constant ProductUnsatisfactory => "product_unsatisfactory";
 use constant TransactionAmountDiffers => "transaction_amount_differs";
 
 1;
+__END__

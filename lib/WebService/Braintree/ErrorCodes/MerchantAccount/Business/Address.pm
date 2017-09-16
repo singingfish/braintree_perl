@@ -7,3 +7,4 @@ use constant StreetAddressIsInvalid => "82685";
 use constant PostalCodeIsInvalid    => "82686";
 
 1;
+__END__

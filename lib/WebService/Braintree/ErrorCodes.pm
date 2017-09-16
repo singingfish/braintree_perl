@@ -19,3 +19,4 @@ use WebService::Braintree::ErrorCodes::Transaction;
 use WebService::Braintree::ErrorCodes::Transaction::Options;
 
 1;
+__END__

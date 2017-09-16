@@ -1,8 +1,9 @@
-#!/usr/bin/env perl
+# vim: sw=4 ts=4 ft=perl
+
+use Test::More;
 
 use lib qw(lib t/lib);
 
-use Test::More;
 use WebService::Braintree;
 use WebService::Braintree::TestHelper qw(sandbox);
 use WebService::Braintree::CreditCardNumbers::CardTypeIndicators;
@@ -28,15 +29,15 @@ my $transaction_params = {
         name => "abc*def",
         phone => "1234567890",
         url => "ebay.com",
-    }
+    },
 };
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 3;
-    subtest "Successful Transactions" => sub {
-        @examples = ("credit", "sale");
-        foreach (@examples) {
-            my ($method) = $_;
+
+    my @examples = qw(credit sale);
+    foreach my $method (@examples) {
+        subtest "Successful Transaction for $example" => sub {
             my $result = WebService::Braintree::Transaction->$method($transaction_params);
 
             ok $result->is_success;
@@ -46,9 +47,8 @@ TODO: {
             is($result->transaction->descriptor->name, "abc*def");
             is($result->transaction->descriptor->phone, "1234567890");
             is($result->transaction->descriptor->url, "ebay.com");
-        }
-    };
-
+        };
+    }
 
     subtest "descriptor validations" => sub {
         my $result = WebService::Braintree::Transaction->sale({
@@ -61,8 +61,9 @@ TODO: {
                 name => "abcdef",
                 phone => "12345678",
                 url => "12345678901234",
-            }
+            },
         });
+
         not_ok $result->is_success;
         is($result->errors->for("transaction")->for("descriptor")->on("name")->[0]->code, WebService::Braintree::ErrorCodes::Descriptor::NameFormatIsInvalid);
         is($result->errors->for("transaction")->for("descriptor")->on("phone")->[0]->code, WebService::Braintree::ErrorCodes::Descriptor::PhoneFormatIsInvalid);
@@ -75,14 +76,13 @@ TODO: {
             credit_card => {
                 number => "4000111111111511",
                 expiration_date => "05/16",
-            }
+            },
         });
         not_ok $result->is_success;
         is($result->message, "Gateway Rejected: fraud");
         is($result->transaction->gateway_rejection_reason, "fraud");
     };
 }
-;
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 1;
@@ -96,13 +96,12 @@ TODO: {
             },
             custom_fields => {
                 store_me => "please!",
-            }
+            },
         });
         ok $result->is_success;
         is $result->transaction->custom_fields->store_me, "please!", "stores custom field value";
     };
 }
-;
 
 ################################################################################
 # Testing note:
@@ -133,7 +132,7 @@ subtest "Processor declined rejection" => sub {
         credit_card => {
             number => "4111111111111111",
             expiration_date => "05/16",
-        }
+        },
     });
     not_ok $result->is_success;
     is($result->message, "Insufficient Funds");
@@ -157,7 +156,7 @@ subtest "with payment method nonce" => sub {
         is($result->transaction->credit_card_details->bin, "411111");
     };
 
-  TODO: {
+    TODO: {
         todo_skip "Tests consistently fail in sandbox environment", 1;
 
         subtest "apple pay" => sub {
@@ -176,11 +175,11 @@ subtest "with payment method nonce" => sub {
             };
         };
     }
-    ;
 };
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 2;
+
     subtest "three_d_secure" => sub {
         subtest "can create a transaction with a three_d_secure_token" => sub {
             my $merchant_account_id = WebService::Braintree::TestHelper::three_d_secure_merchant_account_id;
@@ -189,7 +188,8 @@ TODO: {
                     number => "4111111111111111",
                     expiration_month => "05",
                     expiration_year => "2009",
-                });
+                }
+            );
             my $result = WebService::Braintree::Transaction->sale({
                 amount => "100.00",
                 credit_card => {
@@ -228,7 +228,8 @@ TODO: {
                 number => "4111111111111111",
                 expiration_month => "05",
                 expiration_year => "2009",
-            });
+            },
+        );
         my $result = WebService::Braintree::Transaction->sale({
             amount => "100.00",
             credit_card => {
@@ -244,11 +245,9 @@ TODO: {
         is($result->errors->for("transaction")->on("three_d_secure_token")->[0]->code, $expected_error_code);
     };
 }
-;
 
 subtest "Service Fee" => sub {
-
-  TODO: {
+    TODO: {
         todo_skip "Tests consistently fail in sandbox environment", 2;
 
         subtest "can create a transaction" => sub {
@@ -287,16 +286,15 @@ subtest "Service Fee" => sub {
                 credit_card => {
                     number => "5431111111111111",
                     expiration_date => "05/12",
-                }
+                },
             });
             not_ok $result->is_success;
             my $expected_error_code = WebService::Braintree::ErrorCodes::Transaction::SubMerchantAccountRequiresServiceFeeAmount;
             is($result->errors->for("transaction")->on("merchant_account_id")->[0]->code, $expected_error_code);
         };
     }
-    ;
 
-  TODO: {
+    TODO: {
         todo_skip "Tests consistently fail in sandbox environment", 1;
 
         subtest "not allowed on credits" => sub {
@@ -314,9 +312,7 @@ subtest "Service Fee" => sub {
             is($result->errors->for("transaction")->on("base")->[0]->code, $expected_error_code);
         };
     }
-    ;
 };
-
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 2;
@@ -333,7 +329,7 @@ TODO: {
                 service_fee_amount => "10.00",
                 options => {
                     hold_in_escrow => 'true',
-                }
+                },
             });
             ok $result->is_success;
             is($result->transaction->escrow_status, WebService::Braintree::Transaction::EscrowStatus::HoldPending);
@@ -350,10 +346,11 @@ TODO: {
                 service_fee_amount => "10.00",
                 options => {
                     hold_in_escrow => 'true',
-                }
+                },
             });
             not_ok $result->is_success;
-            is($result->errors->for("transaction")->on("base")->[0]->code,
+            is(
+                $result->errors->for("transaction")->on("base")->[0]->code,
                 WebService::Braintree::ErrorCodes::Transaction::CannotHoldInEscrow,
             );
         }
@@ -381,7 +378,7 @@ TODO: {
                 credit_card => {
                     number => "5431111111111111",
                     expiration_date => "05/12",
-                }
+                },
             });
             my $hold_result = WebService::Braintree::Transaction->hold_in_escrow($result->transaction->id);
             not_ok $hold_result->is_success;
@@ -391,7 +388,6 @@ TODO: {
         };
     };
 }
-;
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 1;
@@ -414,7 +410,7 @@ TODO: {
             credit_card => {
                 number => "5431111111111111",
                 expiration_date => "05/12",
-            }
+            },
         });
         my $result = WebService::Braintree::Transaction->release_from_escrow($sale->transaction->id);
         not_ok $result->is_success;
@@ -423,7 +419,6 @@ TODO: {
         );
     };
 }
-;
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 1;
@@ -447,7 +442,6 @@ TODO: {
         };
     };
 }
-;
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 1;
@@ -465,7 +459,6 @@ TODO: {
         ok $result->is_success;
     };
 }
-;
 
 subtest "Sale" => sub {
     subtest "returns payment instrument type" => sub {
@@ -474,7 +467,7 @@ subtest "Sale" => sub {
             credit_card => {
                 number => WebService::Braintree::SandboxValues::CreditCardNumber::VISA,
                 expiration_date => "05/2009",
-            }
+            },
         });
 
         ok $result->is_success;
@@ -531,14 +524,13 @@ TODO: {
                 credit_card => {
                     number => "5431111111111111",
                     expiration_date  => "05/12",
-                }
+                },
             });
 
             is $result->transaction->is_disbursed, 0;
         };
     };
 }
-;
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 1;
@@ -563,7 +555,6 @@ TODO: {
         };
     };
 }
-;
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 1;
@@ -597,7 +588,6 @@ TODO: {
         };
     };
 }
-;
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 1;
@@ -613,15 +603,14 @@ TODO: {
         };
 
         subtest "unsuccessful if transaction has not been settled" => sub {
-            my $sale       = WebService::Braintree::Transaction->sale($transaction_params);
-            my $result     = WebService::Braintree::Transaction->refund($sale->transaction->id);
+            my $sale   = WebService::Braintree::Transaction->sale($transaction_params);
+            my $result = WebService::Braintree::Transaction->refund($sale->transaction->id);
 
             not_ok $result->is_success;
             is($result->message, "Cannot refund a transaction unless it is settled.", "Errors on unsettled transaction");
         };
     };
 }
-;
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 1;
@@ -644,7 +633,6 @@ TODO: {
         };
     };
 }
-;
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 1;
@@ -658,11 +646,12 @@ TODO: {
         };
 
         subtest "unsuccessful" => sub {
-            should_throw("NotFoundError", sub { WebService::Braintree::Transaction->find('foo') }, "Not Foound");
+            should_throw("NotFoundError", sub {
+                WebService::Braintree::Transaction->find('foo');
+            }, "Not Foound");
         };
     };
 }
-;
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 1;
@@ -673,9 +662,11 @@ TODO: {
                 amount => "50.00",
                 credit_card => {
                     number => "5431111111111111",
-                    expiration_date  => "05/12",
+                    expiration_date => "05/12",
                 },
-                options  => { submit_for_settlement  => 'true'}
+                options  => {
+                    submit_for_settlement => 'true'
+                },
             });
             is $result->transaction->status, "submitted_for_settlement", "should have correct status";
         };
@@ -687,10 +678,21 @@ TODO: {
                     number => "5431111111111111",
                     expiration_date  => "05/12",
                 },
-                customer => {first_name => "Dan", last_name => "Smith"},
-                billing => { street_address => "123 45 6" },
-                shipping => { street_address => "789 10 11" },
-                options  => { store_in_vault  => 'true', add_billing_address_to_payment_method => 'true', store_shipping_address_in_vault => 'true' }
+                customer => {
+                    first_name => "Dan",
+                    last_name => "Smith",
+                },
+                billing => {
+                    street_address => "123 45 6",
+                },
+                shipping => {
+                    street_address => "789 10 11",
+                },
+                options  => {
+                    store_in_vault  => 'true',
+                    add_billing_address_to_payment_method => 'true',
+                    store_shipping_address_in_vault => 'true',
+                },
             });
 
             my $customer_result = WebService::Braintree::Customer->find($result->transaction->customer->id);
@@ -699,7 +701,6 @@ TODO: {
         };
     };
 }
-;
 
 subtest "Create from payment method token" => sub {
     my $sale_result = WebService::Braintree::Transaction->sale({
@@ -708,16 +709,20 @@ subtest "Create from payment method token" => sub {
             number => "5431111111111111",
             expiration_date  => "05/12",
         },
-        customer => {first_name => "Dan", last_name => "Smith"},
-        options  => { store_in_vault  => 'true' }
+        customer => { first_name => "Dan", last_name => "Smith" },
+        options  => { store_in_vault  => 'true' },
     });
 
-    my $create_from_token = WebService::Braintree::Transaction->sale({customer_id => $sale_result->transaction->customer->id, payment_method_token => $sale_result->transaction->credit_card->token, amount => "10.00"});
+    my $create_from_token = WebService::Braintree::Transaction->sale({
+        customer_id => $sale_result->transaction->customer->id,
+        payment_method_token => $sale_result->transaction->credit_card->token,
+        amount => "11.00",
+    });
 
-    ok $create_from_token->is_success;
+    ok($create_from_token->is_success)
+        or diag $create_from_token->message;
     is $create_from_token->transaction->customer->id, $sale_result->transaction->customer->id, "ties sale to existing customer";
     is $create_from_token->transaction->credit_card->token, $sale_result->transaction->credit_card->token, "ties sale to existing customer card";
-
 };
 
 TODO: {
@@ -732,13 +737,13 @@ TODO: {
             },
             customer => {first_name => "Dan"},
             billing => {first_name => "Jim"},
-            shipping => {first_name => "John"}
+            shipping => {first_name => "John"},
         });
 
         my $clone_result = WebService::Braintree::Transaction->clone_transaction($sale_result->transaction->id, {
             amount => "123.45",
             channel => "MyShoppingCartProvider",
-            options => { submit_for_settlement => "false" }
+            options => { submit_for_settlement => "false" },
         });
         ok $clone_result->is_success;
         my $clone_transaction = $clone_result->transaction;
@@ -762,12 +767,12 @@ TODO: {
             credit_card => {
                 number => "5431111111111111",
                 expiration_date  => "05/12",
-            }
+            },
         });
 
         my $clone_result = WebService::Braintree::Transaction->clone_transaction($sale_result->transaction->id, {
             amount => "123.45",
-            options => { submit_for_settlement => "true" }
+            options => { submit_for_settlement => "true" },
         });
         ok $clone_result->is_success;
         my $clone_transaction = $clone_result->transaction;
@@ -780,7 +785,7 @@ TODO: {
             credit_card => {
                 number => "5431111111111111",
                 expiration_date  => "05/12",
-            }
+            },
         });
 
         my $clone_result = WebService::Braintree::Transaction->clone_transaction($credit_result->transaction->id, {amount => "123.45"});
@@ -790,7 +795,6 @@ TODO: {
         is($clone_result->errors->for("transaction")->on("base")->[0]->code, $expected_error_code);
     };
 }
-;
 
 TODO: {
     todo_skip "Tests consistently fail in sandbox environment", 1;
@@ -802,14 +806,13 @@ TODO: {
             credit_card => {
                 number => "5431111111111111",
                 expiration_date => "05/12",
-            }
+            },
         });
 
         ok $result->is_success;
         is($result->transaction->recurring, 1);
     };
 }
-;
 
 subtest "Card Type Indicators" => sub {
     my $result = WebService::Braintree::Transaction->sale({
@@ -817,7 +820,7 @@ subtest "Card Type Indicators" => sub {
         credit_card => {
             number => WebService::Braintree::CreditCardNumbers::CardTypeIndicators::Unknown,
             expiration_date => "05/12",
-        }
+        },
     });
 
     ok $result->is_success;
@@ -851,7 +854,7 @@ subtest "Venmo Sdk Session" => sub {
         },
         options => {
             venmo_sdk_session => WebService::Braintree::Test::VenmoSdk::Session,
-        }
+        },
     });
 
     ok $result->is_success;
@@ -886,7 +889,7 @@ subtest "paypal" => sub {
             payment_method_nonce => $nonce,
             paypal_account => {
                 payee_email => 'payee@example.com',
-            }
+            },
         });
 
         ok $result->is_success;
@@ -910,7 +913,7 @@ subtest "paypal" => sub {
             },
             options => {
                 payee_email => "payee\@example.com",
-            }
+            },
         });
 
         ok $result->is_success;
@@ -932,7 +935,7 @@ subtest "paypal" => sub {
             payment_method_nonce => $nonce,
             options => {
                 store_in_vault => "true",
-            }
+            },
         });
 
         ok $result->is_success;
@@ -954,7 +957,7 @@ subtest "paypal" => sub {
             payment_method_nonce => $nonce,
             options => {
                 store_in_vault => "true",
-            }
+            },
         });
 
         ok $result->is_success;
@@ -1005,7 +1008,7 @@ subtest "paypal" => sub {
             payment_method_nonce => $nonce,
             options => {
                 submit_for_settlement => "true",
-            }
+            },
         });
 
         ok $result->is_success;
@@ -1021,7 +1024,7 @@ subtest "paypal" => sub {
             payment_method_nonce => WebService::Braintree::Nonce->paypal_future_payment,
             options => {
                 submit_for_settlement => "true",
-            }
+            },
         });
         ok $result->is_success;
 

@@ -41,3 +41,4 @@ use constant TrialDurationIsRequired                            => "81908";
 use constant TrialDurationUnitIsInvalid                         => "81909";
 
 1;
+__END__

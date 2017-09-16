@@ -1,6 +1,5 @@
 package WebService::Braintree::DisbursementDetails;
 
-
 use Moose;
 extends 'WebService::Braintree::ResultObject';
 
@@ -16,8 +15,9 @@ sub is_valid {
     } else {
         0;
     }
-};
+}
 
 __PACKAGE__->meta->make_immutable;
-1;
 
+1;
+__END__

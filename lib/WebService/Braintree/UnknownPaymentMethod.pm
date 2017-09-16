@@ -9,5 +9,6 @@ sub BUILD {
 }
 
 __PACKAGE__->meta->make_immutable;
-1;
 
+1;
+__END__

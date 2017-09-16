@@ -56,6 +56,8 @@ sub fetch_subscriptions {
     my $attrs = $response->{'subscriptions'}->{'subscription'};
     return to_instance_array($attrs, "WebService::Braintree::Subscription");
 }
-__PACKAGE__->meta->make_immutable;
-1;
 
+__PACKAGE__->meta->make_immutable;
+
+1;
+__END__

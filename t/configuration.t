@@ -1,10 +1,13 @@
-#!/usr/bin/env perl
-use lib qw(lib test/lib);
-use WebService::Braintree;
+# vim: sw=4 ts=4 ft=perl
+
 use Test::More;
 use Test::Warn;
 
-$config = WebService::Braintree->configuration;
+use lib qw(lib t/lib);
+
+use WebService::Braintree;
+
+my $config = WebService::Braintree->configuration;
 
 $config->environment("sandbox");
 $config->public_key("integration_public_key");
@@ -65,4 +68,5 @@ warning_is {$config->environment("not_valid")} "Assigned invalid value to WebSer
 $config->environment("integration");
 $ENV{'GATEWAY_PORT'} = "8104";
 is $config->port, "8104";
+
 done_testing();

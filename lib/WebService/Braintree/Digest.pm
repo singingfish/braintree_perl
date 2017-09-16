@@ -75,3 +75,4 @@ sub secure_compare {
 }
 
 1;
+__END__

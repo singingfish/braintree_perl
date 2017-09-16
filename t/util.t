@@ -1,6 +1,9 @@
-#!/usr/bin/env perl
+# vim: sw=4 ts=4 ft=perl
+
 use Test::More;
+
 use lib qw(lib t/lib);
+
 use WebService::Braintree::Util;
 use WebService::Braintree::TestHelper;
 

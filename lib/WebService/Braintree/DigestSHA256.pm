@@ -1,7 +1,7 @@
 package WebService::Braintree::DigestSHA256;
 
-
 use strict;
+
 use Digest;
 use Digest::SHA;
 
@@ -16,3 +16,4 @@ sub new {
 }
 
 1;
+__END__

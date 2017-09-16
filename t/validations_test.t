@@ -1,6 +1,9 @@
-#!/usr/bin/env perl
-use lib qw(lib t/lib);
+# vim: sw=4 ts=4 ft=perl
+
 use Test::More;
+
+use lib qw(lib t/lib);
+
 use WebService::Braintree::TestHelper;
 use WebService::Braintree::Validations qw(verify_params);
 
@@ -9,9 +12,13 @@ not_ok verify_params({param_1 => "value"}, {}, "fails verifification if param is
 ok verify_params({param_1 => "value"}, {"param_1" => "."}, "verifies one param");
 ok verify_params({param_1 => {nested_param  => "value"}}, {"param_1" => {nested_param => "."}}, "works with nested hashes");
 not_ok verify_params({param_1 => {invalid_key  => "value"}}, {"param_1" => {nested_param => "."}}, "works with nested hashes");
-ok verify_params({custom_fields => {internal_id => 4432321, bars_of_soap => 43}},
-                 {
-                     custom_fields => "_any_key_"}), "supports wild cards";
-not_ok verify_params({name => {first => "Jill", last => "Johnson"}}, {name => "."}), "doesn't allow nested trees where they shouldn't be";
-done_testing();
+ok verify_params(
+    {custom_fields => {internal_id => 4432321, bars_of_soap => 43}},
+    {custom_fields => "_any_key_"},
+), "supports wild cards";
+not_ok verify_params(
+    {name => {first => "Jill", last => "Johnson"}},
+    {name => "."},
+), "doesn't allow nested trees where they shouldn't be";
 
+done_testing();

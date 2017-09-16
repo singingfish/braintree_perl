@@ -7,3 +7,4 @@ use constant UseBillingForShippingDisabled          => "91572";
 use constant VerificationMerchantAccountIdIsInvalid => "91728";
 
 1;
+__END__
