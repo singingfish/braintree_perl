@@ -61,8 +61,7 @@ sub build_node {
 
 sub xml_to_hash {
     my $return = XMLin(shift, KeyAttr => [], KeepRoot => 1);
-    my $scrubbed = scrubbed($return);
-    return $scrubbed;
+    return scrubbed($return);
 }
 
 sub scrubbed {
@@ -72,7 +71,7 @@ sub scrubbed {
     } elsif (is_arrayref($tree)) {
         return collect_from_array($tree);
     } else {
-      return $tree;
+        return $tree;
     }
 }
 
@@ -90,11 +89,11 @@ sub collect_from_hash {
     my $new_hash = {};
 
     my %types = (
-        'array' => \&array,
-        'boolean' => \&boolean,
-        'integer' => \&integer,
-        'datetime' => \&datetime,
-        'date' => \&date
+        array => \&array,
+        boolean => \&boolean,
+        integer => \&integer,
+        datetime => \&datetime,
+        date => \&date
     );
 
     foreach my $type (keys %types) {
@@ -146,29 +145,21 @@ sub array {
 
     delete $tree->{type};
     my $subtree = (values %$tree)[0];
-    if (ref $subtree eq 'HASH') {
+    if (is_hashref($subtree)) {
         return [scrubbed($subtree)];
-    } elsif (ref $subtree eq 'ARRAY') {
-        return scrubbed(force_array($subtree));
+    } elsif (is_arrayref($subtree)) {
+        return scrubbed($subtree);
     } elsif (defined($subtree)) {
         return [$subtree];
     } else {
         return [];
     }
-
 }
-
 
 sub sub_dashes {
     my $string = shift;
     $string =~ s/-/_/g;
     return $string;
-}
-
-sub force_array {
-    my $subtree = shift;
-    return $subtree if(is_arrayref($subtree));
-    return [$subtree];
 }
 
 1;

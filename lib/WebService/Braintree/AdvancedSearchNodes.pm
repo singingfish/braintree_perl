@@ -149,7 +149,7 @@
 
     use Carp;
     use Moose;
-    use WebService::Braintree::Util qw(difference_arrays);
+    use WebService::Braintree::Util qw(difference_arrays is_arrayref);
     extends ("WebService::Braintree::SearchNode");
 
     has 'allowed_values' => (is => 'rw');
@@ -170,7 +170,7 @@
     sub _args_to_array {
         my $self = shift;
         my @args;
-        if (ref($_[0]) eq 'ARRAY') {
+        if (is_arrayref($_[0])) {
             @args = @{$_[0]};
         } else {
             @args = @_;

@@ -3,6 +3,8 @@ package WebService::Braintree::Result;
 use Moose;
 use Hash::Inflator;
 
+use WebService::Braintree::Util qw(is_hashref);
+
 # XXX: Why only these classes?
 use WebService::Braintree::ValidationErrorCollection;
 use WebService::Braintree::CreditCardVerification;
@@ -37,7 +39,7 @@ sub _get_response {
 sub patch_in_response_accessors {
     my $field_rules = shift;
     while (my($key, $rule) = each(%$field_rules)) {
-        if (ref($rule) eq "HASH") {
+        if (is_hashref($rule)) {
             $meta->add_method($key, sub {
                                   my $self = shift;
                                   my $response = $self->_get_response();

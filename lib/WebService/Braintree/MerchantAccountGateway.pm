@@ -5,7 +5,7 @@ with 'WebService::Braintree::Role::MakeRequest';
 
 use Carp qw(confess);
 use WebService::Braintree::Validations qw(verify_params);
-use WebService::Braintree::Util qw(validate_id);
+use WebService::Braintree::Util qw(validate_id is_hashref);
 use WebService::Braintree::Result;
 
 has 'gateway' => (is => 'ro');
@@ -30,7 +30,7 @@ sub find {
 
 sub _detect_signature {
     my ($params) = @_;
-    if (ref($params->{applicant_details}) eq 'HASH') {
+    if (is_hashref($params->{applicant_details})) {
         warnings::warnif("deprecated", "[DEPRECATED] Passing applicant_details to create is deprecated. Please use individual, business, and funding.");
         return _deprecated_create_signature();
     } else {
