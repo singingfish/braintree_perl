@@ -2,7 +2,7 @@ package WebService::Braintree::Validations;
 
 use strict;
 
-use Ref::Util qw(is_hashref);
+use WebService::Braintree::Util qw(is_hashref);
 
 use vars qw(@ISA @EXPORT_OK);
 use Exporter;

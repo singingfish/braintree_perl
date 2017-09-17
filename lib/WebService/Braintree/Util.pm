@@ -14,7 +14,6 @@ our @EXPORT_OK = qw(
     is_arrayref is_hashref
 );
 
-#use Ref::Util qw(is_arrayref is_hashref);
 use URI::Query;
 
 # USED by ::TransparentRedirectGateway->build_tr_data and
