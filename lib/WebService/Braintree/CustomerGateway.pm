@@ -47,8 +47,10 @@ sub all {
     my $self = shift;
     my $response = $self->gateway->http->post("/customers/advanced_search_ids");
     return WebService::Braintree::ResourceCollection->new()->init($response, sub {
-                                                                      $self->fetch_customers(WebService::Braintree::CustomerSearch->new, shift);
-                                                                  });
+        $self->fetch_customers(
+            WebService::Braintree::CustomerSearch->new, shift,
+        );
+    });
 }
 
 sub fetch_customers {

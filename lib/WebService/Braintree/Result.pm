@@ -2,7 +2,6 @@ package WebService::Braintree::Result;
 
 use Moose;
 use Hash::Inflator;
-#use WebService::Braintree::Util;
 
 # XXX: Why only these classes?
 use WebService::Braintree::ValidationErrorCollection;

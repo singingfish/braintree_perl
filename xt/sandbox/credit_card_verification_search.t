@@ -43,7 +43,6 @@ subtest "Searches text and partial match and equality fields" => sub {
     is $search_results->first->credit_card->{'last_4'}, "1115";
 };
 
-=pod
 subtest "Searches multiple value fields" => sub {
     my $visa_credit_card_params = {
         customer_id => $customer_create->customer->id,
@@ -146,6 +145,5 @@ subtest "Searches range fields" => sub {
 
     is $search_results->maximum_size, 0;
 };
-=cut
 
 done_testing();
