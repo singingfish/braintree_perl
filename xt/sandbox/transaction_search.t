@@ -1,5 +1,8 @@
 # vim: sw=4 ts=4 ft=perl
 
+use 5.010_001;
+use strictures 1;
+
 use Test::More;
 
 use lib qw(lib t/lib);
@@ -92,7 +95,7 @@ subtest "result 'each'" => sub {
 
         is_deeply $empty_result->ids, [];
         ok $empty_result->is_empty;
-        @results = ();
+        my @results = ();
         $empty_result->each(sub { push(@results, shift); });
         is_deeply \@results, [];
     };
@@ -100,7 +103,7 @@ subtest "result 'each'" => sub {
     subtest "when one" => sub {
         my $unique = generate_unique_integer() . "each::one_result";
         my ($search_result, $transaction) = find_one_result($unique);
-        @results = ();
+        my @results = ();
         $search_result->each(sub { push(@results, shift); });
         is_deeply \@results, [$transaction];
     };
