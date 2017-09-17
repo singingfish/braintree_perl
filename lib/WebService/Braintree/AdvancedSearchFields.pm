@@ -1,5 +1,8 @@
 package WebService::Braintree::AdvancedSearchFields;
 
+use 5.010_001;
+use strictures 1;
+
 use Carp;
 use Moose;
 

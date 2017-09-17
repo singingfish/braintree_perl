@@ -1,5 +1,8 @@
 package WebService::Braintree::Nonce;
 
+use 5.010_001;
+use strictures 1;
+
 use Moose;
 extends 'WebService::Braintree::ResultObject';
 

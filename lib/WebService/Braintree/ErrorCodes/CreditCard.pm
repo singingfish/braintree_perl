@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes::CreditCard;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant BillingAddressConflict                                   => "91701";
 use constant BillingAddressIdIsInvalid                                => "91702";

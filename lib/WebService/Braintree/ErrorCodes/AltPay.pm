@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes::AltPay;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant PayPalAccountCannotHaveBothAccessTokenAndConsentCode   => "82903";
 use constant PayPalAccountCannotVaultOneTimeUsePayPalAccount        => "82902";

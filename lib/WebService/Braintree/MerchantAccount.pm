@@ -1,5 +1,8 @@
 package WebService::Braintree::MerchantAccount;
 
+use 5.010_001;
+use strictures 1;
+
 =head1 NAME
 
 WebService::Braintree::Customer
@@ -60,6 +63,9 @@ sub gateway {
 {
     package WebService::Braintree::MerchantAccount::Status;
 
+    use 5.010_001;
+    use strictures 1;
+
     use constant Active => "active";
     use constant Pending => "pending";
     use constant Suspended => "suspended";
@@ -67,6 +73,9 @@ sub gateway {
 
 {
     package WebService::Braintree::MerchantAccount::FundingDestination;
+
+    use 5.010_001;
+    use strictures 1;
 
     use constant Bank => "bank";
     use constant Email => "email";

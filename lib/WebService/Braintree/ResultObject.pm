@@ -1,5 +1,8 @@
 package WebService::Braintree::ResultObject;
 
+use 5.010_001;
+use strictures 1;
+
 use Moose;
 use WebService::Braintree::Util qw(is_arrayref is_hashref);
 

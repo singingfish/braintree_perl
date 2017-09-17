@@ -1,5 +1,8 @@
 package WebService::Braintree::Dispute::TransactionDetails;
 
+use 5.010_001;
+use strictures 1;
+
 =head1 NAME
 
 WebService::Braintree::Dispute::TransactionDetails

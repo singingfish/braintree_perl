@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes::Customer;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant CompanyIsTooLong       => "81601";
 use constant CustomFieldIsInvalid   => "91602";

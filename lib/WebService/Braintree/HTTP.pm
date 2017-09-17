@@ -1,5 +1,8 @@
 package WebService::Braintree::HTTP;
 
+use 5.010_001;
+use strictures 1;
+
 use HTTP::Request;
 use LWP::UserAgent;
 

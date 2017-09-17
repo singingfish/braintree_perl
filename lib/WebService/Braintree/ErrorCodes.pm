@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use WebService::Braintree::ErrorCodes::Address;
 use WebService::Braintree::ErrorCodes::ApplePay;

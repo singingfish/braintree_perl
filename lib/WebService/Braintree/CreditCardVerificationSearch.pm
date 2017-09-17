@@ -1,9 +1,11 @@
 package WebService::Braintree::CreditCardVerificationSearch;
 
+use 5.010_001;
+use strictures 1;
+
 use Moose;
 use WebService::Braintree::CreditCard::CardType;
 use WebService::Braintree::AdvancedSearch;
-
 
 my $field = WebService::Braintree::AdvancedSearchFields->new(metaclass => __PACKAGE__->meta);
 $field->text("id");

@@ -1,6 +1,7 @@
 package WebService::Braintree::Dispute::Reason;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant CancelledRecurringTransaction => "cancelled_recurring_transaction";
 use constant CreditNotProcessed => "credit_not_processed";

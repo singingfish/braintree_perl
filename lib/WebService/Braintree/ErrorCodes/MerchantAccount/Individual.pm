@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes::MerchantAccount::Individual;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant FirstNameIsRequired    => "82637";
 use constant LastNameIsRequired     => "82638";

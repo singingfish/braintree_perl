@@ -1,6 +1,7 @@
 package WebService::Braintree::Subscription::Status;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant Active => 'Active';
 use constant Canceled => 'Canceled';

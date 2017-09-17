@@ -1,6 +1,7 @@
 package WebService::Braintree::Digest;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use Digest::HMAC_SHA1 qw(hmac_sha1 hmac_sha1_hex);
 use Digest::SHA1;

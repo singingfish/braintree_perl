@@ -1,6 +1,7 @@
 package WebService::Braintree::Validations;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use WebService::Braintree::Util qw(is_hashref);
 

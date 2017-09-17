@@ -1,6 +1,7 @@
 package WebService::Braintree::AdvancedSearch;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 sub search_to_hash {
     my ($self, $search) = @_;

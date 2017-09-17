@@ -1,6 +1,7 @@
 package WebService::Braintree::ApplePayCard::CardType;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant AmericanExpress => "Apple Pay - American Express";
 use constant MasterCard => "Apple Pay - MasterCard";

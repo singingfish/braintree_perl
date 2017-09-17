@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes::MerchantAccount::ApplicantDetails;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant AccountNumberIsRequired        => "82614";
 use constant CompanyNameIsInvalid           => "82631";

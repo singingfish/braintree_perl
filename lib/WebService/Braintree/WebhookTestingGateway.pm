@@ -1,5 +1,7 @@
 package WebService::Braintree::WebhookTestingGateway;
 
+use 5.010_001;
+use strictures 1;
 
 use MIME::Base64;
 use POSIX qw(strftime);

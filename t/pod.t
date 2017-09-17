@@ -8,9 +8,6 @@ use Test::More;
 
 use lib qw(lib t/lib);
 
-use strict;
-use warnings;
-
 # Ensure a recent version of Test::Pod
 my $min_tp = 1.22;
 eval "use Test::Pod $min_tp";

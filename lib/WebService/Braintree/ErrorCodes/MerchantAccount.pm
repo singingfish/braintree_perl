@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes::MerchantAccount;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant IdIsNotAllowed                         => "82605";
 use constant IdIsTooLong                            => "82602";

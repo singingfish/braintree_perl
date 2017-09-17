@@ -1,5 +1,8 @@
 package WebService::Braintree::TransparentRedirect::QueryString;
 
+use 5.010_001;
+use strictures 1;
+
 use URI;
 use WebService::Braintree::Digest qw(hexdigest);
 use Moose;

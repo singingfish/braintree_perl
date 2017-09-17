@@ -1,6 +1,7 @@
 package WebService::Braintree::CreditCard::CountryOfIssuance;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant Yes => "Yes";
 use constant No => "No";

@@ -1,6 +1,7 @@
 package WebService::Braintree::Test::MerchantAccount;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use vars qw(@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS );
 use Exporter qw(import);

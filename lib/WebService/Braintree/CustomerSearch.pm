@@ -1,5 +1,8 @@
 package WebService::Braintree::CustomerSearch;
 
+use 5.010_001;
+use strictures 1;
+
 use Moose;
 use WebService::Braintree::AdvancedSearch;
 
