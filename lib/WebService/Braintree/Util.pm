@@ -68,7 +68,6 @@ sub to_instance_array {
     return \@result;
 }
 
-# USED all over the place, UNCOVERED?
 sub validate_id {
     my $id = shift;
 
