@@ -61,6 +61,7 @@ elif [[ "$1" == "test" ]]; then
             $fix_for_root_user_in_container \
             -v $(pwd)/lib:/app/lib \
             -v $(pwd)/t:/app/t \
+            -v $(pwd)/.git:/app/.git \
             ${container}:${version} \
                 $test_command
     done
@@ -83,6 +84,7 @@ elif [[ "$1" == "integration" ]]; then
             -v $(pwd)/t:/app/t \
             -v $(pwd)/xt:/app/xt \
             -v $(pwd)/sandbox_config.json:/app/sandbox_config.json \
+            -v $(pwd)/.git:/app/.git \
             ${container}:${version} \
                 $test_command
     done
@@ -101,6 +103,7 @@ elif [[ "$1" == "cover" ]]; then
             -v $(pwd)/lib:/app/lib \
             -v $(pwd)/t:/app/t \
             -v $(pwd)/cover_db:/app/cover_db \
+            -v $(pwd)/.git:/app/.git \
             ${container}:${version} \
                 cover
 
@@ -128,6 +131,7 @@ elif [[ "$1" == "release" ]]; then
         Changes LICENSE
         Makefile.PL inc
         MANIFEST MANIFEST.SKIP
+        .git
     )
 
     volumes=(-v $(pwd)/.pause:/root/.pause)

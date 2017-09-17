@@ -2,7 +2,8 @@
 
 package WebService::Braintree::CreditCardNumbers::CardTypeIndicators;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant Prepaid           => '4111111111111210';
 use constant Commercial        => '4111111111131010';

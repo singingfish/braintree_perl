@@ -2,6 +2,9 @@
 
 package WebService::Braintree::Nonce;
 
+use 5.010_001;
+use strictures 1;
+
 # XXX Why aren't these constants like WebService::Braintree::SandboxValues::CreditCardNumber?
 sub transactable {
   'fake-valid-nonce';
