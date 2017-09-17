@@ -4,10 +4,10 @@ package WebService::Braintree::MockHTTP;
 
 use Moose;
 
-has method => (is => 'rw' );
-has result => ( is => 'rw' );
-has path => ( is => 'rw');
-has params => ( is => 'rw' );
+has method => (is => 'rw');
+has result => (is => 'rw');
+has path => (is => 'rw');
+has params => (is => 'rw');
 
 sub post {
     my $self = shift;
@@ -21,7 +21,7 @@ sub put {
     my $self = shift;
     $self->path(shift);
     $self->params(shift);
-    $self->method("put");
+    $self->method('put');
     return $self->result;
 }
 
@@ -29,7 +29,7 @@ sub get {
     my $self = shift;
     $self->path(shift);
     $self->params(shift);
-    $self->method("get");
+    $self->method('get');
     return $self->result;
 }
 
@@ -37,7 +37,7 @@ sub delete {
     my $self = shift;
     $self->path(shift);
     $self->params(shift);
-    $self->method("delete");
+    $self->method('delete');
     return $self->result;
 }
 

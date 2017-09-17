@@ -11,7 +11,6 @@ This class represents a collection of validation errors.
 =cut
 
 use Moose;
-use WebService::Braintree::Util;
 use WebService::Braintree::ValidationError;
 
 =head1 CLASS METHODS

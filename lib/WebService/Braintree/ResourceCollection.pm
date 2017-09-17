@@ -37,7 +37,7 @@ sub is_empty {
 
 sub maximum_size {
     my $self = shift;
-    return (scalar @{$self->ids});
+    return (scalar @{$self->ids || []});
 }
 
 sub each {

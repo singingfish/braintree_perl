@@ -3,9 +3,8 @@ package WebService::Braintree::TransactionGateway;
 use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 use Carp qw(confess);
-use WebService::Braintree::Util qw(validate_id);
+use WebService::Braintree::Util qw(validate_id to_instance_array);
 use WebService::Braintree::Validations qw(verify_params transaction_signature clone_transaction_signature transaction_search_results_signature);
-use WebService::Braintree::Util;
 
 has 'gateway' => (is => 'ro');
 
@@ -60,8 +59,8 @@ sub search {
     my $response = $self->gateway->http->post("/transactions/advanced_search_ids", {search => $params});
     confess "DownForMaintenanceError" unless (verify_params($response, transaction_search_results_signature));
     return WebService::Braintree::ResourceCollection->new()->init($response, sub {
-                                                                      $self->fetch_transactions($search, shift);
-                                                                  });
+        $self->fetch_transactions($search, shift);
+    });
 }
 
 sub hold_in_escrow {
@@ -83,8 +82,8 @@ sub all {
     my $self = shift;
     my $response = $self->gateway->http->post("/transactions/advanced_search_ids");
     return WebService::Braintree::ResourceCollection->new()->init($response, sub {
-                                                                      $self->fetch_transactions(WebService::Braintree::TransactionSearch->new, shift);
-                                                                  });
+        $self->fetch_transactions(WebService::Braintree::TransactionSearch->new, shift);
+    });
 }
 
 sub fetch_transactions {

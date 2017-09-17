@@ -4,7 +4,7 @@ use Test::More;
 
 use lib qw(lib t/lib);
 
-use WebService::Braintree::Xml;
+use WebService::Braintree::Xml qw(xml_to_hash);
 use WebService::Braintree::TestHelper;
 
 subtest "simple parsing" => sub {
@@ -13,10 +13,13 @@ subtest "simple parsing" => sub {
 };
 
 subtest "folding array" => sub {
-    is_deeply array({transaction =>[ {id => 1}, {id  => 2}]}), [{id => 1}, {id  => 2}];
-    is_deeply array({type => "array", transaction =>[ {id => 1}, {id  => 2}] }), [{id => 1}, {id  => 2}];
-    is_deeply array({transaction => {id => 1}}), [{id => 1}];
-    is_deeply array({type => "array", transaction => {id => 1}}), [{id => 1}];
+    # This is an unexported method.
+    my $array_method = WebService::Braintree::Xml->can('array');
+
+    is_deeply $array_method->({transaction =>[ {id => 1}, {id  => 2}]}), [{id => 1}, {id  => 2}];
+    is_deeply $array_method->({type => "array", transaction =>[ {id => 1}, {id  => 2}] }), [{id => 1}, {id  => 2}];
+    is_deeply $array_method->({transaction => {id => 1}}), [{id => 1}];
+    is_deeply $array_method->({type => "array", transaction => {id => 1}}), [{id => 1}];
 };
 
 subtest "type = array with one sub-element" => sub {

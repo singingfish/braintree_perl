@@ -78,9 +78,9 @@ subtest "results 'first'" => sub {
         my $search_result = perform_search(Transaction => $criteria);
 
         is scalar @{$search_result->ids}, 2;
-        ok contains($sale1->transaction->id, $search_result->ids);
-        ok contains($sale2->transaction->id, $search_result->ids);
-        ok contains($search_result->first->id, [$sale2->transaction->id, $sale1->transaction->id]);
+        ok grep { $_ eq $sale1->transaction->id } @{$search_result->ids};
+        ok grep { $_ eq $sale2->transaction->id } @{$search_result->ids};
+        ok grep { $_ eq $search_result->first->id } ($sale2->transaction->id, $sale1->transaction->id);
         is $search_result->first->amount, '5.00';
     };
 };
@@ -117,8 +117,8 @@ subtest "result 'each'" => sub {
         my @results = ();
         $search_result->each(sub { push(@results, shift->id); });
 
-        ok contains($sale1->transaction->id, \@results);
-        ok contains($sale2->transaction->id, \@results);
+        ok grep { $_ eq $sale1->transaction->id } @results;
+        ok grep { $_ eq $sale2->transaction->id } @results;
         is scalar(@results), 2;
     };
 };
@@ -134,10 +134,10 @@ subtest "credit_card_card_type - multiple value field" => sub {
         $search->credit_card_card_type->is(WebService::Braintree::CreditCard::CardType::MasterCard);
     });
 
-    ok contains($find->id, $search_result->ids);
+    ok grep { $_ eq $find->id } @{$search_result->ids};
     #my @results = ();
     #$search_result->each(sub { push(@results, shift->id); });
-    #ok contains($find->id, \@results);
+    #ok grep { $_ eq $find->id } @results;
 };
 
 subtest "credit_card_card_type - multiple value field - passing invalid credit_card_card_type" => sub {
@@ -169,10 +169,10 @@ subtest "status - multiple value field" => sub {
         $search->status->is($find->status);
     });
 
-    ok contains($find->id, $search_result->ids);
+    ok grep { $_ eq $find->id } @{$search_result->ids};
     #my @results = ();
     #$search_result->each(sub { push(@results, shift->id); });
-    #ok contains($find->id, \@results);
+    #ok grep { $_ eq $find->id } @results;
 };
 
 subtest "source - multiple value field - passing invalid source" => sub {
@@ -194,10 +194,12 @@ subtest "source - multiple value field" => sub {
         $search->source->is(WebService::Braintree::Transaction::Source::Api);
     });
 
-    ok contains($find->id, $search_result->ids);
+    ok grep { $_ eq $find->id } @{$search_result->ids};
+
+    # There are >5300 transactions. This generates N+1 API calls.
     #my @results = ();
     #$search_result->each(sub { push(@results, shift->id); });
-    #ok contains($find->id, \@results);
+    #ok grep { $_ eq $find->id } @results;
 };
 
 subtest "type - multiple value field - passing invalid type" => sub {
@@ -219,10 +221,10 @@ subtest "type - multiple value field" => sub {
         $search->type->is(WebService::Braintree::Transaction::Type::Sale);
     });
 
-    ok contains($find->id, $search_result->ids);
+    ok grep { $_ eq $find->id } @{$search_result->ids};
     #my @results = ();
     #$search_result->each(sub { push(@results, shift->id); });
-    #ok contains($find->id, \@results);
+    #ok grep { $_ eq $find->id } @results;
 };
 
 subtest "credit card number - partial match" => sub {
@@ -236,7 +238,7 @@ subtest "credit card number - partial match" => sub {
         $search->credit_card_number->ends_with($find->credit_card->last_4);
     });
 
-    ok contains($find->id, $search_result->ids);
+    ok grep { $_ eq $find->id } @{$search_result->ids};
 };
 
 subtest "amount - range" => sub {
@@ -259,8 +261,8 @@ subtest "amount - range" => sub {
         $search->amount->min("4.50");
     });
 
-    ok contains($find->id, $search_result->ids);
-    not_ok contains($sale2->id, $search_result->ids);
+    ok grep { $_ eq $find->id } @{$search_result->ids};
+    not_ok grep { $_ eq $sale2->id } @{$search_result->ids};
 };
 
 TODO: {
@@ -274,7 +276,7 @@ TODO: {
             $search->disbursement_date->min(WebService::Braintree::TestHelper::parse_datetime("2012-01-01 00:00:00"));
         });
 
-        ok contains("deposittransaction", $search_result->ids);
+        ok grep { $_ eq "deposittransaction" } @{$search_result->ids};
         is scalar @{$search_result->ids}, 1;
     };
 
@@ -298,7 +300,7 @@ TODO: {
             $search->dispute_date->min(WebService::Braintree::TestHelper::parse_datetime("2014-03-01 00:00:00"));
         });
 
-        ok contains("disputedtransaction", $search_result->ids);
+        ok grep { $_ eq "disputedtransaction" } @{$search_result->ids};
         is scalar @{$search_result->ids}, 1;
     };
 
@@ -309,7 +311,7 @@ TODO: {
             $search->dispute_date->is(WebService::Braintree::TestHelper::parse_datetime("2014-03-01 00:00:00"));
         });
 
-        ok contains("disputedtransaction", $search_result->ids);
+        ok grep { $_ eq "disputedtransaction" } @{$search_result->ids};
         is scalar @{$search_result->ids}, 1;
     };
 }

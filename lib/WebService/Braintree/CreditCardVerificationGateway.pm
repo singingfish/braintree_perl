@@ -2,7 +2,7 @@ package WebService::Braintree::CreditCardVerificationGateway;
 
 use Moose;
 use WebService::Braintree::CreditCardVerificationSearch;
-use WebService::Braintree::Util;
+use WebService::Braintree::Util qw(validate_id to_instance_array);
 use Carp qw(confess);
 
 has 'gateway' => (is => 'ro');

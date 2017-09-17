@@ -21,3 +21,4 @@ sandbox_config.json
 .build
 test_diffs
 build_log
+Dockerfile.5*
