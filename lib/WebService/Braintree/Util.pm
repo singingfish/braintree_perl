@@ -55,7 +55,6 @@ sub difference_arrays {
     return \@diff;
 }
 
-# USED in several places. UNCOVERED(!)
 sub to_instance_array {
     my ($attrs, $class) = @_;
     my @result = ();
@@ -69,7 +68,6 @@ sub to_instance_array {
     return \@result;
 }
 
-# USED all over the place, UNCOVERED?
 sub validate_id {
     my $id = shift;
 
