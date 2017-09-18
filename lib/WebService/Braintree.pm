@@ -324,6 +324,8 @@ One of the sandbox tests is really really slow.
 
 Thanks to the staff at Braintree for endorsing this fork.
 
+Thanks to ZipRecruiter for sponsoring improvements to the forked code.
+
 =head2 LICENSE AND COPYRIGHT
 
 Copyright 2017 Kieren Diment <zarquon@cpan.org>
