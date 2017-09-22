@@ -129,7 +129,7 @@ sub create_customer {
         first_name => "NotInFaker",
         last_name => "O'Toole",
         company => $company,
-        email => "timmy\@example.com",
+        email => 'timmy@example.com',
         fax => "3145551234",
         phone => "5551231234",
         website => "http://example.com",
@@ -147,8 +147,8 @@ sub create_customer {
                 region => "Illinois",
                 postal_code => "60622",
                 country_name => "United States of America",
-            }
-        }
+            },
+        },
     };
     return WebService::Braintree::Customer->create($customer_attributes);
 }

@@ -115,24 +115,33 @@ will be a L<WebService::Braintree::MerchantAccount::FundingDetails> object.
 has funding_details => (is => 'rw');
 
 sub BUILD {
-    my ($self, $attributes) = @_;
+    my ($self, $attrs) = @_;
 
-    $self->master_merchant_account(WebService::Braintree::MerchantAccount->new($attributes->{master_merchant_account})) if ref($attributes->{master_merchant_account}) eq 'HASH';
-    delete($attributes->{master_merchant_account});
+    $self->build_sub_object($attrs,
+        method => 'master_merchant_account',
+        class  => 'MerchantAccount',
+        key    => 'master_merchant_account',
+    );
 
+    $self->build_sub_object($attrs,
+        method => 'individual_details',
+        class  => 'MerchantAccount::IndividualDetails',
+        key    => 'individual',
+    );
 
-    $self->individual_details(WebService::Braintree::MerchantAccount::IndividualDetails->new($attributes->{individual})) if ref($attributes->{individual}) eq 'HASH';
-    delete($attributes->{individual});
+    $self->build_sub_object($attrs,
+        method => 'business_details',
+        class  => 'MerchantAccount::BusinessDetails',
+        key    => 'business',
+    );
 
+    $self->build_sub_object($attrs,
+        method => 'funding_details',
+        class  => 'MerchantAccount::FundingDetails',
+        key    => 'funding',
+    );
 
-    $self->business_details(WebService::Braintree::MerchantAccount::BusinessDetails->new($attributes->{business})) if ref($attributes->{business}) eq 'HASH';
-    delete($attributes->{business});
-
-
-    $self->funding_details(WebService::Braintree::MerchantAccount::FundingDetails->new($attributes->{funding})) if ref($attributes->{funding}) eq 'HASH';
-    delete($attributes->{funding});
-
-    $self->set_attributes_from_hash($self, $attributes);
+    $self->set_attributes_from_hash($self, $attrs);
 }
 
 __PACKAGE__->meta->make_immutable;

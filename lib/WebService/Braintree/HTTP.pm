@@ -2,7 +2,9 @@ package WebService::Braintree::HTTP;
 
 use HTTP::Request;
 use LWP::UserAgent;
-use WebService::Braintree::Xml;
+
+use WebService::Braintree::Xml qw(hash_to_xml xml_to_hash);
+
 use Moose;
 use Carp qw(confess);
 use constant CLIENT_VERSION => $WebService::Braintree::VERSION || 'development';
@@ -11,22 +13,22 @@ has 'config' => (is => 'ro', default => sub { WebService::Braintree->configurati
 
 sub post {
     my ($self, $path, $params) = @_;
-    $self -> make_request($path, $params, 'POST');
+    $self->make_request($path, $params, 'POST');
 }
 
 sub put {
     my ($self, $path, $params) = @_;
-    $self -> make_request($path, $params, 'PUT');
+    $self->make_request($path, $params, 'PUT');
 }
 
 sub get {
     my ($self, $path, $params) = @_;
-    $self -> make_request($path, $params, 'GET');
+    $self->make_request($path, $params, 'GET');
 }
 
 sub delete {
     my ($self, $path, $params) = @_;
-    $self -> make_request($path, undef, 'DELETE');
+    $self->make_request($path, undef, 'DELETE');
 }
 
 sub make_request {

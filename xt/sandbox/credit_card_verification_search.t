@@ -41,7 +41,6 @@ subtest "Searches text and partial match and equality fields" => sub {
     is $search_results->first->credit_card->{'expiration_month'}, "12";
     is $search_results->first->credit_card->{'bin'}, "400011";
     is $search_results->first->credit_card->{'last_4'}, "1115";
-
 };
 
 subtest "Searches multiple value fields" => sub {
