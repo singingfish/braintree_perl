@@ -3,10 +3,10 @@
 use 5.010_001;
 use strictures 1;
 
-use lib qw(lib t/lib);
-
 use Test::More;
 use Test::Warn;
+
+use lib qw(lib t/lib);
 
 use WebService::Braintree;
 
@@ -105,8 +105,6 @@ subtest 'port()' => sub {
 subtest 'api_version()' => sub {
     is $config->api_version, 4;
 };
-
-
 
 my @examples = (
     ['sandbox', "https://api.sandbox.braintreegateway.com:443/merchants/integration_merchant_id"],
