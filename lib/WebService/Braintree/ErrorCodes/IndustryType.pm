@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes::IndustryType;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant CheckInDateIsInvalid               => "93404";
 use constant CheckOutDateIsInvalid              => "93405";

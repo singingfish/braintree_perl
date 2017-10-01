@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes::Subscription::Modification;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant AmountCannotBeBlank                          => "92003";
 use constant AmountIsInvalid                              => "92002";

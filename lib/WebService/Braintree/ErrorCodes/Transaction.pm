@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes::Transaction;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant AmountCannotBeNegative                            => "81501";
 use constant AmountFormatIsInvalid                             => "81503";

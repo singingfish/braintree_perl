@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes::Subscription;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant BillingDayOfMonthCannotBeUpdated                   => "91918";
 use constant BillingDayOfMonthIsInvalid                         => "91914";

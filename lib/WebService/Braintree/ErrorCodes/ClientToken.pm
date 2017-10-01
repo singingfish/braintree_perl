@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes::ClientToken;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant CustomerDoesNotExist                            => "92804";
 use constant FailOnDuplicatePaymentMethodRequiresCustomerId  => "92803";

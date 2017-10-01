@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes::SettlementBatchSummary;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant CustomFieldIsInvalid     => "82303";
 use constant SettlementDateIsInvalid  => "82302";

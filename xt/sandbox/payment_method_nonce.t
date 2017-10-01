@@ -1,5 +1,8 @@
 # vim: sw=4 ts=4 ft=perl
 
+use 5.010_001;
+use strictures 1;
+
 use Test::More;
 
 use lib qw(lib t/lib);
@@ -79,7 +82,7 @@ subtest "returns null 3ds_info if there isn't any" => sub {
     });
 
     my $result = WebService::Braintree::PaymentMethodNonce->find($nonce);
-    my $nonce = $result->payment_method_nonce;
+    $nonce = $result->payment_method_nonce;
     ok($result->is_success, '.. result is successful');
     is($nonce->three_d_secure_info, undef, '.. three_d_secure_info is null');
 };

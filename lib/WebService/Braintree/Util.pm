@@ -1,6 +1,7 @@
 package WebService::Braintree::Util;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use vars qw(@ISA @EXPORT_OK);
 use Exporter qw(import);

@@ -1,6 +1,7 @@
 package WebService::Braintree::DigestSHA256;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use Digest;
 use Digest::SHA;

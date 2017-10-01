@@ -1,5 +1,8 @@
 package WebService::Braintree::WebhookNotificationGateway;
 
+use 5.010_001;
+use strictures 1;
+
 use MIME::Base64;
 use WebService::Braintree::Digest qw(hexdigest);
 use WebService::Braintree::Xml qw(xml_to_hash);

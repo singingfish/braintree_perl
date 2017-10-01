@@ -1,6 +1,7 @@
 package WebService::Braintree::Transaction::Type;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant Sale => "sale";
 use constant Credit => "credit";

@@ -1,5 +1,8 @@
 package WebService::Braintree::ValidationErrorCollection;
 
+use 5.010_001;
+use strictures 1;
+
 =head1 NAME
 
 WebService::Braintree::ValidationError

@@ -2,6 +2,9 @@
 
 package WebService::Braintree::SandboxValues::TransactionAmount;
 
+use 5.010_001;
+use strictures 1;
+
 use vars qw(@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS );
 use Exporter;
 our @ISA = qw(Exporter);

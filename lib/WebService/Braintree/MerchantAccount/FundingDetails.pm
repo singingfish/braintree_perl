@@ -1,5 +1,7 @@
 package WebService::Braintree::MerchantAccount::FundingDetails;
 
+use 5.010_001;
+use strictures 1;
 
 use Moose;
 extends "WebService::Braintree::ResultObject";

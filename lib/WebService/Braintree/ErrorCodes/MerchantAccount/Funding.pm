@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes::MerchantAccount::Funding;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant RoutingNumberIsRequired => "82640";
 use constant AccountNumberIsRequired => "82641";

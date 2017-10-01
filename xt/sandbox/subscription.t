@@ -1,5 +1,8 @@
 # vim: sw=4 ts=4 ft=perl
 
+use 5.010_001;
+use strictures 1;
+
 use Test::More;
 
 use lib qw(lib t/lib);
@@ -181,12 +184,12 @@ TODO: {
         is $result->message, "Do Not Honor";
     };
 
-    subtest "with a subscription" => sub {
-        my $create = WebService::Braintree::Subscription->create({
-            payment_method_token => $card->credit_card->token,
-            plan_id => "integration_trialless_plan",
-        });
+    my $create = WebService::Braintree::Subscription->create({
+        payment_method_token => $card->credit_card->token,
+        plan_id => "integration_trialless_plan",
+    });
 
+    subtest "with a subscription" => sub {
         subtest "find" => sub {
             my $result = WebService::Braintree::Subscription->find($create->subscription->id);
 

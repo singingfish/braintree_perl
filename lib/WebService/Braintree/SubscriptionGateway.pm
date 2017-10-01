@@ -1,5 +1,8 @@
 package WebService::Braintree::SubscriptionGateway;
 
+use 5.010_001;
+use strictures 1;
+
 use WebService::Braintree::Util qw(to_instance_array validate_id);
 use Carp qw(confess);
 

@@ -1,6 +1,7 @@
 package WebService::Braintree::Transaction::Source;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant Api => "api";
 use constant ControlPanel => "control_panel";

@@ -1,5 +1,8 @@
 # vim: sw=4 ts=4 ft=perl
 
+use 5.010_001;
+use strictures 1;
+
 use Test::More;
 
 use lib qw(lib t/lib);
@@ -26,7 +29,7 @@ subtest "Generate a fingerprint that the gateway accepts" => sub {
         shared_customer_identifier_type => "testing",
     );
 
-    $result = $http->get_cards();
+    my $result = $http->get_cards();
     ok $result->is_success, "result returns no errors";
 };
 
@@ -60,14 +63,14 @@ subtest "it can pass verify card" => sub {
         shared_customer_identifier_type => "testing",
     );
 
-    $result = $http->add_card({
+    my $result = $http->add_card({
         credit_card => {
             number => "4000111111111115",
             expiration_date => "11/2099",
         },
     });
     ok $result->code == 422;
-    $response = from_json($result->content);
+    my $response = from_json($result->content);
     ok $response->{"error"}->{"message"} eq "Credit card verification failed";
 };
 
@@ -92,7 +95,7 @@ subtest "it can pass make default" => sub {
         shared_customer_identifier_type => "testing",
     );
 
-    $result = $http->add_card({
+    my $result = $http->add_card({
         credit_card => {
             number => "4111111111111111",
             expiration_date => "11/2098",
@@ -108,7 +111,7 @@ subtest "it can pass make default" => sub {
     });
     ok $result->code == 201;
 
-    $found_customer = WebService::Braintree::Customer->find($customer->id);
+    my $found_customer = WebService::Braintree::Customer->find($customer->id);
 
     foreach my $card (@{$found_customer->credit_cards}) {
         if ($card->is_default) {
@@ -143,7 +146,7 @@ subtest "it can pass fail_on_duplicate_payment_method card" => sub {
         shared_customer_identifier_type => "testing",
     );
 
-    $result = $http->add_card({
+    my $result = $http->add_card({
         credit_card => {
             number => "4111111111111111",
             expiration_date => "11/2099",
@@ -169,7 +172,7 @@ subtest "it can pass fail_on_duplicate_payment_method card" => sub {
         },
     });
     ok $result->code == 422;
-    $response = from_json($result->content);
+    my $response = from_json($result->content);
     ok $response->{"fieldErrors"}[0]->{"fieldErrors"}[0]->{"message"} eq "Duplicate card exists in the vault";
 };
 

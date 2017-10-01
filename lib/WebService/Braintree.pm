@@ -1,7 +1,8 @@
 package WebService::Braintree;
 
-use strict;
-use warnings;
+use 5.010_001;
+use strictures 1;
+
 use WebService::Braintree::Address;
 use WebService::Braintree::AdvancedSearchFields;
 use WebService::Braintree::AdvancedSearchNodes;

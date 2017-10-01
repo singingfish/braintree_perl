@@ -1,11 +1,17 @@
 {
     package WebService::Braintree::AdvancedSearchNodes;
 
+    use 5.010_001;
+    use strictures 1;
+
     use Moose;
 }
 
 {
     package WebService::Braintree::SearchNode;
+
+    use 5.010_001;
+    use strictures 1;
 
     use Moose;
 
@@ -35,6 +41,9 @@
 {
     package WebService::Braintree::IsNode;
 
+    use 5.010_001;
+    use strictures 1;
+
     use Moose;
     extends ("WebService::Braintree::SearchNode");
 
@@ -49,6 +58,9 @@
 {
     package WebService::Braintree::EqualityNode;
 
+    use 5.010_001;
+    use strictures 1;
+
     use Moose;
     extends ("WebService::Braintree::IsNode");
 
@@ -62,6 +74,9 @@
 
 {
     package WebService::Braintree::KeyValueNode;
+
+    use 5.010_001;
+    use strictures 1;
 
     use Moose;
     extends ("WebService::Braintree::SearchNode");
@@ -87,6 +102,9 @@
 {
     package WebService::Braintree::PartialMatchNode;
 
+    use 5.010_001;
+    use strictures 1;
+
     use Moose;
     extends ("WebService::Braintree::EqualityNode");
 
@@ -106,6 +124,9 @@
 {
     package WebService::Braintree::TextNode;
 
+    use 5.010_001;
+    use strictures 1;
+
     use Moose;
     extends ("WebService::Braintree::PartialMatchNode");
 
@@ -119,6 +140,9 @@
 
 {
     package WebService::Braintree::RangeNode;
+
+    use 5.010_001;
+    use strictures 1;
 
     use Moose;
     extends ("WebService::Braintree::EqualityNode");
@@ -146,6 +170,9 @@
 
 {
     package WebService::Braintree::MultipleValuesNode;
+
+    use 5.010_001;
+    use strictures 1;
 
     use Carp;
     use Moose;

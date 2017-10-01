@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes::ApplePay;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant ApplePayCardsAreNotAccepted                      => "83501";
 use constant CustomerIdIsRequiredForVaulting                  => "83502";

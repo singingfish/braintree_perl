@@ -1,5 +1,8 @@
 # vim: sw=4 ts=4 ft=perl
 
+use 5.010_001;
+use strictures 1;
+
 use Test::More;
 
 use lib qw(lib t/lib);
@@ -37,7 +40,7 @@ TODO: {
 
     my @examples = qw(credit sale);
     foreach my $method (@examples) {
-        subtest "Successful Transaction for $example" => sub {
+        subtest "Successful Transaction for $method" => sub {
             my $result = WebService::Braintree::Transaction->$method($transaction_params);
 
             ok $result->is_success;
@@ -640,7 +643,7 @@ TODO: {
     subtest "Find" => sub {
         subtest "successful" => sub {
             my $sale_result = WebService::Braintree::Transaction->sale($transaction_params);
-            $find_result = WebService::Braintree::Transaction->find($sale_result->transaction->id);
+            my $find_result = WebService::Braintree::Transaction->find($sale_result->transaction->id);
             is $find_result->transaction->id, $sale_result->transaction->id, "should find existing transaction";
             is $find_result->transaction->amount, "50.00", "should find correct amount";
         };

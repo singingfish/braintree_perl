@@ -1,8 +1,12 @@
 # vim: sw=4 ts=4 ft=perl
 
-use lib qw(lib t/lib);
+use 5.010_001;
+use strictures 1;
 
 use Test::More;
+
+use lib qw(lib t/lib);
+
 use WebService::Braintree;
 use WebService::Braintree::TestHelper;
 
@@ -15,7 +19,7 @@ subtest "each" => sub {
         return [$page_counter];
     });
 
-    @page_counts = ();
+    my @page_counts = ();
     $resource_collection->each(sub {
         push(@page_counts, shift);
     });

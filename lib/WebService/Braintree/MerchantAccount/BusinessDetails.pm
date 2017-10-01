@@ -1,5 +1,8 @@
 package WebService::Braintree::MerchantAccount::BusinessDetails;
 
+use 5.010_001;
+use strictures 1;
+
 use WebService::Braintree::MerchantAccount::AddressDetails;
 
 use Moose;

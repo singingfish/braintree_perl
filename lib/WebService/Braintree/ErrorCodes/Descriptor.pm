@@ -1,6 +1,7 @@
 package WebService::Braintree::ErrorCodes::Descriptor;
 
-use strict;
+use 5.010_001;
+use strictures 1;
 
 use constant DynamicDescriptorsDisabled        => "92203";
 use constant InternationalPhoneFormatIsInvalid => "92205";

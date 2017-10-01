@@ -1,5 +1,8 @@
 # vim: sw=4 ts=4 ft=perl
 
+use 5.010_001;
+use strictures 1;
+
 use Test::More;
 
 use lib qw(lib t/lib);
@@ -11,7 +14,7 @@ my $customer_instance = WebService::Braintree::Customer->new;
 my $customer = $customer_instance->create({first_name => "Walter", last_name => "Weatherman"});
 
 subtest "create" => sub {
-    $result = WebService::Braintree::Address->create({
+    my $result = WebService::Braintree::Address->create({
         customer_id => $customer->customer->id,
         first_name => "Walter",
         last_name => "Weatherman",
@@ -54,7 +57,7 @@ subtest "with a customer" => sub {
     });
 
     subtest "find" => sub {
-        $address = WebService::Braintree::Address->find($customer->customer->id, $create_result->address->id);
+        my $address = WebService::Braintree::Address->find($customer->customer->id, $create_result->address->id);
         is $address->first_name, "Walter";
     };
 

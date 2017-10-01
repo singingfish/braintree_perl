@@ -1,5 +1,8 @@
 # vim: sw=4 ts=4 ft=perl
 
+use 5.010_001;
+use strictures 1;
+
 use Test::More;
 
 use lib qw(lib t/lib);
@@ -23,7 +26,7 @@ subtest "instance methods" => sub {
     is $cc->masked_number, "123456******7890";
     not_ok $cc->is_default;
 
-    $default = WebService::Braintree::CreditCard->new(default => 1);
+    my $default = WebService::Braintree::CreditCard->new(default => 1);
     ok $default->is_default;
 };
 

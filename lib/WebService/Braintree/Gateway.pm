@@ -1,5 +1,7 @@
 package WebService::Braintree::Gateway;
 
+use 5.010_001;
+use strictures 1;
 
 use WebService::Braintree::AddressGateway;
 use WebService::Braintree::ClientTokenGateway;

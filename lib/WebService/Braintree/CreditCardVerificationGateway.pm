@@ -1,5 +1,8 @@
 package WebService::Braintree::CreditCardVerificationGateway;
 
+use 5.010_001;
+use strictures 1;
+
 use Moose;
 use WebService::Braintree::CreditCardVerificationSearch;
 use WebService::Braintree::Util qw(validate_id to_instance_array);
