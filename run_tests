@@ -31,6 +31,11 @@ fix_for_root_user_in_container="
     -u $(id -u):$(id -g)
 "
 
+sandbox_config_json=""
+if [[ -s sandbox_config.json ]]; then
+    sandbox_config_json="-v $(pwd)/sandbox_config.json:/app/sandbox_config.json"
+fi
+
 versions=${PERL_VERSIONS:-${all_versions}}
 if [[ "$1" == "pull" ]]; then
     shift
@@ -62,18 +67,30 @@ elif [[ "$1" == "test" ]]; then
             $fix_for_root_user_in_container \
             -v $(pwd)/lib:/app/lib \
             -v $(pwd)/t:/app/t \
+            $sandbox_config_json \
+            -v $(pwd)/.git:/app/.git \
+            ${container}:${version} \
+                $test_command
+    done
+elif [[ "$1" == "unit" ]]; then
+    shift
+    test_command="${@:-"prove -lrs t/unit"}"
+    for version in ${versions}; do
+        echo "Running tests against perl-${version}"
+        MSYS_NO_PATHCONV=1 \
+        docker run \
+            -it --rm \
+            $fix_for_root_user_in_container \
+            -v $(pwd)/lib:/app/lib \
+            -v $(pwd)/t:/app/t \
+            $sandbox_config_json \
             -v $(pwd)/.git:/app/.git \
             ${container}:${version} \
                 $test_command
     done
 elif [[ "$1" == "integration" ]]; then
     shift
-    if [[ ! -s sandbox_config.json ]]; then
-        >&2 echo "You must have setup your sandbox_config.json file"
-        exit 1
-    fi
-
-    test_command="${@:-"prove -lrs xt/"}"
+    test_command="${@:-"prove -lrs t/sandbox"}"
     for version in ${versions}; do
         echo "Running integration tests against perl-${version}"
         MSYS_NO_PATHCONV=1 \
@@ -82,8 +99,7 @@ elif [[ "$1" == "integration" ]]; then
             $fix_for_root_user_in_container \
             -v $(pwd)/lib:/app/lib \
             -v $(pwd)/t:/app/t \
-            -v $(pwd)/xt:/app/xt \
-            -v $(pwd)/sandbox_config.json:/app/sandbox_config.json \
+            $sandbox_config_json \
             -v $(pwd)/.git:/app/.git \
             ${container}:${version} \
                 $test_command
@@ -102,8 +118,7 @@ elif [[ "$1" == "cover" ]]; then
             $fix_for_root_user_in_container \
             -v $(pwd)/lib:/app/lib \
             -v $(pwd)/t:/app/t \
-            -v $(pwd)/xt:/app/xt \
-            -v $(pwd)/sandbox_config.json:/app/sandbox_config.json \
+            $sandbox_config_json \
             -v $(pwd)/cover_db:/app/cover_db \
             -v $(pwd)/.git:/app/.git \
             ${container}:${version} \
@@ -148,6 +163,6 @@ elif [[ "$1" == "release" ]]; then
         ${container}:${tag} \
             -c "carton exec perl Makefile.PL && make dist && cpan-upload *.tar.gz"
 else
-    >&2 echo "${ME}: <pull | build | test | integration | cover | release> [command]"
+    >&2 echo "${ME}: <pull | build | test | unit integration | cover | release> [command]"
     exit 1
 fi

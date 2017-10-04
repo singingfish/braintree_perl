@@ -5,6 +5,11 @@ use strictures 1;
 
 use Test::More;
 
+BEGIN {
+    plan skip_all => "sandbox_config.json required for sandbox tests"
+        unless -s 'sandbox_config.json';
+}
+
 use lib qw(lib t/lib);
 
 use WebService::Braintree;
@@ -117,7 +122,7 @@ subtest "billing_address_id" => sub {
         first_name => 'Jenna',
     });
     my $result = WebService::Braintree::Transaction->sale({
-        amount => "50.00",
+        amount => "40.00",
         customer_id => $customer_result->customer->id,
         billing_address_id => $address_result->address->id,
         credit_card => {
