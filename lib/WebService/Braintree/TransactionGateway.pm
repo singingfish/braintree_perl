@@ -84,15 +84,18 @@ sub cancel_release {
 sub all {
     my $self = shift;
     my $response = $self->gateway->http->post("/transactions/advanced_search_ids");
-    return WebService::Braintree::ResourceCollection->new()->init($response, sub {
+    return WebService::Braintree::ResourceCollection->new->init($response, sub {
         $self->fetch_transactions(WebService::Braintree::TransactionSearch->new, shift);
     });
 }
 
 sub fetch_transactions {
     my ($self, $search, $ids) = @_;
-    $search->ids->in($ids);
+
     return [] if scalar @{$ids} == 0;
+
+    $search->ids->in($ids);
+
     my $response = $self->gateway->http->post("/transactions/advanced_search/", {search => $search->to_hash});
     my $attrs = $response->{'credit_card_transactions'}->{'transaction'};
     return to_instance_array($attrs, "WebService::Braintree::Transaction");

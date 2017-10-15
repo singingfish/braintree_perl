@@ -46,9 +46,9 @@ sub search {
 sub all {
     my $self = shift;
     my $response = $self->gateway->http->post("/subscriptions/advanced_search_ids");
-    return WebService::Braintree::ResourceCollection->new()->init($response, sub {
-                                                                      $self->fetch_subscriptions(WebService::Braintree::SubscriptionSearch->new, shift);
-                                                                  });
+    return WebService::Braintree::ResourceCollection->new->init($response, sub {
+        $self->fetch_subscriptions(WebService::Braintree::SubscriptionSearch->new, shift);
+    });
 }
 
 sub fetch_subscriptions {

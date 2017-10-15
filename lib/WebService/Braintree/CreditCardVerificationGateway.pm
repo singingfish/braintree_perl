@@ -30,16 +30,21 @@ sub search {
 sub all {
     my $self = shift;
     my $response = $self->gateway->http->post("/verifications/advanced_search_ids");
-    return WebService::Braintree::ResourceCollection->new()->init($response, sub {
-                                                                      $self->fetch_verifications(WebService::Braintree::CreditCardVerificationSearch->new, shift);
-                                                                  });
+    return WebService::Braintree::ResourceCollection->new->init($response, sub {
+        $self->fetch_verifications(
+            WebService::Braintree::CreditCardVerificationSearch->new, shift,
+        );
+    });
 }
 
 sub fetch_verifications {
     my ($self, $search, $ids) = @_;
-    $search->ids->in($ids);
+
     return [] if scalar @{$ids} == 0;
+
+    $search->ids->in($ids);
     my $response = $self->gateway->http->post("/verifications/advanced_search/", {search => $search->to_hash});
+
     my $attrs = $response->{'credit_card_verifications'}->{'verification'};
     return to_instance_array($attrs, "WebService::Braintree::CreditCardVerification");
 }

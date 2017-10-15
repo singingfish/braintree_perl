@@ -8,7 +8,7 @@ with 'WebService::Braintree::Role::MakeRequest';
 
 use Carp qw(confess);
 use WebService::Braintree::Validations qw(verify_params);
-use WebService::Braintree::Util qw(validate_id is_hashref);
+use WebService::Braintree::Util qw(validate_id is_hashref to_instance_array);
 use WebService::Braintree::Result;
 
 has 'gateway' => (is => 'ro');
@@ -29,6 +29,29 @@ sub find {
     my ($self, $id) = @_;
     confess "NotFoundError" unless validate_id($id);
     my $result = $self->_make_request("/merchant_accounts/$id", "get", undef)->merchant_account;
+}
+
+sub all {
+    my $self = shift;
+    my $response = $self->gateway->http->get("/merchant_accounts");
+    return to_instance_array($response->{merchant_accounts}{merchant_account}, 'WebService::Braintree::MerchantAccount');
+    #return WebService::Braintree::ResourceCollection->new->init($response, sub {
+    #    $self->fetch_merchant_accounts(
+    #        WebService::Braintree::MerchantAccountSearch->new, shift,
+    #    );
+    #});
+}
+
+sub fetch_merchant_accounts {
+    my ($self, $search, $ids) = @_;
+
+    return [] if scalar @{$ids} == 0;
+
+    $search->ids->in($ids);
+    my $response = $self->gateway->http->post("/merchant_accounts/advanced_search/", {search => $search->to_hash});
+
+    my $attrs = $response->{'merchant_accounts'}->{'merchant_account'};
+    return to_instance_array($attrs, "WebService::Braintree::MerchantAccount");
 }
 
 sub _detect_signature {

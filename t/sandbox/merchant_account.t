@@ -5,6 +5,11 @@ use strictures 1;
 
 use Test::More;
 
+BEGIN {
+    plan skip_all => "sandbox_config.json required for sandbox tests"
+        unless -s 'sandbox_config.json';
+}
+
 use lib qw(lib t/lib);
 
 use WebService::Braintree;
@@ -16,6 +21,9 @@ use WebService::Braintree::ErrorCodes::MerchantAccount::Business;
 use WebService::Braintree::ErrorCodes::MerchantAccount::Business::Address;
 use WebService::Braintree::TestHelper qw(sandbox);
 use WebService::Braintree::Test;
+
+WebService::Braintree::TestHelper->verify_sandbox
+    || BAIL_OUT 'Sandbox is not prepared properly. Please read xt/README.';
 
 my $deprecated_application_params = {
     applicant_details => {
@@ -38,6 +46,17 @@ my $deprecated_application_params = {
     },
     tos_accepted => 'true',
     master_merchant_account_id => 'sandbox_master_merchant_account',
+};
+
+subtest 'Successful Create with deprecated parameters' => sub {
+    plan skip_all => 'Deprecated parameters no longer allowed';
+
+    local $SIG{__WARN__} = sub {};
+
+    my $result = WebService::Braintree::MerchantAccount->create($deprecated_application_params);
+    ok $result->is_success;
+    is($result->merchant_account->status, WebService::Braintree::MerchantAccount::Status::Pending);
+    is($result->merchant_account->master_merchant_account->id, 'sandbox_master_merchant_account');
 };
 
 my $valid_application_params = {
@@ -78,37 +97,28 @@ my $valid_application_params = {
     master_merchant_account_id => 'sandbox_master_merchant_account',
 };
 
-TODO: {
-    todo_skip 'Tests consistently fail in sandbox environment', 1;
+subtest 'Successful Create' => sub {
+    plan skip_all => 'sandbox_master_merchant_account does not work anymore';
 
-    subtest 'Successful Create with deprecated parameters' => sub {
-        local $SIG{__WARN__} = sub {};
-        my $result = WebService::Braintree::MerchantAccount->create($deprecated_application_params);
-        ok $result->is_success;
-        is($result->merchant_account->status, WebService::Braintree::MerchantAccount::Status::Pending);
-        is($result->merchant_account->master_merchant_account->id, 'sandbox_master_merchant_account');
-    };
+    my $result = WebService::Braintree::MerchantAccount->create($valid_application_params);
+    ok $result->is_success;
+    is($result->merchant_account->status, WebService::Braintree::MerchantAccount::Status::Pending);
+    is($result->merchant_account->master_merchant_account->id, 'sandbox_master_merchant_account');
+};
 
-    subtest 'Successful Create' => sub {
-        my $result = WebService::Braintree::MerchantAccount->create($valid_application_params);
-        ok $result->is_success;
-        is($result->merchant_account->status, WebService::Braintree::MerchantAccount::Status::Pending);
-        is($result->merchant_account->master_merchant_account->id, 'sandbox_master_merchant_account');
-    };
+subtest 'Accepts ID' => sub {
+    plan skip_all => 'sandbox_master_merchant_account does not work anymore';
 
+    my $params_with_id = $valid_application_params;
+    my $rand = int(rand(1000));
+    $params_with_id->{'id'} = 'sub_merchant_account_id' . $rand;
+    my $result = WebService::Braintree::MerchantAccount->create($params_with_id);
 
-    subtest 'Accepts ID' => sub {
-        my $params_with_id = $valid_application_params;
-        my $rand = int(rand(1000));
-        $params_with_id->{'id'} = 'sub_merchant_account_id' . $rand;
-        my $result = WebService::Braintree::MerchantAccount->create($params_with_id);
-
-        ok $result->is_success;
-        is($result->merchant_account->status, WebService::Braintree::MerchantAccount::Status::Pending);
-        is($result->merchant_account->master_merchant_account->id, 'sandbox_master_merchant_account');
-        is($result->merchant_account->id, 'sub_merchant_account_id' . $rand);
-    };
-}
+    ok $result->is_success;
+    is($result->merchant_account->status, WebService::Braintree::MerchantAccount::Status::Pending);
+    is($result->merchant_account->master_merchant_account->id, 'sandbox_master_merchant_account');
+    is($result->merchant_account->id, 'sub_merchant_account_id' . $rand);
+};
 
 subtest 'Handles Unsuccessful Result' => sub {
     my $result = WebService::Braintree::MerchantAccount->create({});
@@ -117,8 +127,8 @@ subtest 'Handles Unsuccessful Result' => sub {
     is($result->errors->for('merchant_account')->on('master_merchant_account_id')->[0]->code, $expected_error_code);
 };
 
-TODO: {
-    todo_skip 'Tests consistently fail in sandbox environment', 1;
+subtest 'The broken tests' => sub {
+    plan skip_all => 'sandbox_master_merchant_account does not work anymore';
 
     subtest 'Works with FundingDestination::Bank' => sub {
         my $params = $valid_application_params;
@@ -347,7 +357,7 @@ TODO: {
         ok $result->is_success;
         my $merchant_account = WebService::Braintree::MerchantAccount->find('sub_merchant_account_id' . $rand);
     };
-}
+};
 
 subtest 'Calling find with a nonexistant ID returns a NotFoundError' => sub {
     should_throw('NotFoundError', sub {

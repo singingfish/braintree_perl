@@ -5,6 +5,11 @@ use strictures 1;
 
 use Test::More;
 
+BEGIN {
+    plan skip_all => "sandbox_config.json required for sandbox tests"
+        unless -s 'sandbox_config.json';
+}
+
 use lib qw(lib t/lib);
 
 use WebService::Braintree;
@@ -268,56 +273,59 @@ subtest "amount - range" => sub {
     not_ok grep { $_ eq $sale2->id } @{$search_result->ids};
 };
 
-TODO: {
-    todo_skip "Test consistently fails against sandbox environment ", 6;
+subtest "disbursement_date - range - max and min" => sub {
+    plan skip_all => "'deposittransaction' does not exist";
 
-    subtest "disbursement_date - range - max and min" => sub {
-        my $search_result = WebService::Braintree::Transaction->search(sub {
-            my $search = shift;
-            $search->id->is("deposittransaction");
-            $search->disbursement_date->max(WebService::Braintree::TestHelper::parse_datetime("2014-01-01 00:00:00"));
-            $search->disbursement_date->min(WebService::Braintree::TestHelper::parse_datetime("2012-01-01 00:00:00"));
-        });
+    my $search_result = WebService::Braintree::Transaction->search(sub {
+        my $search = shift;
+        $search->id->is("deposittransaction");
+        $search->disbursement_date->max(WebService::Braintree::TestHelper::parse_datetime("2014-01-01 00:00:00"));
+        $search->disbursement_date->min(WebService::Braintree::TestHelper::parse_datetime("2012-01-01 00:00:00"));
+    });
 
-        ok grep { $_ eq "deposittransaction" } @{$search_result->ids};
-        is scalar @{$search_result->ids}, 1;
-    };
+    ok grep { $_ eq "deposittransaction" } @{$search_result->ids};
+    is scalar @{$search_result->ids}, 1;
+};
 
-    subtest "disbursement_date - range - is" => sub {
-        my $search_result = WebService::Braintree::Transaction->search(sub {
-            my $search = shift;
-            $search->id->is("deposittransaction");
-            $search->disbursement_date->is(WebService::Braintree::TestHelper::parse_datetime("2013-04-10 00:00:00"));
-        });
-    };
+subtest "disbursement_date - range - is" => sub {
+    plan skip_all => "'deposittransaction' does not exist";
 
-    # XXX Where is $search_result defined within this scope??!
-    #ok contains("deposittransaction", $search_result->ids);
-    #is scalar @{$search_result->ids}, 1;
+    my $search_result = WebService::Braintree::Transaction->search(sub {
+        my $search = shift;
+        $search->id->is("deposittransaction");
+        $search->disbursement_date->is(WebService::Braintree::TestHelper::parse_datetime("2013-04-10 00:00:00"));
+    });
 
-    subtest "dispute_date - range - max and min" => sub {
-        my $search_result = WebService::Braintree::Transaction->search(sub {
-            my $search = shift;
-            $search->id->is("disputedtransaction");
-            $search->dispute_date->max(WebService::Braintree::TestHelper::parse_datetime("2014-03-31 00:00:00"));
-            $search->dispute_date->min(WebService::Braintree::TestHelper::parse_datetime("2014-03-01 00:00:00"));
-        });
+    ok contains("deposittransaction", $search_result->ids);
+    is scalar @{$search_result->ids}, 1;
+};
 
-        ok grep { $_ eq "disputedtransaction" } @{$search_result->ids};
-        is scalar @{$search_result->ids}, 1;
-    };
+subtest "dispute_date - range - max and min" => sub {
+    plan skip_all => "'disputedtransaction' does not exist";
 
-    subtest "dispute_date - range - is" => sub {
-        my $search_result = WebService::Braintree::Transaction->search(sub {
-            my $search = shift;
-            $search->id->is("disputedtransaction");
-            $search->dispute_date->is(WebService::Braintree::TestHelper::parse_datetime("2014-03-01 00:00:00"));
-        });
+    my $search_result = WebService::Braintree::Transaction->search(sub {
+        my $search = shift;
+        $search->id->is("disputedtransaction");
+        $search->dispute_date->max(WebService::Braintree::TestHelper::parse_datetime("2014-03-31 00:00:00"));
+        $search->dispute_date->min(WebService::Braintree::TestHelper::parse_datetime("2014-03-01 00:00:00"));
+    });
 
-        ok grep { $_ eq "disputedtransaction" } @{$search_result->ids};
-        is scalar @{$search_result->ids}, 1;
-    };
-}
+    ok grep { $_ eq "disputedtransaction" } @{$search_result->ids};
+    is scalar @{$search_result->ids}, 1;
+};
+
+subtest "dispute_date - range - is" => sub {
+    plan skip_all => "'disputedtransaction' does not exist";
+
+    my $search_result = WebService::Braintree::Transaction->search(sub {
+        my $search = shift;
+        $search->id->is("disputedtransaction");
+        $search->dispute_date->is(WebService::Braintree::TestHelper::parse_datetime("2014-03-01 00:00:00"));
+    });
+
+    ok grep { $_ eq "disputedtransaction" } @{$search_result->ids};
+    is scalar @{$search_result->ids}, 1;
+};
 
 subtest "merchant_account_id" => sub {
     subtest "bogus id" => sub {
