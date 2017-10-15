@@ -31,6 +31,11 @@ fix_for_root_user_in_container="
     -u $(id -u):$(id -g)
 "
 
+wsbt_debug=""
+if [[ -n $WEBSERVICE_BRAINTREE_DEBUG ]]; then
+    wsbt_debug="-e WEBSERVICE_BRAINTREE_DEBUG=1"
+fi
+
 sandbox_config_json=""
 if [[ -s sandbox_config.json ]]; then
     sandbox_config_json="-v $(pwd)/sandbox_config.json:/app/sandbox_config.json"
@@ -68,6 +73,7 @@ elif [[ "$1" == "test" ]]; then
             -v $(pwd)/lib:/app/lib \
             -v $(pwd)/t:/app/t \
             $sandbox_config_json \
+            $wsbt_debug \
             -v $(pwd)/.git:/app/.git \
             ${container}:${version} \
                 $test_command
@@ -84,6 +90,7 @@ elif [[ "$1" == "unit" ]]; then
             -v $(pwd)/lib:/app/lib \
             -v $(pwd)/t:/app/t \
             $sandbox_config_json \
+            $wsbt_debug \
             -v $(pwd)/.git:/app/.git \
             ${container}:${version} \
                 $test_command
@@ -100,6 +107,7 @@ elif [[ "$1" == "integration" ]]; then
             -v $(pwd)/lib:/app/lib \
             -v $(pwd)/t:/app/t \
             $sandbox_config_json \
+            $wsbt_debug \
             -v $(pwd)/.git:/app/.git \
             ${container}:${version} \
                 $test_command
@@ -119,6 +127,7 @@ elif [[ "$1" == "cover" ]]; then
             -v $(pwd)/lib:/app/lib \
             -v $(pwd)/t:/app/t \
             $sandbox_config_json \
+            $wsbt_debug \
             -v $(pwd)/cover_db:/app/cover_db \
             -v $(pwd)/.git:/app/.git \
             ${container}:${version} \
