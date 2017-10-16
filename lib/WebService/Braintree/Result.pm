@@ -76,8 +76,10 @@ patch_in_response_accessors($response_objects);
 
 sub is_success {
     my $self = shift;
-    return 1 unless $self->response->{'api_error_response'};
-    return 0;
+
+    return if $self->response->{'api_error_response'};
+
+    return 1;
 }
 
 sub api_error_response {

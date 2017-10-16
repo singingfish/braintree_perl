@@ -5,11 +5,19 @@ use strictures 1;
 
 use Test::More;
 
+BEGIN {
+    plan skip_all => "sandbox_config.json required for sandbox tests"
+        unless -s 'sandbox_config.json';
+}
+
 use lib qw(lib t/lib);
 
 use WebService::Braintree;
 use WebService::Braintree::Util;
 use WebService::Braintree::TestHelper qw(sandbox);
+
+WebService::Braintree::TestHelper->verify_sandbox
+    || BAIL_OUT 'Sandbox is not prepared properly. Please read xt/README.';
 
 my $customer = WebService::Braintree::Customer->create({
     first_name => "Fred",
@@ -26,13 +34,13 @@ subtest "id (equality)" => sub {
     my $id = generate_unique_integer() . "123";
     my $subscription1 = WebService::Braintree::Subscription->create({
         payment_method_token => $card->credit_card->token,
-        plan_id => "integration_trialless_plan",
+        plan_id => WebService::Braintree::TestHelper->TRIALLESS_PLAN_ID,
         id => "subscription1_$id",
     })->subscription;
 
     my $subscription2 = WebService::Braintree::Subscription->create({
         payment_method_token => $card->credit_card->token,
-        plan_id => "integration_trialless_plan",
+        plan_id => WebService::Braintree::TestHelper->TRIALLESS_PLAN_ID,
         id => "subscription2_$id",
     })->subscription;
 
@@ -41,11 +49,8 @@ subtest "id (equality)" => sub {
         $search->id->is("subscription1_$id");
     });
 
-    TODO: {
-        todo_skip "Tests consistently fail in sandbox environment", 2;
-        ok grep { $_ eq $subscription1->id } @{$search_result->ids};
-        not_ok grep { $_ eq $subscription2->id } @{$search_result->ids};
-    }
+    ok grep { $_ eq $subscription1->id } @{$search_result->ids};
+    not_ok grep { $_ eq $subscription2->id } @{$search_result->ids};
 };
 
 subtest "price (range)" => sub {
@@ -53,14 +58,14 @@ subtest "price (range)" => sub {
 
     my $subscription1 = WebService::Braintree::Subscription->create({
         payment_method_token => $card->credit_card->token,
-        plan_id => "integration_trialless_plan",
+        plan_id => WebService::Braintree::TestHelper->TRIALLESS_PLAN_ID,
         id => "subscription1_$id",
         price => "5.00",
     })->subscription;
 
     my $subscription2 = WebService::Braintree::Subscription->create({
         payment_method_token => $card->credit_card->token,
-        plan_id => "integration_trialless_plan",
+        plan_id => WebService::Braintree::TestHelper->TRIALLESS_PLAN_ID,
         id => "subscription2_$id",
         price => "6.00",
     })->subscription;
@@ -70,11 +75,8 @@ subtest "price (range)" => sub {
         $search->price->max("5.50");
     });
 
-    TODO: {
-        todo_skip "Tests consistently fail in sandbox environment", 2;
-        ok grep { $_ eq $subscription1->id } @{search_result->ids};
-        not_ok grep { $_ eq $subscription2->id } @{search_result->ids};
-    }
+    ok grep { $_ eq $subscription1->id } @{$search_result->ids};
+    not_ok grep { $_ eq $subscription2->id } @{$search_result->ids};
 };
 
 subtest "price (is)"  => sub {
@@ -82,14 +84,14 @@ subtest "price (is)"  => sub {
 
     my $subscription1 = WebService::Braintree::Subscription->create({
         payment_method_token => $card->credit_card->token,
-        plan_id => "integration_trialless_plan",
+        plan_id => WebService::Braintree::TestHelper->TRIALLESS_PLAN_ID,
         id => "subscription1_$id",
         price => "5.00",
     })->subscription;
 
     my $subscription2 = WebService::Braintree::Subscription->create({
         payment_method_token => $card->credit_card->token,
-        plan_id => "integration_trialless_plan",
+        plan_id => WebService::Braintree::TestHelper->TRIALLESS_PLAN_ID,
         id => "subscription2_$id",
         price => "6.00",
     })->subscription;
@@ -99,41 +101,36 @@ subtest "price (is)"  => sub {
         $search->price->is("5.00");
     });
 
-    TODO: {
-        todo_skip "Tests consistently fail in sandbox environment", 2;
-        ok grep { $_ eq $subscription1->id } @{search_result->ids};
-        not_ok grep { $_ eq $subscription2->id } @{search_result->ids};
-    }
+    ok grep { $_ eq $subscription1->id } @{$search_result->ids};
+    not_ok grep { $_ eq $subscription2->id } @{$search_result->ids};
 };
 
 subtest "status (multiple value)" => sub {
+    plan skip_all => "make_subscription_past_due receives a 404";
+
     my $id = generate_unique_integer() . "222";
 
     my $subscription_active = WebService::Braintree::Subscription->create({
         payment_method_token => $card->credit_card->token,
-        plan_id => "integration_trialless_plan",
+        plan_id => WebService::Braintree::TestHelper->TRIALLESS_PLAN_ID,
         id => "subscription1_$id",
     })->subscription;
 
     my $subscription_past_due = WebService::Braintree::Subscription->create({
         payment_method_token => $card->credit_card->token,
-        plan_id => "integration_trialless_plan",
+        plan_id => WebService::Braintree::TestHelper->TRIALLESS_PLAN_ID,
         id => "subscription2_$id",
     })->subscription;
 
-    TODO: {
-        todo_skip "Tests consistently fail in sandbox environment", 2;
+    make_subscription_past_due($subscription_past_due->id);
 
-        make_subscription_past_due($subscription_past_due->id);
+    my $search_result = WebService::Braintree::Subscription->search(sub {
+        my $search = shift;
+        $search->status->is("Active");
+    });
 
-        my $search_result = WebService::Braintree::Subscription->search(sub {
-            my $search = shift;
-            $search->status->is("Active");
-        });
-
-        ok grep { $_ eq $subscription_active->id } @{search_result->ids};
-        not_ok grep { $_ eq $subscription_past_due->id } @{search_result->ids};
-    }
+    ok grep { $_ eq $subscription_active->id } @{$search_result->ids};
+    not_ok grep { $_ eq $subscription_past_due->id } @{$search_result->ids};
 };
 
 subtest "each (single value)" => sub {
@@ -141,22 +138,19 @@ subtest "each (single value)" => sub {
 
     my $subscription_active = WebService::Braintree::Subscription->create({
         payment_method_token => $card->credit_card->token,
-        plan_id => "integration_trialless_plan",
+        plan_id => WebService::Braintree::TestHelper->TRIALLESS_PLAN_ID,
         id => "subscription1_$id",
     })->subscription;
 
     my $search_result = WebService::Braintree::Subscription->search(sub{
-                                                                        shift->id->is("subscription1_$id");
-                                                                    });
+        shift->id->is("subscription1_$id");
+    });
 
-    TODO: {
-        todo_skip "Tests consistently fail in sandbox environment", 1;
-        my @subscriptions = ();
-        $search_result->each(sub {
-            push(@subscriptions, shift);
-        });
-        is_deeply \@subscriptions, [$subscription_active];
-    }
+    my @subscriptions = ();
+    $search_result->each(sub {
+        push(@subscriptions, shift);
+    });
+    is_deeply \@subscriptions, [$subscription_active];
 };
 
 subtest "merchant_account_id" => sub {
@@ -164,7 +158,7 @@ subtest "merchant_account_id" => sub {
         my $id = generate_unique_integer() . "single_value";
         my $subscription_active = WebService::Braintree::Subscription->create({
             payment_method_token => $card->credit_card->token,
-            plan_id => "integration_trialless_plan",
+            plan_id => WebService::Braintree::TestHelper->TRIALLESS_PLAN_ID,
             id => "subscription1_$id",
         })->subscription;
 
@@ -181,52 +175,40 @@ subtest "merchant_account_id" => sub {
         my $id = generate_unique_integer() . "single_value";
         my $subscription_active = WebService::Braintree::Subscription->create({
             payment_method_token => $card->credit_card->token,
-            plan_id => "integration_trialless_plan",
+            plan_id => WebService::Braintree::TestHelper->TRIALLESS_PLAN_ID,
             id => "subscription1_$id",
         })->subscription;
 
-        TODO: {
-            todo_skip "Tests consistently fail in sandbox environment", 1;
+        my $search_result = WebService::Braintree::Subscription->search(sub{
+            my $search = shift;
+            $search->id->is("subscription1_$id");
+            $search->merchant_account_id->in("obvious_junk", $subscription_active->merchant_account_id);
+        });
 
-            my $search_result = WebService::Braintree::Subscription->search(sub{
-                my $search = shift;
-                $search->id->is("subscription1_$id");
-                $search->merchant_account_id->in("obvious_junk", $subscription_active->merchant_account_id);
-            });
-
-            is scalar @{$search_result->ids}, 1;
-        }
+        is scalar @{$search_result->ids}, 1;
     };
 
     subtest "valid id" => sub {
         my $id = generate_unique_integer() . "single_value";
         my $subscription_active = WebService::Braintree::Subscription->create({
             payment_method_token => $card->credit_card->token,
-            plan_id => "integration_trialless_plan",
+            plan_id => WebService::Braintree::TestHelper->TRIALLESS_PLAN_ID,
             id => "subscription1_$id",
         })->subscription;
 
-        TODO: {
-            todo_skip "Tests consistently fail in sandbox environment", 1;
+        my $search_result = WebService::Braintree::Subscription->search(sub{
+            my $search = shift;
+            $search->id->is("subscription1_$id");
+            $search->merchant_account_id->is($subscription_active->merchant_account_id);
+        });
 
-            my $search_result = WebService::Braintree::Subscription->search(sub{
-                my $search = shift;
-                $search->id->is("subscription1_$id");
-                $search->merchant_account_id->is($subscription_active->merchant_account_id);
-            });
-
-            is scalar @{$search_result->ids}, 1;
-        }
+        is scalar @{$search_result->ids}, 1;
     };
 };
 
-TODO: {
-    todo_skip "Tests consistently fail in sandbox environment", 1;
-
-    subtest "all" => sub {
-        my $subscriptions = WebService::Braintree::Subscription->all;
-        ok scalar @{$subscriptions->ids} > 1;
-    };
-}
+subtest "all" => sub {
+    my $subscriptions = WebService::Braintree::Subscription->all;
+    ok scalar @{$subscriptions->ids} > 1;
+};
 
 done_testing();

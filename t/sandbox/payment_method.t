@@ -5,6 +5,11 @@ use strictures 1;
 
 use Test::More;
 
+BEGIN {
+    plan skip_all => "sandbox_config.json required for sandbox tests"
+        unless -s 'sandbox_config.json';
+}
+
 use lib qw(lib t/lib);
 
 use WebService::Braintree;
@@ -133,36 +138,33 @@ subtest "Create" => sub {
         ok $result->is_success;
     };
 
-    TODO: {
-        todo_skip "Tests consistently fail in sandbox environment", 1;
-
-        subtest "it respects verify_card and verification_merchant_account_id when included outside of the nonce" => sub {
-            my $nonce = WebService::Braintree::TestHelper::nonce_for_new_payment_method({
-                credit_card => {
-                    number => "4000111111111115",
-                    expiration_month => "11",
-                    expiration_year => "2009",
-                },
-            });
+    subtest "it respects verify_card and verification_merchant_account_id when included outside of the nonce" => sub {
+        plan skip_all => "merchant_account 'sandbox_credit_card_non_default' broken";
+        my $nonce = WebService::Braintree::TestHelper::nonce_for_new_payment_method({
+            credit_card => {
+                number => "4000111111111115",
+                expiration_month => "11",
+                expiration_year => "2009",
+            },
+        });
 
 
-            my $customer = WebService::Braintree::Customer->create()->customer;
-            my $result = WebService::Braintree::PaymentMethod->create({
-                payment_method_nonce => $nonce,
-                customer_id => $customer->id,
-                options => {
-                    verify_card => "true",
-                    verification_merchant_account_id => WebService::Braintree::TestHelper::NON_DEFAULT_MERCHANT_ACCOUNT_ID,
-                },
-            });
+        my $customer = WebService::Braintree::Customer->create()->customer;
+        my $result = WebService::Braintree::PaymentMethod->create({
+            payment_method_nonce => $nonce,
+            customer_id => $customer->id,
+            options => {
+                verify_card => "true",
+                verification_merchant_account_id => WebService::Braintree::TestHelper::NON_DEFAULT_MERCHANT_ACCOUNT_ID,
+            },
+        });
 
-            ok !$result->is_success;
-            ok($result->credit_card_verification->status eq WebService::Braintree::Transaction::Status::ProcessorDeclined);
-            is($result->credit_card_verification->processor_response_code, "2000");
-            is($result->credit_card_verification->processor_response_text, "Do Not Honor");
-            ok($result->credit_card_verification->merchant_account_id eq WebService::Braintree::TestHelper::NON_DEFAULT_MERCHANT_ACCOUNT_ID);
-        };
-    }
+        ok !$result->is_success;
+        ok($result->credit_card_verification->status eq WebService::Braintree::Transaction::Status::ProcessorDeclined);
+        is($result->credit_card_verification->processor_response_code, "2000");
+        is($result->credit_card_verification->processor_response_text, "Do Not Honor");
+        ok($result->credit_card_verification->merchant_account_id eq WebService::Braintree::TestHelper::NON_DEFAULT_MERCHANT_ACCOUNT_ID);
+    };
 
     subtest "it respects fail_on_duplicate_payment_method when included outside of the nonce" => sub {
         my $customer = WebService::Braintree::Customer->create()->customer;

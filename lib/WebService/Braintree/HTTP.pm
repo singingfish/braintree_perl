@@ -1,8 +1,11 @@
+# vim: sw=4 ts=4 ft=perl
+
 package WebService::Braintree::HTTP;
 
 use 5.010_001;
 use strictures 1;
 
+use Data::Dumper;
 use HTTP::Request;
 use LWP::UserAgent;
 
@@ -49,7 +52,10 @@ sub make_request {
     $request->header("User-Agent" => "Braintree Perl Module " . CLIENT_VERSION );
 
     my $agent = LWP::UserAgent->new;
+
+    warn Dumper $request if $ENV{WEBSERVICE_BRAINTREE_DEBUG};
     my $response = $agent->request($request);
+    warn Dumper $response->content if $ENV{WEBSERVICE_BRAINTREE_DEBUG};
 
     $self->check_response_code($response->code);
 

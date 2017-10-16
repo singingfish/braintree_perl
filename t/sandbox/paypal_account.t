@@ -5,6 +5,11 @@ use strictures 1;
 
 use Test::More;
 
+BEGIN {
+    plan skip_all => "sandbox_config.json required for sandbox tests"
+        unless -s 'sandbox_config.json';
+}
+
 use lib qw(lib t/lib);
 
 use Data::GUID;
@@ -15,6 +20,9 @@ use WebService::Braintree::Test;
 use WebService::Braintree::Xml;
 
 require 't/lib/WebService/Braintree/Nonce.pm';
+
+WebService::Braintree::TestHelper->verify_sandbox
+    || BAIL_OUT 'Sandbox is not prepared properly. Please read xt/README.';
 
 subtest "Find" => sub {
     subtest "it returns paypal accounts by token" => sub {
@@ -129,40 +137,36 @@ subtest "Update" => sub {
     };
 };
 
-TODO: {
-    todo_skip "Tests consistently fail in sandbox environment", 1;
+subtest "it returns subscriptions associated with a paypal account" => sub {
+    my $customer = WebService::Braintree::Customer->create()->customer;
+    my $payment_method_token = "paypal-account-" . int(rand(10000));
+    my $nonce = WebService::Braintree::TestHelper::nonce_for_paypal_account({
+        consent_code => "consent-code",
+        token => $payment_method_token,
+    });
 
-    subtest "it returns subscriptions associated with a paypal account" => sub {
-        my $customer = WebService::Braintree::Customer->create()->customer;
-        my $payment_method_token = "paypal-account-" . int(rand(10000));
-        my $nonce = WebService::Braintree::TestHelper::nonce_for_paypal_account({
-            consent_code => "consent-code",
-            token => $payment_method_token,
-        });
+    my $result = WebService::Braintree::PaymentMethod->create({
+        payment_method_nonce => $nonce,
+        customer_id => $customer->id,
+    });
 
-        my $result = WebService::Braintree::PaymentMethod->create({
-            payment_method_nonce => $nonce,
-            customer_id => $customer->id,
-        });
+    ok $result->is_success;
 
-        ok $result->is_success;
+    my $token = $result->payment_method->token;
+    my $subscription1 = WebService::Braintree::Subscription->create({
+        payment_method_token => $token,
+        plan_id => WebService::Braintree::TestHelper::TRIALLESS_PLAN_ID,
+    })->subscription;
 
-        my $token = $result->payment_method->token;
-        my $subscription1 = WebService::Braintree::Subscription->create({
-            payment_method_token => $token,
-            plan_id => WebService::Braintree::TestHelper::TRIALLESS_PLAN_ID,
-        })->subscription;
+    my $subscription2 = WebService::Braintree::Subscription->create({
+        payment_method_token => $token,
+        plan_id => WebService::Braintree::TestHelper::TRIALLESS_PLAN_ID,
+    })->subscription;
 
-        my $subscription2 = WebService::Braintree::Subscription->create({
-            payment_method_token => $token,
-            plan_id => WebService::Braintree::TestHelper::TRIALLESS_PLAN_ID,
-        })->subscription;
-
-        my $paypal_account = WebService::Braintree::PayPalAccount->find($token);
-        my @subscription_ids = map { $_->id; } @{$paypal_account->subscriptions};
-        ok (grep { $subscription1->id eq $_ } @subscription_ids);
-        ok (grep { $subscription2->id eq $_ } @subscription_ids);
-    };
-}
+    my $paypal_account = WebService::Braintree::PayPalAccount->find($token);
+    my @subscription_ids = map { $_->id; } @{$paypal_account->subscriptions};
+    ok (grep { $subscription1->id eq $_ } @subscription_ids);
+    ok (grep { $subscription2->id eq $_ } @subscription_ids);
+};
 
 done_testing();

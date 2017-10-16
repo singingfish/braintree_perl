@@ -16,6 +16,7 @@ use WebService::Braintree::MerchantAccount;
 use WebService::Braintree::PartnerMerchant;
 use WebService::Braintree::PaymentMethod;
 use WebService::Braintree::PayPalAccount;
+use WebService::Braintree::Plan;
 use WebService::Braintree::PayPalDetails;
 use WebService::Braintree::ResourceCollection;
 use WebService::Braintree::SettlementBatchSummary;
@@ -128,6 +129,10 @@ Create, update, delete, and find payment methods.
 =head3 L<WebService::Braintree::PayPalAccount>
 
 Find and update PayPal accounts.
+
+=head3 L<WebService::Braintree::Plan>
+
+List all subscription plans.
 
 =head3 L<WebService::Braintree::SettlementBatchSummary>
 

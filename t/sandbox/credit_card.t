@@ -5,6 +5,11 @@ use strictures 1;
 
 use Test::More;
 
+BEGIN {
+    plan skip_all => "sandbox_config.json required for sandbox tests"
+        unless -s 'sandbox_config.json';
+}
+
 use lib qw(lib t/lib);
 
 use JSON;
@@ -369,7 +374,6 @@ subtest "card with negative card type indentifiers" => sub {
     is $result->credit_card->commercial, WebService::Braintree::CreditCard::Commercial::No;
     is $result->credit_card->durbin_regulated, WebService::Braintree::CreditCard::DurbinRegulated::No;
 };
-
 
 subtest "card without card type identifiers" => sub {
     my $credit_card_params = {

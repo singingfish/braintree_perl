@@ -5,6 +5,11 @@ use strictures 1;
 
 use Test::More;
 
+BEGIN {
+    plan skip_all => "sandbox_config.json required for sandbox tests"
+        unless -s 'sandbox_config.json';
+}
+
 use lib qw(lib t/lib);
 
 use WebService::Braintree;
@@ -136,10 +141,6 @@ subtest "Create:S2S" => sub {
         });
 
         ok $result->is_success;
-    };
-
-    subtest "with invalid attributes" => sub {
-        plan skip_all => 'pending';
     };
 };
 
