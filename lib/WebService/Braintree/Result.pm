@@ -16,11 +16,16 @@ use WebService::Braintree::Nonce;
 my $meta = __PACKAGE__->meta;
 
 my $response_objects = {
+    add_on => "WebService::Braintree::AddOn",
     address => "WebService::Braintree::Address",
-    apple_pay => "WebService::Braintree::ApplePayCard",
+    apple_pay => "WebService::Braintree::ApplePay",
     apple_pay_card => "WebService::Braintree::ApplePayCard",
     credit_card => "WebService::Braintree::CreditCard",
     customer => "WebService::Braintree::Customer",
+    dispute => "WebService::Braintree::Dispute",
+    discount => "WebService::Braintree::Discount",
+    evidence => "WebService::Braintree::Dispute::Evidence",
+    merchant => "WebService::Braintree::Merchant",
     merchant_account => "WebService::Braintree::MerchantAccount",
     payment_method => {
         credit_card => "WebService::Braintree::CreditCard",

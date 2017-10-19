@@ -723,7 +723,7 @@ subtest "Clone transaction and submit for settlement" => sub {
 };
 
 subtest "Clone transaction with validation error" => sub {
-    plan skip_all => 'This returns unauthorized (unknown why)';
+    plan skip_all => 'Transaction->credit() returns unauthorized';
 
     my $credit_result = WebService::Braintree::Transaction->credit({
         amount => amount(40, 60),
@@ -973,6 +973,105 @@ subtest "paypal" => sub {
         is($transaction->status, WebService::Braintree::Transaction::Status::SettlementDeclined);
         is($transaction->processor_settlement_response_code, "4001");
         is($transaction->processor_settlement_response_text, "Settlement Declined");
+    };
+};
+
+subtest update_details => sub {
+    plan skip_all => 'update_details() returns unauthorized for some reason';
+
+    my $amount = amount(40, 60);
+    my $txn_result = WebService::Braintree::Transaction->sale({
+        %$params,
+        amount => $amount,
+        order_id => '123',
+        descriptor => {
+            name => '123*123456789012345678',
+            phone => '3334445555',
+            url => 'ebay.com',
+        },
+    });
+    validate_result($txn_result) or return;
+
+    subtest 'when status is NOT submitted_for_settlement' => sub {
+        my $result = WebService::Braintree::Transaction->update_details(
+            $txn_result->transaction->id, {
+                amount => $amount - 1,
+                order_id => '456',
+                descriptor => {
+                    name => '456*123456789012345678',
+                    phone => '3334445555',
+                    url => 'ebay.com',
+                },
+            },
+        );
+        invalidate_result($result) or return;
+        is($result->errors->for('transaction')->on('base')->[0]->code, WebService::Braintree::ErrorCodes::Transaction::CannotUpdateTransactionDetailsNotSubmittedForSettlement);
+    };
+
+    subtest 'when status is submitted_for_settlement' => sub {
+        my $submit = WebService::Braintree::Transaction->submit_for_settlement($txn_result->transaction->id);
+        validate_result($submit) or return;
+        settle($txn_result->transaction->id);
+
+        subtest 'successfully update details' => sub {
+            my $result = WebService::Braintree::Transaction->update_details(
+                $txn_result->transaction->id, {
+                    amount => $amount - 1,
+                    order_id => '456',
+                    descriptor => {
+                        name => '456*123456789012345678',
+                        phone => '3334445555',
+                        url => 'ebay.com',
+                    },
+                },
+            );
+            validate_result($result) or return;
+
+            my $txn = $result->transaction;
+            cmp_ok($txn->amount, '==', $amount - 1);
+            is($txn->order_id, '456');
+            is($txn->descriptor->name, '456*123456789012345678');
+        };
+
+        subtest 'raises an error when a key is invalid' => sub {
+        };
+
+        subtest 'Raises an error' => sub {
+            subtest 'when settlement amount is invalid' => sub {
+            };
+
+            subtest 'when the descriptor is invalid' => sub {
+            };
+
+            subtest 'when the order_id is invalid' => sub {
+            };
+
+            subtest 'on an unsupported processor' => sub {
+            };
+        };
+    };
+};
+
+subtest submit_for_partial_settlement => sub {
+    plan skip_all => 'submit_for_partial_settlement() returns unauthorized for some reason';
+
+    subtest "returns an error with an order_id that's too long" => sub {
+        my $amount = amount(40, 60);
+        my $txn_result = WebService::Braintree::Transaction->sale({
+            %$params,
+            amount => $amount,
+            merchant_account_id => 'sandbox_credit_card',
+        });
+        validate_result($txn_result) or return;
+
+        my $result = WebService::Braintree::Transaction->submit_for_partial_settlement(
+            $txn_result->transaction->id,
+            20, {
+                order_id => '1'x256,
+            },
+        );
+        invalidate_result($result) or return;
+        is($result->errors->for('transaction')->on('order_id')->[0]->code, WebService::Braintree::ErrorCodes::Transaction::OrderIdIsTooLong);
     };
 };
 

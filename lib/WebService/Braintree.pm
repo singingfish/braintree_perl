@@ -4,21 +4,26 @@ use 5.010_001;
 use strictures 1;
 
 use WebService::Braintree::Address;
+use WebService::Braintree::AddOn;
 use WebService::Braintree::AdvancedSearchFields;
 use WebService::Braintree::AdvancedSearchNodes;
+use WebService::Braintree::ApplePay;
 use WebService::Braintree::ApplePayCard;
 use WebService::Braintree::CreditCard;
 use WebService::Braintree::Customer;
 use WebService::Braintree::CustomerSearch;
 use WebService::Braintree::DisbursementDetails;
+use WebService::Braintree::Discount;
 use WebService::Braintree::Dispute;
+use WebService::Braintree::DisputeSearch;
+use WebService::Braintree::ErrorCodes;
+use WebService::Braintree::Merchant;
 use WebService::Braintree::MerchantAccount;
 use WebService::Braintree::PartnerMerchant;
 use WebService::Braintree::PaymentMethod;
 use WebService::Braintree::PayPalAccount;
 use WebService::Braintree::Plan;
 use WebService::Braintree::PayPalDetails;
-use WebService::Braintree::ResourceCollection;
 use WebService::Braintree::SettlementBatchSummary;
 use WebService::Braintree::Subscription;
 use WebService::Braintree::SubscriptionSearch;
@@ -28,6 +33,7 @@ use WebService::Braintree::Disbursement;
 use WebService::Braintree::TransparentRedirect;
 use WebService::Braintree::WebhookNotification;
 use WebService::Braintree::WebhookTesting;
+
 use WebService::Braintree::Configuration;
 
 =head1 NAME
@@ -97,12 +103,20 @@ This token is created with L<WebService::Braintree::ClientToken/generate>.
 
 =head2 INTERFACE
 
-There are twelve classes that you will interface with.  Please see their
+These are the classes that you will interface with.  Please see their
 respective documentation for more detail on how to use them.
+
+=head3 L<WebService::Braintree::AddOn>
+
+List all plan add-ons.
 
 =head3 L<WebService::Braintree::Address>
 
 Create, update, delete, and find addresses.
+
+=head3 L<WebService::Braintree::ApplePay>
+
+List, register, and unregister ApplePay domains.
 
 =head3 L<WebService::Braintree::ClientToken>
 
@@ -119,6 +133,18 @@ Find and list credit card verifications.
 =head3 L<WebService::Braintree::Customer>
 
 Create, update, delete, and find customers.
+
+=head3 L<WebService::Braintree::Discount>
+
+List all plan discounts.
+
+=head3 L<WebService::Braintree::Dispute>
+
+Accept, and find disputes.
+
+=head3 L<WebService::Braintree::Merchant>
+
+Provision merchants from "raw ApplePay".
 
 =head3 L<WebService::Braintree::MerchantAccount>
 

@@ -21,54 +21,54 @@ Braintree API. These classes follow a specific form:
 
 | Invocable | Method | Deprecated ? | In Perl? | Equivalent? |
 | ---       | ---    | ---      | ---         | ---         |
-| AddOn | all | | No | |
+| AddOn | all | | Yes | Yes |
 | Address | create | | Yes | No |
 | Address | delete | | Yes | No |
 | Address | find | | Yes | No |
 | Address | update | | Yes | No |
-| ApplePay | register\_domain | | No | |
-| ApplePay | unregister\_domain | | No | |
-| ApplePay | registered\_domains | | No | |
+| ApplePay | register\_domain | | Yes | |
+| ApplePay | unregister\_domain | | Yes | |
+| ApplePay | registered\_domains | | Yes | |
 | ClientToken | generate | | Yes | No |
 | CreditCard | create | | Yes | No |
 | CreditCard | create\_credit\_card\_url | Yes | No | |
 | CreditCard | create\_from\_transparent\_redirect | Yes | No | |
-| CreditCard | credit | | No | |
+| CreditCard | credit | | Yes | |
 | CreditCard | delete | | Yes | Yes |
-| CreditCard | expired | | No | |
-| CreditCard | expiring\_between | | No | |
+| CreditCard | expired | | Yes | expired\_cards() in Perl |
+| CreditCard | expiring\_between | | Yes | |
 | CreditCard | find | | Yes | |
 | CreditCard | from\_nonce | | Yes | |
 | CreditCard | grant | Yes | No | |
-| CreditCard | sale | | No | |
+| CreditCard | sale | | Yes | |
 | CreditCard | update | | Yes | |
 | CreditCard | update\_from\_transparent\_redirect | Yes | No | |
 | CreditCard | update\_credit\_card\_url | Yes | No | |
 | CreditCardVerification | all | ??? | Yes | |
 | CreditCardVerification | find | | Yes | |
 | CreditCardVerification | search | | Yes | |
-| CreditCardVerification | create | | No | |
+| CreditCardVerification | create | | Yes | |
 | Customer | all | | Yes | |
 | Customer | create | | Yes | |
 | Customer | create\_customer\_url | Yes | No | |
 | Customer | create\_from\_transparent\_redirect | Yes | No | |
-| Customer | credit | | No | |
+| Customer | credit | | Yes | |
 | Customer | delete | | Yes | |
 | Customer | find | | Yes | |
-| Customer | sale | | No | |
+| Customer | sale | | Yes | |
 | Customer | search | | Yes | |
-| Customer | transactions | | No | |
+| Customer | transactions | | Yes | |
 | Customer | update | | Yes | |
 | Customer | update\_customer\_url | Yes | No | |
 | Customer | update\_from\_transparent\_redirect | Yes | No | |
-| Discount | all | | No | |
-| Dispute | accept | | No | |
+| Discount | all | | Yes | Yes |
+| Dispute | accept | | Yes | |
 | Dispute | add\_file\_evidence | | No | |
-| Dispute | add\_text\_evidence | | No | |
-| Dispute | finalize | | No | |
-| Dispute | find | | No | |
-| Dispute | remove\_evidence | | No | |
-| Dispute | search | | No | |
+| Dispute | add\_text\_evidence | | Yes | |
+| Dispute | finalize | | Yes | |
+| Dispute | find | | Yes | |
+| Dispute | remove\_evidence | | Yes | |
+| Dispute | search | | Yes | |
 | DocumentUpload | create | | No | |
 | EuropeBankAccount | find | | No | |
 | IdealPayment | sale | | No | |
@@ -82,8 +82,8 @@ Braintree API. These classes follow a specific form:
 | PaymentMethod | find | | Yes | |
 | PaymentMethod | update | | Yes | |
 | PaymentMethod | delete | | Yes | |
-| PaymentMethod | grant | | No | |
-| PaymentMethod | revoke | | No | |
+| PaymentMethod | grant | | Yes | |
+| PaymentMethod | revoke | | Yes | |
 | PaymentMethodNonce | create | | Yes | |
 | PaymentMethodNonce | find | | Yes | |
 | PayPalAccount | create | | No | |
@@ -101,7 +101,7 @@ Braintree API. These classes follow a specific form:
 | Subscription | search | | Yes | |
 | Subscription | update | | Yes | |
 | Transaction | all | ??? | Yes | |
-| Transaction | create | | No | |
+| Transaction | create | | Yes | |
 | Transaction | cancel\_release | | Yes | |
 | Transaction | clone\_transaction | | Yes | |
 | Transaction | create\_from\_transparent\_redirect | Yes | No | |
@@ -114,8 +114,8 @@ Braintree API. These classes follow a specific form:
 | Transaction | search | | Yes | |
 | Transaction | release\_from\_escrow | | Yes | |
 | Transaction | submit\_for\_settlement | | Yes | |
-| Transaction | update\_details | | No | |
-| Transaction | submit\_for\_partial\_settlement | | No | |
+| Transaction | update\_details | | Yes | |
+| Transaction | submit\_for\_partial\_settlement | | Yes | |
 | Transaction | void | | Yes | |
 | TransparentRedirect | confirm | | Yes | |
 | TransparentRedirect | create\_credit\_card\_data | | Yes | |

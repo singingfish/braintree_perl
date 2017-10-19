@@ -9,6 +9,7 @@ use WebService::Braintree::ErrorCodes::CreditCard;
 use WebService::Braintree::ErrorCodes::CreditCard::Options;
 use WebService::Braintree::ErrorCodes::Customer;
 use WebService::Braintree::ErrorCodes::Descriptor;
+use WebService::Braintree::ErrorCodes::Dispute;
 use WebService::Braintree::ErrorCodes::MerchantAccount;
 use WebService::Braintree::ErrorCodes::MerchantAccount::ApplicantDetails;
 use WebService::Braintree::ErrorCodes::MerchantAccount::ApplicantDetails::Address;

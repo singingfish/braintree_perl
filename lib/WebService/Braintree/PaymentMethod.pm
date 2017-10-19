@@ -52,6 +52,28 @@ sub delete {
     $class->gateway->payment_method->delete($token);
 }
 
+=head2 grant()
+
+This takes a token and revokes the corresponding payment method (if found).
+
+=cut
+
+sub grant {
+    my ($class, $token, $params) = @_;
+    $class->gateway->payment_method->grant($token, ($params//{}));
+}
+
+=head2 revoke()
+
+This takes a token and revokes the corresponding payment method (if found).
+
+=cut
+
+sub revokes {
+    my ($class, $token) = @_;
+    $class->gateway->payment_method->revokes($token);
+}
+
 =head2 find()
 
 This takes a token and returns the payment method (if it exists).

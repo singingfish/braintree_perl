@@ -41,6 +41,7 @@ our @EXPORT = qw(
     validate_result invalidate_result
     nonce_for_new_payment_method
     credit_card cc_number cc_last4 cc_bin cc_masked
+    settle
 );
 our @EXPORT_OK = qw(
 );
@@ -72,6 +73,30 @@ our @EXPORT_OK = qw(
 # The sandbox must have specific items in it with specific values.
 sub verify_sandbox {
     subtest verify_sandbox => sub {
+        my %required_addons = (
+            increase_30 => superhashof(bless {
+                id => 'increase_30',
+                amount => '30.00',
+                never_expires => 1,
+            }, 'WebService::Braintree::AddOn'),
+        );
+        my %addons = map {
+            $_->id => $_
+        } @{WebService::Braintree::AddOn->all};
+        return unless cmp_deeply(\%addons, superhashof(\%required_addons), 'Validate addons');
+
+        my %required_discounts = (
+            discount_15 => superhashof(bless {
+                id => 'discount_15',
+                amount => '15.00',
+                never_expires => 1,
+            }, 'WebService::Braintree::Discount'),
+        );
+        my %discounts = map {
+            $_->id => $_
+        } @{WebService::Braintree::Discount->all};
+        return unless cmp_deeply(\%discounts, superhashof(\%required_discounts), 'Validate discounts');
+
         my %required_plans = (
             integration_trialless_plan => superhashof(bless {
                 price => '12.34',
@@ -128,9 +153,12 @@ sub verify_sandbox {
                 sub_merchant_account => 0,
             }, 'WebService::Braintree::MerchantAccount'),
         );
-        my %merchants = map {
-            $_->id => $_
-        } @{WebService::Braintree::MerchantAccount->all};
+        # Change to ->each
+        my %merchants;
+        WebService::Braintree::MerchantAccount->all->each(sub {
+            my $merchant = shift;
+            $merchants{$merchant->id} = $merchant;
+        });
 
         return unless cmp_deeply(\%merchants, superhashof(\%required_merchants), 'Validate merchants');
 
@@ -202,6 +230,7 @@ sub not_ok {
 
 sub should_throw {
     my($exception, $block, $message) = @_;
+    $message //= '';
     try {
         $block->();
         fail($message . " [Should have thrown $exception]");
@@ -270,6 +299,8 @@ sub settlement_pending {
 
 sub create_settled_transaction {
     my ($params) = shift;
+
+    $params->{amount} //= amount(40, 60);
 
     my $sale = WebService::Braintree::Transaction->sale($params);
     die Dumper($sale) unless $sale->is_success;

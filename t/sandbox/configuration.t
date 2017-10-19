@@ -25,7 +25,7 @@ subtest "default integration configuration" => sub {
     });
     validate_result($result) or return;
 
-    is $result->transaction->amount, $amount;
+    cmp_ok $result->transaction->amount, '==', $amount;
 };
 
 subtest "configuration two" => sub {

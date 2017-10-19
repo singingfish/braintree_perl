@@ -367,7 +367,7 @@ subtest 'Error cases' => sub {
                 my $search = shift;
                 $search->amount->is("-5.50");
             });
-        }
+        }, 'should throw DownForMaintenanceError';
     };
 
     subtest "credit_card_card_type - multiple value field - passing invalid credit_card_card_type" => sub {
