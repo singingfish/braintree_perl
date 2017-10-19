@@ -40,7 +40,7 @@ sub create {
     $class->gateway->credit_card->create($params);
 }
 
-=head2 create()
+=head2 from_nonce()
 
 This takes a nonce and returns the credit card (if it exists).
 
