@@ -1,3 +1,5 @@
+# vim: sw=4 ts=4 ft=perl
+
 package WebService::Braintree::ValidationError;
 
 =head1 NAME
@@ -20,7 +22,7 @@ This class is B<NOT> an interface, so it does B<NOT> have any class methods.
 
 =head2 attribute()
 
-This is the B<TODO>
+This is the attribute which has the validation error.
 
 =cut
 
@@ -28,7 +30,7 @@ has 'attribute' => (is => 'ro');
 
 =head2 code()
 
-This is the B<TODO>
+This is the validation error code returned from Braintree.
 
 =cut
 
@@ -36,7 +38,7 @@ has 'code' => (is => 'ro');
 
 =head2 message()
 
-This is the B<TODO>
+This is the explanatory message provided by Braintree for this error.
 
 =cut
 

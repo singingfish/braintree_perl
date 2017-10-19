@@ -1,3 +1,5 @@
+# vim: sw=4 ts=4 ft=perl
+
 package WebService::Braintree::SettlementBatchSummary;
 
 use 5.010_001;
@@ -18,7 +20,8 @@ TODO
 =cut
 
 use Moose;
-extends 'WebService::Braintree::ResultObject';
+
+with 'WebService::Braintree::Role::Interface';
 
 =head1 CLASS METHODS
 
@@ -32,21 +35,6 @@ generates a settlement batch summary.
 sub generate {
     my($class, $settlement_date, $group_by_custom_field) = @_;
     $class->gateway->settlement_batch_summary->generate($settlement_date, $group_by_custom_field);
-}
-
-sub gateway {
-    return WebService::Braintree->configuration->gateway;
-}
-
-=head1 OBJECT METHODS
-
-UNKNOWN
-
-=cut
-
-sub BUILD {
-    my ($self, $attributes) = @_;
-    $self->set_attributes_from_hash($self, $attributes);
 }
 
 __PACKAGE__->meta->make_immutable;

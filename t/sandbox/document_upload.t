@@ -45,6 +45,7 @@ subtest create => sub {
         validate_result($response) or return;
 
         my $upload = $response->document_upload;
+        isa_ok($upload, 'WebService::Braintree::_::DocumentUpload');
         ok($upload->id);
         is($upload->content_type, 'image/png');
         is($upload->kind, $kind);

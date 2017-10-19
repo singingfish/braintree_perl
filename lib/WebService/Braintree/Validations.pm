@@ -1,3 +1,5 @@
+# vim: sw=4 ts=4 ft=perl
+
 package WebService::Braintree::Validations;
 
 use 5.010_001;
@@ -163,7 +165,8 @@ sub transaction_signature{
         subscription_id => ".",
         venmo_sdk_payment_method_code => ".",
         service_fee_amount => ".",
-        three_d_secure_token => "."
+        three_d_secure_token => ".",
+        line_items => '.',
     };
 }
 

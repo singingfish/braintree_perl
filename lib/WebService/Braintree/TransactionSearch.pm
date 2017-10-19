@@ -1,10 +1,14 @@
+# vim: sw=4 ts=4 ft=perl
+
 package WebService::Braintree::TransactionSearch;
 
 use 5.010_001;
 use strictures 1;
 
 use Moose;
-use WebService::Braintree::AdvancedSearch;
+extends 'WebService::Braintree::AdvancedSearch';
+
+use WebService::Braintree::Transaction::Status;
 
 my $field = WebService::Braintree::AdvancedSearchFields->new(metaclass => __PACKAGE__->meta);
 
@@ -72,10 +76,6 @@ $field->range("processor_declined_at");
 $field->range("settled_at");
 $field->range("submitted_for_settlement_at");
 $field->range("voided_at");
-
-sub to_hash {
-    WebService::Braintree::AdvancedSearch->search_to_hash(shift);
-}
 
 __PACKAGE__->meta->make_immutable;
 

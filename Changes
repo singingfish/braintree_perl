@@ -1,4 +1,11 @@
 Revision history for WebService-Braintree
+0.XX
+        Added new interfaces:
+            TransactionLineItem
+                ->find_all()
+        Added a ton of missing object methods from the Ruby SDK
+        Added a TON of documentation around ... well, everything.
+
 1.1    2018-02-24
         Added new interfaces:
             DocumentUpload

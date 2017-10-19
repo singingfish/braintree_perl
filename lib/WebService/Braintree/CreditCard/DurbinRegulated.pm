@@ -1,3 +1,5 @@
+# vim: sw=4 ts=4 ft=perl
+
 package WebService::Braintree::CreditCard::DurbinRegulated;
 
 use 5.010_001;

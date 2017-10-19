@@ -1,18 +1,37 @@
+# vim: sw=4 ts=4 ft=perl
+
 package WebService::Braintree::PaginatedCollection;
 
 use 5.010_001;
 use strictures 1;
 
+=head1 NAME
+
+WebService::Braintree::ResourceCollection
+
+=head1 PURPOSE
+
+This class provides a way of iterating over a collection of resources. It will
+lazily retrieve the objects from Braintree.
+
+This class will only be created as part of a L<response|WebService::Braintree::Result> or L<error response|WebService::Braintree::ErrorResult>.
+
+=cut
+
 use Moose;
-extends "WebService::Braintree::ResultObject";
+
+=head1 METHODS
+
+=cut
 
 has 'callback' => (is => 'rw');
 
-sub init {
-    my ($self, $callback) = @_;
-    $self->callback($callback);
-    return $self;
-}
+=head2 each($block)
+
+This takes a subroutine and executes that subroutine for each element in this
+collection.
+
+=cut
 
 sub each {
     my ($self, $block) = @_;

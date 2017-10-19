@@ -223,6 +223,7 @@ subtest 'file evidence (add and find)' => sub {
 
 subtest search => sub {
     subtest 'Not found' => sub {
+        plan skip_all => "This is inconsistently returning 500-ServerError";
         my $collection = perform_search(Dispute => {
             id => 'non_existent_dispute',
         });

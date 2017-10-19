@@ -1,3 +1,5 @@
+# vim: sw=4 ts=4 ft=perl
+
 package WebService::Braintree::Plan;
 
 use 5.010_001;
@@ -14,7 +16,8 @@ This class lists all subscription plans.
 =cut
 
 use Moose;
-extends "WebService::Braintree::ResultObject";
+
+with 'WebService::Braintree::Role::Interface';
 
 =head2 all()
 
@@ -25,16 +28,6 @@ This returns all the plans.
 sub all {
     my $class = shift;
     $class->gateway->plan->all;
-}
-
-sub gateway {
-    return WebService::Braintree->configuration->gateway;
-}
-
-sub BUILD {
-    my ($self, $attributes) = @_;
-
-    $self->set_attributes_from_hash($self, $attributes);
 }
 
 __PACKAGE__->meta->make_immutable;

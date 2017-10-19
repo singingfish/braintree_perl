@@ -1,3 +1,5 @@
+# vim: sw=4 ts=4 ft=perl
+
 package WebService::Braintree::Subscription;
 
 use 5.010_001;
@@ -18,7 +20,8 @@ use WebService::Braintree::SubscriptionGateway;
 use WebService::Braintree::Subscription::Status;
 
 use Moose;
-extends 'WebService::Braintree::ResultObject';
+
+with 'WebService::Braintree::Role::Interface';
 
 =head1 CLASS METHODS
 
@@ -104,31 +107,6 @@ This returns all the subscriptions.
 sub all {
     my $class = shift;
     $class->gateway->subscription->all;
-}
-
-sub gateway {
-    return WebService::Braintree->configuration->gateway;
-}
-
-=head1 OBJECT METHODS
-
-In addition to the methods provided by the keys returned from Braintree, this
-class provides the following methods:
-
-=head2 transactions()
-
-This returns a list of all transactions that have been made against this
-subscription. This is a list of L<WebService::Braintree::Transaction> objects. 
-
-=cut
-
-sub BUILD {
-    my ($self, $attributes) = @_;
-    my $sub_objects = {
-        transactions => 'WebService::Braintree::Transaction',
-    };
-    $self->setup_sub_objects($self, $attributes, $sub_objects);
-    $self->set_attributes_from_hash($self, $attributes);
 }
 
 __PACKAGE__->meta->make_immutable;

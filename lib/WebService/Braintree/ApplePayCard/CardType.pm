@@ -1,3 +1,5 @@
+# vim: sw=4 ts=4 ft=perl
+
 package WebService::Braintree::ApplePayCard::CardType;
 
 use 5.010_001;
