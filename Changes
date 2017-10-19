@@ -30,6 +30,7 @@ Revision history for WebService-Braintree
                 ->transactions()
             PaymentMethod
                 ->grant()
+                ->revoke()
             PayPalAccount
                 ->create()
                 ->delete()
