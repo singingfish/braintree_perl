@@ -53,9 +53,11 @@ L<https://developers.braintreepayments.com/ruby/sdk/server/overview>.
 You can also look over the test suite for guidance of usage, especially the
 C<xt/sandbox> tests.  Not all of these tests work (ones marked
 C<todo_skip>.  This is because they are an adaptation of code used against
-Braintree's private integration server.  Care has been taken that the same
-sandbox tests that fail in this module also fail for L<Net::Braintree>, and
-in the same manner.
+Braintree's private integration server.
+
+As of version 0.94, with appropriate manual intervention for your sandbox
+account (documented in C<t/sandbox/README>), more of the sandbox tests
+run/pass for this module than for the original module L<Net::Braintree>.
 
 =head2 GENERAL STYLE
 
