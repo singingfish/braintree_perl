@@ -13,8 +13,9 @@ sub generate_test_payment_method_code {
     return "stub-" . $number;
 };
 
+use constant VisaCreditCardNumber => "4111111111111111";
 use constant InvalidPaymentMethodCode => "stub-invalid-payment-method-code";
-use constant VisaPaymentMethodCode => generate_test_payment_method_code("4111111111111111");
+use constant VisaPaymentMethodCode => generate_test_payment_method_code(VisaCreditCardNumber());
 
 use constant InvalidSession => "stub-invalid-session";
 use constant Session => "stub-session";
