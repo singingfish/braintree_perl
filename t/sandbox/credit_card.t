@@ -27,14 +27,16 @@ my $customer_create = WebService::Braintree::Customer->create({
 });
 
 subtest "Create with S2S" => sub {
+    my $cc_number = cc_number();
     my $credit_card_params = credit_card({
+        number => $cc_number,
         customer_id => $customer_create->customer->id,
     });
 
     my $result = WebService::Braintree::CreditCard->create($credit_card_params);
     validate_result($result) or return;
 
-    is $result->credit_card->last_4, "1111", "sets credit card number";
+    is $result->credit_card->last_4, cc_last4($cc_number), "sets credit card number";
     ok $result->credit_card->unique_number_identifier =~ /\A\w{32}\z/;
     not_ok $result->credit_card->is_venmo_sdk;
     ok $result->credit_card->image_url
@@ -129,12 +131,14 @@ subtest "delete" => sub {
 
 subtest "find" => sub {
     subtest "card exists" => sub {
+        my $cc_numer = cc_number();
         my $card = WebService::Braintree::CreditCard->create(credit_card({
+            number => $cc_number,
             expiration_date => "12/15",
             customer_id => $customer_create->customer->id,
         }));
         my $result = WebService::Braintree::CreditCard->find($card->credit_card->token);
-        is $result->last_4, "1111";
+        is $result->last_4, cc_last4($cc_number);
         is $result->expiration_month, "12";
     };
 
@@ -234,7 +238,6 @@ subtest "update" => sub {
             });
         });
     };
-
 };
 
 subtest 'Card Types' => sub {
