@@ -90,9 +90,20 @@ subtest "credit card data" => sub {
     my $customer = WebService::Braintree::Customer->new();
     my $create_customer = $customer->create({first_name => "Judge", last_name => "Reinhold"});
 
-    my $credit_card_create_tr_params = { redirect_url => "http://example.com", credit_card => {customer_id => $create_customer->customer->id }};
+    my $cc_number = cc_number();
+    my $expiration = '05/12';
+    my $credit_card_create_tr_params = {
+        redirect_url => "http://example.com",
+        credit_card => {
+            number => $cc_number,
+            customer_id => $create_customer->customer->id,
+        },
+    };
     my $credit_card_create_params = {
-        credit_card => credit_card(),
+        credit_card => credit_card({
+            number => $cc_number,
+            expiration_date => $expiration,
+        }),
     };
 
     my $tr_data = WebService::Braintree::TransparentRedirect->create_credit_card_data($credit_card_create_tr_params);
@@ -102,7 +113,7 @@ subtest "credit card data" => sub {
 
     subtest "result credit card" => sub {
         isnt($result->credit_card, undef) or return;
-        is $result->credit_card->last_4, "1111", "sets card #";
+        is $result->credit_card->last_4, cc_last4($cc_number), "sets card #";
         is $result->credit_card->expiration_month, "05", "sets expiration date";
     };
 
