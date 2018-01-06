@@ -54,7 +54,17 @@ sub make_request {
     my $agent = LWP::UserAgent->new;
 
     warn Dumper $request if $ENV{WEBSERVICE_BRAINTREE_DEBUG};
-    my $response = $agent->request($request);
+    my $response;
+    my $tries = 1;
+    while ($tries < 5) {
+        $response = $agent->request($request);
+        if ($response->code eq '500' && $response->message =~ /Connection timed out/i) {
+            warn "Retrying timed-out connection after try $tries\n";
+            $tries++;
+            next;
+        }
+        last;
+    }
     warn Dumper $response->content if $ENV{WEBSERVICE_BRAINTREE_DEBUG};
 
     $self->check_response_code($response->code);
