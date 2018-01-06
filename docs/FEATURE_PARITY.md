@@ -90,7 +90,7 @@ Braintree API. These classes follow a specific form:
 | PayPalAccount | find | | Yes | |
 | PayPalAccount | update | | Yes | |
 | PayPalAccount | delete | | Yes | |
-| PayPalAccount | sale | | No | |
+| PayPalAccount | sale | | Yes | |
 | Plan | all | | Yes | |
 | SettlementBatchSummary | generate | | Yes | |
 | Subscription | all | ??? | Yes | |
