@@ -86,10 +86,10 @@ Braintree API. These classes follow a specific form:
 | PaymentMethod | revoke | | Yes | |
 | PaymentMethodNonce | create | | Yes | |
 | PaymentMethodNonce | find | | Yes | |
-| PayPalAccount | create | | No | |
+| PayPalAccount | create | | Yes | |
 | PayPalAccount | find | | Yes | |
 | PayPalAccount | update | | Yes | |
-| PayPalAccount | delete | | No | |
+| PayPalAccount | delete | | Yes | |
 | PayPalAccount | sale | | No | |
 | Plan | all | | Yes | |
 | SettlementBatchSummary | generate | | Yes | |
