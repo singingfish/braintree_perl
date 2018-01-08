@@ -7,11 +7,13 @@ use Moose;
 extends "WebService::Braintree::ResultObject";
 
 =pod
+
 has comment => (is => 'rw');
 has created_at => (is => 'rw');
 has id => (is => 'rw');
 has sent_to_processor_at => (is => 'rw');
 has url => (is => 'rw');
+
 =cut
 
 sub BUILD {
