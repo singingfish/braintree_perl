@@ -16,33 +16,34 @@ use WebService::Braintree::Nonce;
 my $meta = __PACKAGE__->meta;
 
 my $response_objects = {
-    add_on => "WebService::Braintree::AddOn",
-    address => "WebService::Braintree::Address",
-    apple_pay => "WebService::Braintree::ApplePay",
-    apple_pay_card => "WebService::Braintree::ApplePayCard",
-    credit_card => "WebService::Braintree::CreditCard",
-    customer => "WebService::Braintree::Customer",
-    dispute => "WebService::Braintree::Dispute",
-    discount => "WebService::Braintree::Discount",
-    evidence => "WebService::Braintree::Dispute::Evidence",
-    merchant => "WebService::Braintree::Merchant",
-    merchant_account => "WebService::Braintree::MerchantAccount",
+    add_on => 'WebService::Braintree::AddOn',
+    address => 'WebService::Braintree::Address',
+    apple_pay => 'WebService::Braintree::ApplePay',
+    apple_pay_card => 'WebService::Braintree::ApplePayCard',
+    credit_card => 'WebService::Braintree::CreditCard',
+    customer => 'WebService::Braintree::Customer',
+    dispute => 'WebService::Braintree::Dispute',
+    discount => 'WebService::Braintree::Discount',
+    evidence => 'WebService::Braintree::Dispute::Evidence',
+    ideal_payment => 'WebService::Braintree::IdealPayment',
+    merchant => 'WebService::Braintree::Merchant',
+    merchant_account => 'WebService::Braintree::MerchantAccount',
     payment_method => {
-        credit_card => "WebService::Braintree::CreditCard",
-        paypal_account => "WebService::Braintree::PayPalAccount",
+        credit_card => 'WebService::Braintree::CreditCard',
+        paypal_account => 'WebService::Braintree::PayPalAccount',
     },
     payment_method_nonce => 'WebService::Braintree::Nonce',
-    paypal_account => "WebService::Braintree::PayPalAccount",
-    settlement_batch_summary => "WebService::Braintree::SettlementBatchSummary",
-    subscription => "WebService::Braintree::Subscription",
-    transaction => "WebService::Braintree::Transaction",
+    paypal_account => 'WebService::Braintree::PayPalAccount',
+    settlement_batch_summary => 'WebService::Braintree::SettlementBatchSummary',
+    subscription => 'WebService::Braintree::Subscription',
+    transaction => 'WebService::Braintree::Transaction',
 };
 
 has response => ( is => 'ro' );
 
 sub _get_response {
     my $self = shift;
-    return $self->response->{'api_error_response'} || $self->response;
+    return $self->response->{api_error_response} || $self->response;
 }
 
 sub patch_in_response_accessors {
@@ -83,20 +84,20 @@ patch_in_response_accessors($response_objects);
 sub is_success {
     my $self = shift;
 
-    return if $self->response->{'api_error_response'};
+    return if $self->response->{api_error_response};
 
     return 1;
 }
 
 sub api_error_response {
     my $self = shift;
-    return $self->response->{'api_error_response'};
+    return $self->response->{api_error_response};
 }
 
 sub message {
     my $self = shift;
-    return $self->api_error_response->{'message'} if $self->api_error_response;
-    return "";
+    return $self->api_error_response->{message} if $self->api_error_response;
+    return '';
 }
 
 sub errors {

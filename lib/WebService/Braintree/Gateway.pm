@@ -18,6 +18,7 @@ my %gateways = (
   customer => 'Customer',
   discount => 'Discount',
   dispute => 'Dispute',
+  ideal_payment => 'IdealPayment',
   merchant => 'Merchant',
   merchant_account => 'MerchantAccount',
   payment_method => 'PaymentMethod',

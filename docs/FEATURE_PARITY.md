@@ -71,8 +71,8 @@ Braintree API. These classes follow a specific form:
 | Dispute | search | | Yes | |
 | DocumentUpload | create | | No | |
 | EuropeBankAccount | find | | No | |
-| IdealPayment | sale | | No | |
-| IdealPayment | find | | No | |
+| IdealPayment | find | | Yes | |
+| IdealPayment | sale | | Yes | |
 | Merchant | provision\_raw\_apple\_pay | | No | |
 | MerchantAccount | all | ??? | Yes | |
 | MerchantAccount | create | | Yes | |

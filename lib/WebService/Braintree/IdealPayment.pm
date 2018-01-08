@@ -1,15 +1,15 @@
-package WebService::Braintree::UsBankAccount;
+package WebService::Braintree::IdealPayment;
 
 use 5.010_001;
 use strictures 1;
 
 =head1 NAME
 
-WebService::Braintree::UsBank
+WebService::Braintree::IdealPayment
 
 =head1 PURPOSE
 
-This class finds US Bank Account payment methods.
+This class finds IdealPayment payment methods.
 
 =cut
 
@@ -20,13 +20,13 @@ extends 'WebService::Braintree::PaymentMethod';
 
 =head2 find()
 
-This takes a token and returns the US Bank account (if it exists).
+This takes a token and returns the IdealPayment (if it exists).
 
 =cut
 
 sub find {
     my ($class, $token) = @_;
-    $class->gateway->us_bank_account->find($token);
+    $class->gateway->ideal_payment->find($token);
 }
 
 =head2 sale()
@@ -37,10 +37,10 @@ transaction on the provided token.
 =cut
 
 sub sale {
-    my ($class, $token, $params) = @_;
+    my ($class, $ideal_payment_id, $params) = @_;
     WebService::Braintree::Transaction->sale({
         %{$params//{}},
-        payment_method_token => $token,
+        payment_method_nonce => $ideal_payment_id,
         options => { submit_for_settlement => 1 },
     });
 }

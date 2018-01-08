@@ -18,6 +18,8 @@ use WebService::Braintree::Discount;
 use WebService::Braintree::Dispute;
 use WebService::Braintree::DisputeSearch;
 use WebService::Braintree::ErrorCodes;
+use WebService::Braintree::IbanBankAccount;
+use WebService::Braintree::IdealPayment;
 use WebService::Braintree::Merchant;
 use WebService::Braintree::MerchantAccount;
 use WebService::Braintree::PartnerMerchant;
@@ -143,6 +145,10 @@ List all plan discounts.
 =head3 L<WebService::Braintree::Dispute>
 
 Accept, and find disputes.
+
+=head3 L<WebService::Braintree::IdealPayment>
+
+Find IdealPayment payment methods.
 
 =head3 L<WebService::Braintree::Merchant>
 
