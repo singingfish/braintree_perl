@@ -1,6 +1,11 @@
 Revision history for WebService-Braintree
 1.0    2018-01-13
         Added new interfaces:
+            UsBankAccount
+                ->find()
+
+0.XX    XXXX-XX-XX
+        Added new interfaces:
             AddOn
                 ->all()
             ApplePay

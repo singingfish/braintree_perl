@@ -124,8 +124,8 @@ Braintree API. These classes follow a specific form:
 | TransparentRedirect | update\_credit\_card\_data | | Yes | |
 | TransparentRedirect | update\_customer\_data | | Yes | |
 | TransparentRedirect | url | | Yes | |
-| UsBankAccount | find | | No | |
-| UsBankAccount | sale | | No | |
+| UsBankAccount | find | | Yes | |
+| UsBankAccount | sale | | Yes | |
 | WebhookNotification | parse | | Yes | |
 | WebhookNotification | verify | | Yes | |
 | WebhookTesting | sample\_notification | | Yes | |

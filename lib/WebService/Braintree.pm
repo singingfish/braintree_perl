@@ -3,6 +3,7 @@ package WebService::Braintree;
 use 5.010_001;
 use strictures 1;
 
+use WebService::Braintree::AchMandate;
 use WebService::Braintree::Address;
 use WebService::Braintree::AddOn;
 use WebService::Braintree::AdvancedSearchFields;
@@ -31,6 +32,7 @@ use WebService::Braintree::Transaction;
 use WebService::Braintree::TransactionSearch;
 use WebService::Braintree::Disbursement;
 use WebService::Braintree::TransparentRedirect;
+use WebService::Braintree::UsBankAccount;
 use WebService::Braintree::WebhookNotification;
 use WebService::Braintree::WebhookTesting;
 
@@ -58,7 +60,7 @@ L<https://developers.braintreepayments.com/ruby/sdk/server/overview>.
 
 You can also look over the test suite for guidance of usage, especially the
 C<xt/sandbox> tests.  Not all of these tests work (ones marked
-C<todo_skip>.  This is because they are an adaptation of code used against
+C<todo_skip>).  This is because they are an adaptation of code used against
 Braintree's private integration server.
 
 As of version 0.94, with appropriate manual intervention for your sandbox
@@ -180,6 +182,10 @@ has many methods.
 Manage the transparent redirection of ????.
 
 B<NOTE>: This class needs significant help in documentation.
+
+=head3 L<WebService::Braintree::UsBankAccount>
+
+Find US Bank Accounts.
 
 =head2 SEARCHING
 

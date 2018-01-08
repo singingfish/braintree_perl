@@ -28,6 +28,7 @@ my %gateways = (
   subscription => 'Subscription',
   transaction => 'Transaction',
   transparent_redirect => 'TransparentRedirect',
+  us_bank_account => 'UsBankAccount',
   webhook_notification => 'WebhookNotification',
   webhook_testing => 'WebhookTesting',
 );
