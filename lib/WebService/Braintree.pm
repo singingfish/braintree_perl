@@ -18,6 +18,7 @@ use WebService::Braintree::Discount;
 use WebService::Braintree::Dispute;
 use WebService::Braintree::DisputeSearch;
 use WebService::Braintree::ErrorCodes;
+use WebService::Braintree::EuropeBankAccount;
 use WebService::Braintree::IbanBankAccount;
 use WebService::Braintree::IdealPayment;
 use WebService::Braintree::Merchant;
@@ -145,6 +146,10 @@ List all plan discounts.
 =head3 L<WebService::Braintree::Dispute>
 
 Accept, and find disputes.
+
+=head3 L<WebService::Braintree::EuropeBankAccount>
+
+Find Europe Bank Accounts.
 
 =head3 L<WebService::Braintree::IdealPayment>
 

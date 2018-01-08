@@ -24,6 +24,7 @@ my $response_objects = {
     customer => 'WebService::Braintree::Customer',
     dispute => 'WebService::Braintree::Dispute',
     discount => 'WebService::Braintree::Discount',
+    europe_bank_account => 'WebService::Braintree::EuropeBankAccount',
     evidence => 'WebService::Braintree::Dispute::Evidence',
     ideal_payment => 'WebService::Braintree::IdealPayment',
     merchant => 'WebService::Braintree::Merchant',
@@ -37,6 +38,7 @@ my $response_objects = {
     settlement_batch_summary => 'WebService::Braintree::SettlementBatchSummary',
     subscription => 'WebService::Braintree::Subscription',
     transaction => 'WebService::Braintree::Transaction',
+    us_bank_account => 'WebService::Braintree::UsBankAccount',
 };
 
 has response => ( is => 'ro' );

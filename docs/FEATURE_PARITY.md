@@ -70,7 +70,7 @@ Braintree API. These classes follow a specific form:
 | Dispute | remove\_evidence | | Yes | |
 | Dispute | search | | Yes | |
 | DocumentUpload | create | | No | |
-| EuropeBankAccount | find | | No | |
+| EuropeBankAccount | find | | Yes | |
 | IdealPayment | find | | Yes | |
 | IdealPayment | sale | | Yes | |
 | Merchant | provision\_raw\_apple\_pay | | No | |

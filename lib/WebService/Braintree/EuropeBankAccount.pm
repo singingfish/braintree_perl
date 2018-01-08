@@ -1,15 +1,15 @@
-package WebService::Braintree::UsBankAccount;
+package WebService::Braintree::EuropeBankAccount;
 
 use 5.010_001;
 use strictures 1;
 
 =head1 NAME
 
-WebService::Braintree::UsBankAccount
+WebService::Braintree::EuropeBankAccount
 
 =head1 PURPOSE
 
-This class finds US Bank Account payment methods.
+This class finds Europe Bank Account payment methods.
 
 =cut
 
@@ -20,13 +20,13 @@ extends 'WebService::Braintree::PaymentMethod';
 
 =head2 find()
 
-This takes a token and returns the US Bank account (if it exists).
+This takes a token and returns the Europe Bank account (if it exists).
 
 =cut
 
 sub find {
     my ($class, $token) = @_;
-    $class->gateway->us_bank_account->find($token);
+    $class->gateway->europe_bank_account->find($token);
 }
 
 =head2 sale()
