@@ -18,6 +18,7 @@ my %gateways = (
   customer => 'Customer',
   discount => 'Discount',
   dispute => 'Dispute',
+  document_upload => 'DocumentUpload',
   europe_bank_account => 'EuropeBankAccount',
   ideal_payment => 'IdealPayment',
   merchant => 'Merchant',

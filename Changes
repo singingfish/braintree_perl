@@ -1,6 +1,8 @@
 Revision history for WebService-Braintree
 1.0    2018-01-13
         Added new interfaces:
+            DocumentUpload
+                ->create()
             UsBankAccount
                 ->find()
 

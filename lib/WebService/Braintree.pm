@@ -17,6 +17,7 @@ use WebService::Braintree::DisbursementDetails;
 use WebService::Braintree::Discount;
 use WebService::Braintree::Dispute;
 use WebService::Braintree::DisputeSearch;
+use WebService::Braintree::DocumentUpload;
 use WebService::Braintree::ErrorCodes;
 use WebService::Braintree::EuropeBankAccount;
 use WebService::Braintree::IbanBankAccount;

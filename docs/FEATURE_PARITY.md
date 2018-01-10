@@ -69,7 +69,7 @@ Braintree API. These classes follow a specific form:
 | Dispute | find | | Yes | |
 | Dispute | remove\_evidence | | Yes | |
 | Dispute | search | | Yes | |
-| DocumentUpload | create | | No | |
+| DocumentUpload | create | | Yes | |
 | EuropeBankAccount | find | | Yes | |
 | IdealPayment | find | | Yes | |
 | IdealPayment | sale | | Yes | |

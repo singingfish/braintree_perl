@@ -24,6 +24,7 @@ my $response_objects = {
     customer => 'WebService::Braintree::Customer',
     dispute => 'WebService::Braintree::Dispute',
     discount => 'WebService::Braintree::Discount',
+    document_upload => 'WebService::Braintree::DocumentUpload',
     europe_bank_account => 'WebService::Braintree::EuropeBankAccount',
     evidence => 'WebService::Braintree::Dispute::Evidence',
     ideal_payment => 'WebService::Braintree::IdealPayment',
