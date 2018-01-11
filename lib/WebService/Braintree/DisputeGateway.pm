@@ -27,6 +27,15 @@ sub finalize {
     $self->_make_request("/disputes/${id}/finalize", "put", undef);
 }
 
+sub add_file_evidence {
+    my $self = shift;
+    my ($id, $upload_id) = @_;
+    confess "ArgumentError" unless validate_id($id);
+    confess "ArgumentError" unless validate_id($upload_id);
+
+    $self->_make_request("/disputes/${id}/evidence", "post", {document_upload_id => $upload_id});
+}
+
 sub add_text_evidence {
     my $self = shift;
     my ($id, $content) = @_;

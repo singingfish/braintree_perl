@@ -63,7 +63,7 @@ Braintree API. These classes follow a specific form:
 | Customer | update\_from\_transparent\_redirect | Yes | No | |
 | Discount | all | | Yes | Yes |
 | Dispute | accept | | Yes | |
-| Dispute | add\_file\_evidence | | No | |
+| Dispute | add\_file\_evidence | | Yes | |
 | Dispute | add\_text\_evidence | | Yes | |
 | Dispute | finalize | | Yes | |
 | Dispute | find | | Yes | |
