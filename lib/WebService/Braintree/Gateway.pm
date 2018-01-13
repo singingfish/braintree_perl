@@ -4,6 +4,7 @@ use 5.010_001;
 use strictures 1;
 
 use Moose;
+use Class::Load qw(try_load_class);
 
 has 'config' => (is => 'ro');
 
@@ -33,7 +34,10 @@ my %gateways = (
 
 while (my ($method, $gateway) = each %gateways) {
   my $package = "WebService::Braintree::${gateway}Gateway";
-  eval "use $package"; die $@ if $@;
+
+  my ($ok, $error) = try_load_class($package);
+  $ok ? $package->import : die $error;
+
   has $method => (is => 'ro', lazy => 1, default => sub {
       my $self = shift;
       $package->new(gateway => $self);
