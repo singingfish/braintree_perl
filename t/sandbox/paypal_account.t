@@ -23,6 +23,10 @@ use WebService::Braintree::Xml;
 WebService::Braintree::TestHelper->verify_sandbox
     || BAIL_OUT 'Sandbox is not prepared properly. Please read xt/README.';
 
+# The create failure tests in the Ruby SDK have errors which reference
+# Vault. The sandbox account we have doesn't have the Vault flow. As such, we
+# cannot create any tests for create.
+
 subtest "Find" => sub {
     subtest "it returns paypal accounts by token" => sub {
         my $customer_result = WebService::Braintree::Customer->create();
@@ -136,6 +140,25 @@ subtest "Update" => sub {
 
         ok $update_result->payment_method->default;
     };
+};
+
+subtest sale => sub {
+    my $customer_result = WebService::Braintree::Customer->create();
+    validate_result($customer_result, 'Customer created') or return;
+
+    my $pm_result = WebService::Braintree::PaymentMethod->create({
+        customer_id => $customer_result->customer->id,
+        payment_method_nonce => WebService::Braintree::SandboxValues::Nonce->PAYPAL_FUTURE_PAYMENT,
+    });
+    validate_result($pm_result, 'Payment method created') or return;
+    my $paypal_account = $pm_result->paypal_account;
+
+    my $sale_result = WebService::Braintree::PayPalAccount->sale(
+        $paypal_account->token, {
+            amount => amount(80,120),
+        },
+    );
+    validate_result($sale_result) or return;
 };
 
 subtest "it returns subscriptions associated with a paypal account" => sub {

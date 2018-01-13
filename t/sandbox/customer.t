@@ -277,4 +277,57 @@ subtest "Search" => sub {
     };
 };
 
+subtest 'credit' => sub {
+    plan skip_all => 'Transaction->credit() returns unauthorized';
+
+    my $cust_result = WebService::Braintree::Customer->create({
+        credit_card => credit_card(),
+    });
+    validate_result($cust_result) or return;
+    my $customer = $cust_result->customer;
+
+    my $amount = amount(80, 120);
+    my $cred_result = WebService::Braintree::Customer->credit(
+        $customer->id, {
+            amount => $amount,
+        },
+    );
+    validate_result($cred_result) or return;
+    my $txn = $cred_result->transaction;
+
+    cmp_ok($txn->amount, '==', $amount);
+    is($txn->type, 'credit');
+    is($txn->customer_details->id, $customer->id);
+    is($txn->credit_card_details->token, $customer->credit_cards->[0]->token);
+};
+
+subtest 'sale' => sub {
+    my $cust_result = WebService::Braintree::Customer->create({
+        credit_card => credit_card(),
+    });
+    validate_result($cust_result) or return;
+    my $customer = $cust_result->customer;
+
+    my $amount = amount(80, 120);
+    my $sale_result = WebService::Braintree::Customer->sale(
+        $customer->id, {
+            amount => $amount,
+        },
+    );
+    validate_result($sale_result) or return;
+    my $txn = $sale_result->transaction;
+
+    cmp_ok($txn->amount, '==', $amount);
+    is($txn->type, 'sale');
+    is($txn->customer_details->id, $customer->id);
+    is($txn->credit_card_details->token, $customer->credit_cards->[0]->token);
+
+    my $transactions = WebService::Braintree::Customer->transactions(
+        $customer->id,
+    );
+
+    ok(!$transactions->is_empty);
+    is($transactions->first->id, $txn->id);
+};
+
 done_testing();

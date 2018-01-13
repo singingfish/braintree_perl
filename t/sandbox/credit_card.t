@@ -12,6 +12,7 @@ BEGIN {
 
 use lib qw(lib t/lib);
 
+use DateTime;
 use JSON;
 use String::CamelCase qw(decamelize);
 use WebService::Braintree;
@@ -377,6 +378,103 @@ subtest "Invalid Venmo Sdk Session" => sub {
     validate_result($result) or return;
 
     not_ok $result->credit_card->is_venmo_sdk;
+};
+
+subtest credit => sub {
+    plan skip_all => 'This returns unauthorized';
+    my $cust_res = WebService::Braintree::Customer->create({
+        credit_card => credit_card(),
+    });
+    validate_result($cust_res) or return;
+    my $customer = $cust_res->customer;
+
+    my $amount = amount(80,120);
+    my $cred_res = WebService::Braintree::CreditCard->credit(
+        $customer->credit_cards->[0]->token, {
+            amount => $amount,
+        },
+    );
+    validate_result($cred_res) or return;
+    my $txn = $cred_res->transaction;
+
+    cmp_ok($txn->amount, '==', $amount);
+    is($txn->type, 'credit');
+    is($txn->customer_details->id, $customer->id);
+    is($txn->credit_card_details->token, $customer->credit_cards->[0]->token);
+};
+
+subtest sale => sub {
+    my $cust_res = WebService::Braintree::Customer->create({
+        credit_card => credit_card(),
+    });
+    validate_result($cust_res) or return;
+    my $customer = $cust_res->customer;
+
+    my $amount = amount(80,120);
+    my $cred_res = WebService::Braintree::CreditCard->sale(
+        $customer->credit_cards->[0]->token, {
+            amount => $amount,
+        },
+    );
+    validate_result($cred_res) or return;
+    my $txn = $cred_res->transaction;
+
+    cmp_ok($txn->amount, '==', $amount);
+    is($txn->type, 'sale');
+    is($txn->customer_details->id, $customer->id);
+    is($txn->credit_card_details->token, $customer->credit_cards->[0]->token);
+};
+
+subtest expired_cards => sub {
+    my $credit_card_params = credit_card({
+        customer_id => $customer_create->customer->id,
+        expiration_date => '01/2015',
+    });
+
+    my $card_result = WebService::Braintree::CreditCard->create($credit_card_params);
+    validate_result($card_result) or return;
+    my $credit_card = $card_result->credit_card;
+
+    my $expired = WebService::Braintree::CreditCard->expired_cards();
+    ok(!$expired->is_empty);
+    my $have_card = 0;
+    $expired->each(sub {
+        my $card = shift;
+        $have_card = 1 if $card->token eq $credit_card->token;
+    });
+    ok($have_card);
+};
+
+subtest expiring_between => sub {
+    my $next_year = DateTime->now->year + 1;
+
+    my $credit_card_params = credit_card({
+        customer_id => $customer_create->customer->id,
+        expiration_date => "06/${next_year}",
+    });
+
+    my $card_result = WebService::Braintree::CreditCard->create($credit_card_params);
+    validate_result($card_result) or return;
+    my $credit_card = $card_result->credit_card;
+
+    my $values = WebService::Braintree::CreditCard->expiring_between(
+        DateTime->new( month => 1, year => $next_year ),
+        DateTime->new( month => 12, year => $next_year ),
+    );
+    ok(!$values->is_empty, 'Have at least 1 card expiring next year');
+
+    my $have_card = 0;
+    my $have_expired = 0;
+    my $have_bad_year = 0;
+    $values->each(sub {
+        my $card = shift;
+        $have_card = 1 if $card->token eq $credit_card->token;
+        $have_expired = 1 if $card->expired;
+        $have_bad_year = 1 if $card->expiration_year ne $next_year;
+    });
+    ok($have_card);
+    ok(!$have_expired);
+    ok(!$have_bad_year);
 };
 
 done_testing();
