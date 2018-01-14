@@ -4,16 +4,12 @@ use 5.010_001;
 use strictures 1;
 
 use Moose;
-use Hash::Inflator;
 
 use WebService::Braintree::Util qw(is_hashref);
-
-# XXX: Why only these classes?
 use WebService::Braintree::ValidationErrorCollection;
-use WebService::Braintree::CreditCardVerification;
-use WebService::Braintree::Nonce;
 
-my $meta = __PACKAGE__->meta;
+# Load these here because they aren't an interface, but a result class.
+use WebService::Braintree::Nonce;
 
 my $response_objects = {
     add_on => 'WebService::Braintree::AddOn',
@@ -21,6 +17,7 @@ my $response_objects = {
     apple_pay => 'WebService::Braintree::ApplePay',
     apple_pay_card => 'WebService::Braintree::ApplePayCard',
     credit_card => 'WebService::Braintree::CreditCard',
+    #credit_card_verification => 'WebService::Braintree::CreditCardVerification',
     customer => 'WebService::Braintree::Customer',
     dispute => 'WebService::Braintree::Dispute',
     discount => 'WebService::Braintree::Discount',
@@ -49,11 +46,13 @@ sub _get_response {
     return $self->response->{api_error_response} || $self->response;
 }
 
+my $meta = __PACKAGE__->meta;
+
 sub patch_in_response_accessors {
     my $field_rules = shift;
     while (my($key, $rule) = each(%$field_rules)) {
         if (is_hashref($rule)) {
-            $meta->add_method($key, sub {
+            $meta->add_method($key => sub {
                 my $self = shift;
                 my $response = $self->_get_response();
                 while (my($subkey, $subrule) = each(%$rule)) {
@@ -64,16 +63,16 @@ sub patch_in_response_accessors {
                     }
                 }
 
-                return undef;
+                return;
             });
 
             patch_in_response_accessors($rule);
         } else {
-            $meta->add_method($key, sub {
+            $meta->add_method($key => sub {
                 my $self = shift;
                 my $response = $self->_get_response();
                 if (!$response->{$key}) {
-                    return undef;
+                    return;
                 }
 
                 return $rule->new($response->{$key});
@@ -83,14 +82,6 @@ sub patch_in_response_accessors {
 }
 
 patch_in_response_accessors($response_objects);
-
-sub is_success {
-    my $self = shift;
-
-    return if $self->response->{api_error_response};
-
-    return 1;
-}
 
 sub api_error_response {
     my $self = shift;
@@ -111,6 +102,14 @@ sub errors {
 sub credit_card_verification {
     my $self = shift;
     return WebService::Braintree::CreditCardVerification->new($self->api_error_response->{verification});
+}
+
+sub is_success { # 1 }
+    my $self = shift;
+
+    return if $self->response->{api_error_response};
+
+    return 1;
 }
 
 __PACKAGE__->meta->make_immutable;

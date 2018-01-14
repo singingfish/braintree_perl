@@ -11,6 +11,7 @@ use WebService::Braintree::AdvancedSearchNodes;
 use WebService::Braintree::ApplePay;
 use WebService::Braintree::ApplePayCard;
 use WebService::Braintree::CreditCard;
+use WebService::Braintree::CreditCardVerification;
 use WebService::Braintree::Customer;
 use WebService::Braintree::CustomerSearch;
 use WebService::Braintree::DisbursementDetails;
