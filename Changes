@@ -1,5 +1,5 @@
 Revision history for WebService-Braintree
-1.0    2018-01-13
+0.XX    XXXX-XX-XX
         Added new interfaces:
             DocumentUpload
                 ->create()
@@ -15,8 +15,10 @@ Revision history for WebService-Braintree
         Added new methods:
             Dispute
                 ->add_file_evidence()
+        Unsuccessful results are now ::ErrorResult, not ::Result.
+            ::Result->api_error_repsonse is now removed.
 
-0.XX    XXXX-XX-XX
+1.0    2018-01-13
         Added new interfaces:
             AddOn
                 ->all()

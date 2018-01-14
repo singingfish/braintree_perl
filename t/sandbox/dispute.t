@@ -243,10 +243,10 @@ subtest search => sub {
         my $dispute = $txn->disputes->[0];
 
         my $by_status = perform_search(Dispute => {
-            status => WebService::Braintree::Dispute::Status::Open,
+            status => WebService::Braintree::Dispute::Status->Open,
         });
 
-        cmp_ok(count($by_status), '>=', 1, 'Found at least 1 open txn');
+        cmp_ok(count($by_status), '>=', 1, 'Found at least 1 open dispute');
     };
 };
 

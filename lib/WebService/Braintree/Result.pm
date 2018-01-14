@@ -17,7 +17,7 @@ my $response_objects = {
     apple_pay => 'WebService::Braintree::ApplePay',
     apple_pay_card => 'WebService::Braintree::ApplePayCard',
     credit_card => 'WebService::Braintree::CreditCard',
-    #credit_card_verification => 'WebService::Braintree::CreditCardVerification',
+    credit_card_verification => 'WebService::Braintree::CreditCardVerification',
     customer => 'WebService::Braintree::Customer',
     dispute => 'WebService::Braintree::Dispute',
     discount => 'WebService::Braintree::Discount',
@@ -41,11 +41,6 @@ my $response_objects = {
 
 has response => ( is => 'ro' );
 
-sub _get_response {
-    my $self = shift;
-    return $self->response->{api_error_response} || $self->response;
-}
-
 my $meta = __PACKAGE__->meta;
 
 sub patch_in_response_accessors {
@@ -54,7 +49,7 @@ sub patch_in_response_accessors {
         if (is_hashref($rule)) {
             $meta->add_method($key => sub {
                 my $self = shift;
-                my $response = $self->_get_response();
+                my $response = $self->response();
                 while (my($subkey, $subrule) = each(%$rule)) {
                     my $field_value = $self->$subkey;
                     if ($field_value) {
@@ -70,7 +65,7 @@ sub patch_in_response_accessors {
         } else {
             $meta->add_method($key => sub {
                 my $self = shift;
-                my $response = $self->_get_response();
+                my $response = $self->response();
                 if (!$response->{$key}) {
                     return;
                 }
@@ -83,34 +78,7 @@ sub patch_in_response_accessors {
 
 patch_in_response_accessors($response_objects);
 
-sub api_error_response {
-    my $self = shift;
-    return $self->response->{api_error_response};
-}
-
-sub message {
-    my $self = shift;
-    return $self->api_error_response->{message} if $self->api_error_response;
-    return '';
-}
-
-sub errors {
-    my $self = shift;
-    return WebService::Braintree::ValidationErrorCollection->new($self->api_error_response->{errors});
-}
-
-sub credit_card_verification {
-    my $self = shift;
-    return WebService::Braintree::CreditCardVerification->new($self->api_error_response->{verification});
-}
-
-sub is_success { # 1 }
-    my $self = shift;
-
-    return if $self->response->{api_error_response};
-
-    return 1;
-}
+sub is_success { 1 }
 
 __PACKAGE__->meta->make_immutable;
 
