@@ -74,7 +74,7 @@ sub update {
     $class->gateway->credit_card->update($token, $params);
 }
 
-=head2 update()
+=head2 delete()
 
 This takes a token. It will delete the corresponding credit card (if found).
 
@@ -83,6 +83,62 @@ This takes a token. It will delete the corresponding credit card (if found).
 sub delete {
     my ($class, $token) = @_;
     $class->gateway->credit_card->delete($token);
+}
+
+=head2 credit()
+
+This takes a token and an optional hashref of parameters and creates a credit
+transaction on the provided token.
+
+=cut
+
+sub credit {
+    my ($class, $token, $params) = @_;
+    WebService::Braintree::Transaction->credit({
+        %{$params//{}},
+        payment_method_token => $token,
+    });
+}
+
+=head2 sale()
+
+This takes a token and an optional hashref of parameters and creates a sale
+transaction on the provided token.
+
+=cut
+
+sub sale {
+    my ($class, $token, $params) = @_;
+    WebService::Braintree::Transaction->sale({
+        %{$params//{}},
+        payment_method_token => $token,
+    });
+}
+
+=head2 expired_cards()
+
+This returns a list of all the expired credit cards.
+
+B<NOTE>: This method is called C< expired() > in the Ruby and Python SDKs. It is
+renamed in this SDK because it clashes with the object attribute C<expired>.
+
+=cut
+
+sub expired_cards {
+    my ($class) = @_;
+    $class->gateway->credit_card->expired();
+}
+
+=head2 expiring_between()
+
+This takes two DateTime objects and returns a list of all the credit cards expiring
+between them.
+
+=cut
+
+sub expiring_between {
+    my ($class, $start, $end) = @_;
+    $class->gateway->credit_card->expiring_between($start, $end);
 }
 
 sub gateway {

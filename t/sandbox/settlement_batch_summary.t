@@ -34,11 +34,13 @@ subtest "returns an error if the result cannot be parsed" => sub {
 subtest "returns transactions settled on a given day" => sub {
     my $transaction_params = {
         amount => amount(40, 60),
-        credit_card => credit_card(),
+        credit_card => credit_card({
+            number => cc_number('mastercard'),
+        }),
     };
 
-    my $settlement_date = WebService::Braintree::TestHelper::now_in_eastern;
-    my $transaction = create_settled_transaction($transaction_params);
+    my $txn_result = create_settled_transaction($transaction_params);
+    my $settlement_date = (split('_', $txn_result->transaction->settlement_batch_id))[0];
 
     my $result = WebService::Braintree::SettlementBatchSummary->generate($settlement_date);
     validate_result($result) or return;
@@ -47,8 +49,8 @@ subtest "returns transactions settled on a given day" => sub {
         $_->{card_type} eq 'MasterCard'
     } @{$result->settlement_batch_summary->records};
 
-    ok($mastercard_records[0]->{count} >= 1);
-    ok($mastercard_records[0]->{amount_settled} >= $transaction_params->{amount});
+    ok grep { $_->count >= 1 } @mastercard_records;
+    ok grep { $_->amount_settled >= $txn_result->transaction->amount } @mastercard_records;
 };
 
 # This looks like it depends on other tests being successful?

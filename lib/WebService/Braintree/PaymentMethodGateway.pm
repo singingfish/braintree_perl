@@ -27,6 +27,16 @@ sub delete {
     $self->_make_request("/payment_methods/any/" . $token, 'delete');
 }
 
+sub grant {
+    my ($self, $token, $params) = @_;
+    $self->_make_request("/payment_methods/grant", 'post', {payment_method => { %$params, shared_payment_method_token => $token}});
+}
+
+sub revoke {
+    my ($self, $token) = @_;
+    $self->_make_request("/payment_methods/revoke", 'post', {payment_method => { shared_payment_method_token => $token}});
+}
+
 sub find {
     my ($self, $token) = @_;
     if (!validate_id($token)) {

@@ -7,6 +7,11 @@ The file is formatted thusly:
   "private_key": "xxx"
 }
 
+Should you want to contribute to the development of Webservice::Braintree,
+please mail zarquon@cpan.org for the shared credentials used by the
+development team (however for casual development your own sandbox
+credentials should mostly be fine).
+
 You also need to have created elements in the control panel. These items are
 verified by test preambles, but the description of how to create them is here.
 

@@ -60,6 +60,18 @@ sub find {
     $class->gateway->credit_card_verification->find($token);
 }
 
+=head2 create()
+
+This takes a hashref of parameters and returns the credit card verification
+created.
+
+=cut
+
+sub create {
+    my ($class, $params) = @_;
+    $class->gateway->credit_card_verification->create($params);
+}
+
 sub gateway {
     WebService::Braintree->configuration->gateway;
 }
