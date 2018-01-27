@@ -46,6 +46,18 @@ sub finalize {
     $class->gateway->dispute->finalize($id);
 }
 
+=head2 add_file_evidence
+
+This takes a dispute id and a document_upload id and adds the upload to the
+dispute's evidence.
+
+=cut
+
+sub add_file_evidence {
+    my ($class, $id, $upload_id) = @_;
+    $class->gateway->dispute->add_file_evidence($id, $upload_id);
+}
+
 =head2 add_text_evidence
 
 This takes a dispute id and a comment and adds the comment to the dispute's

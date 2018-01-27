@@ -1,30 +1,32 @@
-package WebService::Braintree::Discount;
+package WebService::Braintree::DocumentUpload;
 
 use 5.010_001;
 use strictures 1;
 
 =head1 NAME
 
-WebService::Braintree::Discount
+WebService::Braintree::DocumentUpload
 
 =head1 PURPOSE
 
-This class lists all discounts.
+This class creates document uploads.
 
 =cut
 
 use Moose;
 extends "WebService::Braintree::ResultObject";
 
-=head2 all()
+use WebService::Braintree::DocumentUpload::Kind;
 
-This returns all the discounts.
+=head2 create()
+
+This takes a hashref of params and returns the create document upload.
 
 =cut
 
-sub all {
-    my $class = shift;
-    $class->gateway->discount->all;
+sub create {
+    my ($class, $params) = @_;
+    $class->gateway->document_upload->create($params // {});
 }
 
 sub gateway {

@@ -54,7 +54,7 @@ sub delete {
 
 =head2 grant()
 
-This takes a token and revokes the corresponding payment method (if found).
+This takes a token and grants the corresponding payment method (if found).
 
 =cut
 
