@@ -1,5 +1,5 @@
 Revision history for WebService-Braintree
-0.XX    XXXX-XX-XX
+1.1    2018-02-24
         Added new interfaces:
             DocumentUpload
                 ->create()
