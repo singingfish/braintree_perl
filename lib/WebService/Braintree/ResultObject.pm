@@ -4,6 +4,8 @@ use 5.010_001;
 use strictures 1;
 
 use Moose;
+use Hash::Inflator;
+
 use WebService::Braintree::Util qw(is_arrayref is_hashref);
 
 sub set_attributes_from_hash {
