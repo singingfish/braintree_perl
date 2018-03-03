@@ -9,6 +9,6 @@ use constant KindIsInvalid              => '84901';
 use constant FileIsTooLarge             => '84902';
 use constant FileTypeIsInvalid          => '84903';
 use constant FileIsMalformedOrEncrypted => '84904';
- 
+
 1;
 __END__

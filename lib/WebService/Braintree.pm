@@ -223,7 +223,7 @@ The various field types are documenated at L<WebService::Braintree::AdvancedSear
 
 =head2 RESPONSES
 
-Responses from the interface methods will either be a 
+Responses from the interface methods will either be a
 L<Result|WebService::Braintree::Result/> or an
 L<ErrorResult|WebService::Braintree::ErrorResult/>. You can distinguish between
 them by calling C<< $result->is_success >>.

@@ -9,6 +9,10 @@ use Moose;
 
 extends 'WebService::Braintree::_';
 
+=head1 ATTRIBUTES
+
+=cut
+
 has bin => (
     is => 'ro',
 );
@@ -64,10 +68,27 @@ has token => (
     is => 'ro',
 );
 
+=head1 OBJECT METHODS
+
+In addition to the methods provided by the keys returned from Braintree, this
+class provides the following methods:
+
+=head2 expiration_date()
+
+This returns the expiration date in MM/YYYY format.
+
+=cut
+
 sub expiration_date {
     my $self = shift;
     $self->expiration_month . '/' . $self->expiration_year;
 }
+
+=head2 masked_number()
+
+This returns the card number with the center masked out.
+
+=cut
 
 sub masked_number {
     my $self = shift;
