@@ -101,7 +101,8 @@ use constant Unknown => 'Unknown';
 
 =item All
 
-This is a list of all the card types.
+This returns an arrayref of all other constants in the order they are defined
+in this module.
 
 =cut
 
@@ -118,7 +119,7 @@ use constant All => [
     Solo,
     Switch,
     Visa,
-    Unknown
+    Unknown,
 ];
 
 =back

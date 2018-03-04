@@ -7,12 +7,12 @@ use strictures 1;
 
 =head1 NAME
 
-WebService::Braintree::ResourceCollection
+WebService::Braintree::PaginatedCollection
 
 =head1 PURPOSE
 
-This class provides a way of iterating over a collection of resources. It will
-lazily retrieve the objects from Braintree.
+This class provides a way of iterating over a paginated collection of resources.
+It will lazily retrieve the objects from Braintree.
 
 This class will only be created as part of a L<response|WebService::Braintree::Result> or L<error response|WebService::Braintree::ErrorResult>.
 
@@ -24,12 +24,12 @@ use Moose;
 
 =cut
 
-has 'callback' => (is => 'rw');
+has callback => (is => 'ro');
 
 =head2 each($block)
 
-This takes a subroutine and executes that subroutine for each element in this
-collection.
+This takes a subroutine and executes that subroutine for each page of results
+in this collection.
 
 =cut
 

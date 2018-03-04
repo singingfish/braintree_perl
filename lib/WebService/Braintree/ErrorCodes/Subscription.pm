@@ -5,6 +5,17 @@ package WebService::Braintree::ErrorCodes::Subscription;
 use 5.010_001;
 use strictures 1;
 
+=head1 NAME
+
+WebService::Braintree::ErrorCodes::Subscription
+
+=head1 PURPOSE
+
+This class contains error codes that might be returned if a subscription
+is incorrect in some way.
+
+=cut
+
 use constant BillingDayOfMonthCannotBeUpdated                   => "91918";
 use constant BillingDayOfMonthIsInvalid                         => "91914";
 use constant BillingDayOfMonthMustBeNumeric                     => "91913";

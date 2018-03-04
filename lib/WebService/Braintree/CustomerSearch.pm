@@ -5,8 +5,6 @@ package WebService::Braintree::CustomerSearch;
 use 5.010_001;
 use strictures 1;
 
-use Moose;
-
 =head1 NAME
 
 WebService::Braintree::CustomerSearch
@@ -15,8 +13,12 @@ WebService::Braintree::CustomerSearch
 
 This class represents a search for customers.
 
+This class should never be instantiated directly. Instead, you will access
+objects of this class through the search interface.
+
 =cut
 
+use Moose;
 extends 'WebService::Braintree::AdvancedSearch';
 
 =head1 FIELDS
@@ -105,6 +107,32 @@ This is a L<text field|WebService::Braintree::AdvancedSearchNodes/"Text Field">.
 
 $field->text("company");
 
+=head2 created_at
+
+This is a L<range field|WebService::Braintree::AdvancedSearchNodes/"Range Field">. It will restrict the search to customers created between the two dates.
+
+=cut
+
+$field->range("created_at");
+
+=head2 credit_card_expiration_date
+
+This is an L<equality field|WebService::Braintree::AdvancedSearchNodes/"Equality Field">. It will restrict the search to customers with
+credit cards with a specific expiration date.
+
+=cut
+
+$field->equality("credit_card_expiration_date");
+
+=head2 credit_card_number
+
+This is a L<partial-match field|WebService::Braintree::AdvancedSearchNodes/"Partial Match Field">. It will restrict the search to customers with
+credit cards containing a specific card number.
+
+=cut
+
+$field->partial_match("credit_card_number");
+
 =head2 email
 
 This is a L<text field|WebService::Braintree::AdvancedSearchNodes/"Text Field">. It will restrict the search to a specific email.
@@ -137,6 +165,14 @@ This is a L<text field|WebService::Braintree::AdvancedSearchNodes/"Text Field">.
 
 $field->text("id");
 
+=head2 ids
+
+This is a L<multiple-values field|WebService::Braintree::AdvancedSearchNodes/"Multiple Values Field">. It will restrict the search to a list of specific ids.
+
+=cut
+
+$field->multiple_values("ids");
+
 =head2 last_name
 
 This is a L<text field|WebService::Braintree::AdvancedSearchNodes/"Text Field">. It will restrict the search to a specific last name.
@@ -152,6 +188,14 @@ This is a L<text field|WebService::Braintree::AdvancedSearchNodes/"Text Field">.
 =cut
 
 $field->text("payment_method_token");
+
+=head2 payment_method_token_with_duplicates
+
+This is an L<is field|WebService::Braintree::AdvancedSearchNodes/"is Field">. It will restrict the search to cusotmers with a specific payment method token.
+
+=cut
+
+$field->is("payment_method_token_with_duplicates");
 
 =head2 paypal_account_email
 
@@ -176,48 +220,6 @@ This is a L<text field|WebService::Braintree::AdvancedSearchNodes/"Text Field">.
 =cut
 
 $field->text("website");
-
-=head2 payment_method_token_with_duplicates
-
-This is an L<is field|WebService::Braintree::AdvancedSearchNodes/"is Field">. It will restrict the search to cusotmers with a specific payment method token.
-
-=cut
-
-$field->is("payment_method_token_with_duplicates");
-
-=head2 credit_card_expiration_date
-
-This is an L<equality field|WebService::Braintree::AdvancedSearchNodes/"Equality Field">. It will restrict the search to customers with
-credit cards with a specific expiration date.
-
-=cut
-
-$field->equality("credit_card_expiration_date");
-
-=head2 credit_card_number
-
-This is a L<partial-match field|WebService::Braintree::AdvancedSearchNodes/"Partial Match Field">. It will restrict the search to customers with
-credit cards with a specific card number.
-
-=cut
-
-$field->partial_match("credit_card_number");
-
-=head2 ids
-
-This is a L<multiple-values field|WebService::Braintree::AdvancedSearchNodes/"Multiple Values Field">. It will restrict the search to a list of specific ids.
-
-=cut
-
-$field->multiple_values("ids");
-
-=head2 created_at
-
-This is a L<range field|WebService::Braintree::AdvancedSearchNodes/"Range Field">. It will restrict the search to customers created between the two dates.
-
-=cut
-
-$field->range("created_at");
 
 __PACKAGE__->meta->make_immutable;
 

@@ -12,6 +12,7 @@ use WebService::Braintree::AdvancedSearchNodes;
 # Load the error codes omnibus so clients can get at them.
 use WebService::Braintree::ErrorCodes;
 
+# Load all the interfaces so clients can get at them.
 use WebService::Braintree::AddOn;
 use WebService::Braintree::Address;
 use WebService::Braintree::ApplePay;
@@ -39,6 +40,7 @@ use WebService::Braintree::UsBankAccount;
 use WebService::Braintree::WebhookNotification;
 use WebService::Braintree::WebhookTesting;
 
+# Finally, load the configuration class.
 use WebService::Braintree::Configuration;
 
 =head1 NAME
@@ -56,13 +58,12 @@ going forward.
 
 =head2 DOCUMENTATION
 
-The module is sparsely documented, at best.  The public facing API is very
-similar to the Ruby libraries which are documented at
-L<https://developers.braintreepayments.com/ruby/sdk/server/overview>.
-
+The module is fully documented, but that documentation is reverse-engineered.
+The public facing API is very similar to the Ruby libraries which are documented
+at L<https://developers.braintreepayments.com/ruby/sdk/server/overview>.
 
 You can also look over the test suite for guidance of usage, especially the
-C<xt/sandbox> tests.  Not all of these tests work (ones marked
+C<t/sandbox> tests.  Not all of these tests work (ones marked
 C<todo_skip>).  This is because they are an adaptation of code used against
 Braintree's private integration server.
 
@@ -76,11 +77,15 @@ In general, clients of this library will not instantiate any objects.  Every
 call you make will be a class method.  Some methods will return objects.  In
 those cases, those objects will be documented for you.
 
+Unless otherwise noted, all attributes in these objects will be read-only and
+will have been populated by the responses from Braintree.
+
 =cut
 
-my $configuration_instance = WebService::Braintree::Configuration->new;
-
-sub configuration { return $configuration_instance; }
+{
+    my $configuration_instance = WebService::Braintree::Configuration->new;
+    sub configuration { return $configuration_instance; }
+}
 
 =head2 CONFIGURATION
 
@@ -365,7 +370,11 @@ tests will take between 5 and 20 minutes.
 
 =over 4
 
-=item There is no pod documentation.
+=item Many of the integration tests are still skipped.
+
+=item There aren't enough unit tests.
+
+=item The documentation is still sparse, especially for the PURPOSE sections.
 
 =back
 

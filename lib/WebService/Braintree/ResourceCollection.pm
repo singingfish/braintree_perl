@@ -20,9 +20,8 @@ This class will only be created as part of a L<response|WebService::Braintree::R
 
 use Moose;
 
-=head1 METHODS
-
-=cut
+# These attributes and methods are undocumented because they're meant to be
+# internal-use only. But, prepending underscores makes the code ugly.
 
 has 'callback' => (
     is => 'ro',
@@ -44,6 +43,16 @@ sub page_size {
     my $self = shift;
     return $self->response->{search_results}{page_size};
 }
+
+=head1 METHODS
+
+=cut
+
+=head2 is_success
+
+This returns true if the request was successful, otherwise false.
+
+=cut
 
 sub is_success {
     my $self = shift;

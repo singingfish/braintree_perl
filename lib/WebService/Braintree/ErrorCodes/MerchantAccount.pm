@@ -5,6 +5,17 @@ package WebService::Braintree::ErrorCodes::MerchantAccount;
 use 5.010_001;
 use strictures 1;
 
+=head1 NAME
+
+WebService::Braintree::ErrorCodes::MerchantAccount
+
+=head1 PURPOSE
+
+This class contains error codes that might be returned if a merchant
+account is incorrect in some way.
+
+=cut
+
 use constant IdIsNotAllowed                         => "82605";
 use constant IdIsTooLong                            => "82602";
 use constant IdFormatIsInvalid                      => "82603";

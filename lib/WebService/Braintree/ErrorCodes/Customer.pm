@@ -5,6 +5,17 @@ package WebService::Braintree::ErrorCodes::Customer;
 use 5.010_001;
 use strictures 1;
 
+=head1 NAME
+
+WebService::Braintree::ErrorCodes::Customer
+
+=head1 PURPOSE
+
+This class contains error codes that might be returned if a customer is
+incorrect in some way.
+
+=cut
+
 use constant CompanyIsTooLong       => "81601";
 use constant CustomFieldIsInvalid   => "91602";
 use constant CustomFieldIsTooLong   => "81603";

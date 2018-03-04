@@ -5,6 +5,17 @@ package WebService::Braintree::ErrorCodes::MerchantAccount::Individual;
 use 5.010_001;
 use strictures 1;
 
+=head1 NAME
+
+WebService::Braintree::ErrorCodes::MerchantAccount::Individual
+
+=head1 PURPOSE
+
+This class contains error codes that might be returned if an
+individual record for a merchant account is incorrect in some way.
+
+=cut
+
 use constant FirstNameIsRequired    => "82637";
 use constant LastNameIsRequired     => "82638";
 use constant DateOfBirthIsRequired  => "82639";

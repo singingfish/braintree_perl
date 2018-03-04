@@ -5,6 +5,17 @@ package WebService::Braintree::ErrorCodes::MerchantAccount::ApplicantDetails;
 use 5.010_001;
 use strictures 1;
 
+=head1 NAME
+
+WebService::Braintree::ErrorCodes::MerchantAccount::ApplicantDetails
+
+=head1 PURPOSE
+
+This class contains error codes that might be returned if the applicant
+details for a merchant account is incorrect in some way.
+
+=cut
+
 use constant AccountNumberIsRequired        => "82614";
 use constant CompanyNameIsInvalid           => "82631";
 use constant CompanyNameIsRequiredWithTaxId => "82633";

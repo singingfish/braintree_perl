@@ -1,6 +1,7 @@
 # vim: sw=4 ts=4 ft=perl
 
-package WebService::Braintree::Role::CollectionBuilder;
+package # hide from pause
+    WebService::Braintree::Role::CollectionBuilder;
 
 use 5.010_001;
 use strictures 1;

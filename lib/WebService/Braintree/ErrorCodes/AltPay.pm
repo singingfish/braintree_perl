@@ -5,6 +5,17 @@ package WebService::Braintree::ErrorCodes::AltPay;
 use 5.010_001;
 use strictures 1;
 
+=head1 NAME
+
+WebService::Braintree::ErrorCodes::AltPay
+
+=head1 PURPOSE
+
+This class contains error codes that might be returned if an alternate
+payment method is incorrect in some way.
+
+=cut
+
 use constant PayPalAccountCannotHaveBothAccessTokenAndConsentCode   => "82903";
 use constant PayPalAccountCannotVaultOneTimeUsePayPalAccount        => "82902";
 

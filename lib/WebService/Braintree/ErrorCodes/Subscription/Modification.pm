@@ -5,6 +5,17 @@ package WebService::Braintree::ErrorCodes::Subscription::Modification;
 use 5.010_001;
 use strictures 1;
 
+=head1 NAME
+
+WebService::Braintree::ErrorCodes::Subscription::Modification
+
+=head1 PURPOSE
+
+This class contains error codes that might be returned if a modification
+of a subscription is incorrect in some way.
+
+=cut
+
 use constant AmountCannotBeBlank                          => "92003";
 use constant AmountIsInvalid                              => "92002";
 use constant AmountIsTooLarge                             => "92023";

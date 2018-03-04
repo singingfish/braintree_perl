@@ -6,15 +6,15 @@ use 5.010_001;
 use strictures 1;
 
 use WebService::Braintree::CreditCard::CardType;
-use WebService::Braintree::CreditCard::Location;
-use WebService::Braintree::CreditCard::Prepaid;
-use WebService::Braintree::CreditCard::Debit;
-use WebService::Braintree::CreditCard::Payroll;
-use WebService::Braintree::CreditCard::Healthcare;
-use WebService::Braintree::CreditCard::DurbinRegulated;
 use WebService::Braintree::CreditCard::Commercial;
 use WebService::Braintree::CreditCard::CountryOfIssuance;
+use WebService::Braintree::CreditCard::Debit;
+use WebService::Braintree::CreditCard::DurbinRegulated;
+use WebService::Braintree::CreditCard::Healthcare;
 use WebService::Braintree::CreditCard::IssuingBank;
+use WebService::Braintree::CreditCard::Location;
+use WebService::Braintree::CreditCard::Payroll;
+use WebService::Braintree::CreditCard::Prepaid;
 
 =head1 NAME
 

@@ -91,6 +91,9 @@ subscription object.
 Please see L<Searching|WebService::Braintree/SEARCHING> for more information on
 the subref and how it works.
 
+Please see L<WebService::Braintree::SubscriptionSearch> for the fields available
+to be searched on.
+
 =cut
 
 sub search {
@@ -113,17 +116,3 @@ __PACKAGE__->meta->make_immutable;
 
 1;
 __END__
-
-=head1 TODO
-
-=over 4
-
-=item Need to document the keys and values that are returned
-
-=item Need to document the required and optional input parameters
-
-=item Need to document the possible errors/exceptions
-
-=back
-
-=cut

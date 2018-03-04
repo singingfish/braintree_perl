@@ -10,19 +10,17 @@ WebService::Braintree::ValidationError
 
 This class represents an error, usually from a failed validation.
 
+This class will only be created as part of a L<error response|WebService::Braintree::ErrorResult>.
+
 =cut
 
 use Moose;
 
-=head1 CLASS METHODS
-
-This class is B<NOT> an interface, so it does B<NOT> have any class methods.
-
-=head1 OBJECT METHODS
+=head1 METHODS
 
 =head2 attribute()
 
-This is the attribute which has the validation error.
+This is the attribute in the unsuccessful request which failed validation.
 
 =cut
 
@@ -48,13 +46,3 @@ __PACKAGE__->meta->make_immutable;
 
 1;
 __END__
-
-=head1 TODO
-
-=over 4
-
-=item Need to document what the attributes actually mean.
-
-=back
-
-=cut

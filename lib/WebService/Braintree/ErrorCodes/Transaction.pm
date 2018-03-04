@@ -5,6 +5,17 @@ package WebService::Braintree::ErrorCodes::Transaction;
 use 5.010_001;
 use strictures 1;
 
+=head1 NAME
+
+WebService::Braintree::ErrorCodes::Transaction
+
+=head1 PURPOSE
+
+This class contains error codes that might be returned if a transaction
+is incorrect in some way.
+
+=cut
+
 use constant AmountCannotBeNegative                            => "81501";
 use constant AmountFormatIsInvalid                             => "81503";
 use constant AmountIsInvalid                                   => "81503";

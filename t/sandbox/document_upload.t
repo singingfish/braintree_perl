@@ -29,10 +29,7 @@ my $fixtures = File::Spec->catdir(
 my $tempdir = tempdir(CLEANUP => 1, DIR => File::Spec->tmpdir);
 
 subtest create => sub {
-    # This is EvidenceDocument in the Ruby version of this test, but the
-    # error response says:
-    #     "Document upload 'kind' must be 'identity_document'."
-    my $kind = WebService::Braintree::DocumentUpload::Kind->IdentityDocument;
+    my $kind = WebService::Braintree::DocumentUpload::Kind->EvidenceDocument;
 
     subtest 'success with valid request' => sub {
         my $file = File::Spec->catfile($fixtures, 'bt_logo.png');

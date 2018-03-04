@@ -5,6 +5,17 @@ package WebService::Braintree::ErrorCodes::Address;
 use 5.010_001;
 use strictures 1;
 
+=head1 NAME
+
+WebService::Braintree::ErrorCodes::Address
+
+=head1 PURPOSE
+
+This class contains error codes that might be returned if an address
+is incorrect in some way.
+
+=cut
+
 use constant CannotBeBlank                   => "81801";
 use constant CompanyIsInvalid                => "91821";
 use constant CompanyIsTooLong                => "81802";

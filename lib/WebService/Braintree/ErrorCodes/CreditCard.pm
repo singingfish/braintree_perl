@@ -5,6 +5,17 @@ package WebService::Braintree::ErrorCodes::CreditCard;
 use 5.010_001;
 use strictures 1;
 
+=head1 NAME
+
+WebService::Braintree::ErrorCodes::CreditCard
+
+=head1 PURPOSE
+
+This class contains error codes that might be returned if a credit card
+is incorrect in some way.
+
+=cut
+
 use constant BillingAddressConflict                                   => "91701";
 use constant BillingAddressIdIsInvalid                                => "91702";
 use constant CannotUpdateCardUsingPaymentMethodNonce                  => "91735";

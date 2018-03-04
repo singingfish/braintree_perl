@@ -1,6 +1,7 @@
 # vim: sw=4 ts=4 ft=perl
 
-package WebService::Braintree::Validations;
+package # hide from pause
+    WebService::Braintree::Validations;
 
 use 5.010_001;
 use strictures 1;

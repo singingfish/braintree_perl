@@ -185,7 +185,7 @@ subtest 'file evidence (add and find)' => sub {
     );
 
     my $file = File::Spec->catfile($fixtures, 'bt_logo.png');
-    my $kind = WebService::Braintree::DocumentUpload::Kind->IdentityDocument;
+    my $kind = WebService::Braintree::DocumentUpload::Kind->EvidenceDocument;
     my $response = WebService::Braintree::DocumentUpload->create({
         kind => $kind,
         file => $file,

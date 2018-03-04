@@ -5,6 +5,17 @@ package WebService::Braintree::ErrorCodes::MerchantAccount::ApplicantDetails::Ad
 use 5.010_001;
 use strictures 1;
 
+=head1 NAME
+
+WebService::Braintree::ErrorCodes::MerchantAccount::ApplicantDetails::Address
+
+=head1 PURPOSE
+
+This class contains error codes that might be returned if the address for an
+applicant details for a merchant account is incorrect in some way.
+
+=cut
+
 use constant LocalityIsRequired      => "82618";
 use constant PostalCodeIsInvalid     => "82630";
 use constant PostalCodeIsRequired    => "82619";

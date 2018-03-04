@@ -5,6 +5,17 @@ package WebService::Braintree::ErrorCodes::ApplePay;
 use 5.010_001;
 use strictures 1;
 
+=head1 NAME
+
+WebService::Braintree::ErrorCodes::ApplePay
+
+=head1 PURPOSE
+
+This class contains error codes that might be returned if an ApplePay
+is incorrect in some way.
+
+=cut
+
 use constant ApplePayCardsAreNotAccepted                      => "83501";
 use constant CustomerIdIsRequiredForVaulting                  => "83502";
 use constant TokenIsInUse                                     => "93503";

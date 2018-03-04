@@ -5,6 +5,17 @@ package WebService::Braintree::ErrorCodes::PayPalAccount;
 use 5.010_001;
 use strictures 1;
 
+=head1 NAME
+
+WebService::Braintree::ErrorCodes::PayPalAccount
+
+=head1 PURPOSE
+
+This class contains error codes that might be returned if a PayPalAccount
+is incorrect in some way.
+
+=cut
+
 use constant CannotCloneTransactionWithPayPalAccount => "91573";
 use constant CannotVaultOneTimeUsePayPalAccount      => "82902";
 use constant CannotHaveBothAccessTokenAndConsentCode => "82903";

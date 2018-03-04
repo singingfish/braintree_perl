@@ -111,10 +111,7 @@ has virtual_card_type => (
     alias => 'card_type',
 );
 
-=head1 OBJECT METHODS
-
-In addition to the methods provided by the keys returned from Braintree, this
-class provides the following methods:
+=head1 METHODS
 
 =head2 expiration_date()
 

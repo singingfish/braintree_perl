@@ -217,17 +217,3 @@ __PACKAGE__->meta->make_immutable;
 
 1;
 __END__
-
-=head1 TODO
-
-=over 4
-
-=item Need to document the keys and values that are returned
-
-=item Need to document the required and optional input parameters
-
-=item Need to document the possible errors/exceptions
-
-=back
-
-=cut
