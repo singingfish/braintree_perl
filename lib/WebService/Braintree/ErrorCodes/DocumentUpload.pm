@@ -16,10 +16,39 @@ is incorrect in some way.
 
 =cut
 
-use constant KindIsInvalid              => '84901';
-use constant FileIsTooLarge             => '84902';
-use constant FileTypeIsInvalid          => '84903';
+=head1 METHODS
+
+=over 4
+
+=cut
+
+=item KindIsInvalid
+
+=cut
+
+use constant KindIsInvalid => '84901';
+
+=item FileIsTooLarge
+
+=cut
+
+use constant FileIsTooLarge => '84902';
+
+=item FileTypeIsInvalid
+
+=cut
+
+use constant FileTypeIsInvalid => '84903';
+
+=item FileIsMalformedOrEncrypted
+
+=cut
+
 use constant FileIsMalformedOrEncrypted => '84904';
+
+=back
+
+=cut
 
 1;
 __END__

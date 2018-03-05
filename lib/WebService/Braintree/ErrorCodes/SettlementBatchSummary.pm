@@ -16,9 +16,33 @@ batch summary is incorrect in some way.
 
 =cut
 
-use constant CustomFieldIsInvalid     => "82303";
-use constant SettlementDateIsInvalid  => "82302";
-use constant SettlementDateIsRequired => "82301";
+=head1 METHODS
+
+=over 4
+
+=cut
+
+=item CustomFieldIsInvalid
+
+=cut
+
+use constant CustomFieldIsInvalid => '82303';
+
+=item SettlementDateIsInvalid
+
+=cut
+
+use constant SettlementDateIsInvalid => '82302';
+
+=item SettlementDateIsRequired
+
+=cut
+
+use constant SettlementDateIsRequired => '82301';
+
+=back
+
+=cut
 
 1;
 __END__

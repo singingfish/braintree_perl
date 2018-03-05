@@ -16,12 +16,51 @@ incorrect in some way.
 
 =cut
 
-use constant DynamicDescriptorsDisabled        => "92203";
-use constant InternationalPhoneFormatIsInvalid => "92205";
-use constant InternationalNameFormatIsInvalid  => "92204";
-use constant NameFormatIsInvalid               => "92201";
-use constant PhoneFormatIsInvalid              => "92202";
-use constant UrlFormatIsInvalid                => "92206";
+=head1 METHODS
+
+=over 4
+
+=cut
+
+=item DynamicDescriptorsDisabled
+
+=cut
+
+use constant DynamicDescriptorsDisabled => '92203';
+
+=item InternationalPhoneFormatIsInvalid
+
+=cut
+
+use constant InternationalPhoneFormatIsInvalid => '92205';
+
+=item InternationalNameFormatIsInvalid
+
+=cut
+
+use constant InternationalNameFormatIsInvalid => '92204';
+
+=item NameFormatIsInvalid
+
+=cut
+
+use constant NameFormatIsInvalid => '92201';
+
+=item PhoneFormatIsInvalid
+
+=cut
+
+use constant PhoneFormatIsInvalid => '92202';
+
+=item UrlFormatIsInvalid
+
+=cut
+
+use constant UrlFormatIsInvalid => '92206';
+
+=back
+
+=cut
 
 1;
 __END__

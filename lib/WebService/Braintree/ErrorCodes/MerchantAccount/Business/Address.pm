@@ -16,9 +16,33 @@ business record for a merchant account is incorrect in some way.
 
 =cut
 
-use constant RegionIsInvalid        => "82684";
+=head1 METHODS
+
+=over 4
+
+=cut
+
+=item RegionIsInvalid
+
+=cut
+
+use constant RegionIsInvalid => "82684";
+
+=item StreetAddressIsInvalid
+
+=cut
+
 use constant StreetAddressIsInvalid => "82685";
-use constant PostalCodeIsInvalid    => "82686";
+
+=item PostalCodeIsInvalid
+
+=cut
+
+use constant PostalCodeIsInvalid => "82686";
+
+=back
+
+=cut
 
 1;
 __END__

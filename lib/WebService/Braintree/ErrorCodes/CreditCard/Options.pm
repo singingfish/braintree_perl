@@ -16,9 +16,33 @@ a credit card are incorrect in some way.
 
 =cut
 
-use constant UpdateExistingTokenIsInvalid           => "91723";
-use constant UseBillingForShippingDisabled          => "91572";
-use constant VerificationMerchantAccountIdIsInvalid => "91728";
+=head1 METHODS
+
+=over 4
+
+=cut
+
+=item UpdateExistingTokenIsInvalid
+
+=cut
+
+use constant UpdateExistingTokenIsInvalid => '91723';
+
+=item UseBillingForShippingDisabled
+
+=cut
+
+use constant UseBillingForShippingDisabled => '91572';
+
+=item VerificationMerchantAccountIdIsInvalid
+
+=cut
+
+use constant VerificationMerchantAccountIdIsInvalid => '91728';
+
+=back
+
+=cut
 
 1;
 __END__

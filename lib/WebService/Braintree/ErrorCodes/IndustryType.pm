@@ -16,13 +16,57 @@ is incorrect in some way.
 
 =cut
 
-use constant CheckInDateIsInvalid               => "93404";
-use constant CheckOutDateIsInvalid              => "93405";
-use constant CheckOutDateMustFollowCheckInDate  => "93406";
-use constant EmptyData                          => "93402";
-use constant FolioNumberIsInvalid               => "93403";
-use constant IndustryTypeIsInvalid              => "93401";
-use constant UnknownDataField                   => "93407";
+=head1 METHODS
+
+=over 4
+
+=cut
+
+=item CheckInDateIsInvalid
+
+=cut
+
+use constant CheckInDateIsInvalid => '93404';
+
+=item CheckOutDateIsInvalid
+
+=cut
+
+use constant CheckOutDateIsInvalid => '93405';
+
+=item CheckOutDateMustFollowCheckInDate
+
+=cut
+
+use constant CheckOutDateMustFollowCheckInDate => '93406';
+
+=item EmptyData
+
+=cut
+
+use constant EmptyData => '93402';
+
+=item FolioNumberIsInvalid
+
+=cut
+
+use constant FolioNumberIsInvalid => '93403';
+
+=item IndustryTypeIsInvalid
+
+=cut
+
+use constant IndustryTypeIsInvalid => '93401';
+
+=item UnknownDataField
+
+=cut
+
+use constant UnknownDataField => '93407';
+
+=back
+
+=cut
 
 1;
 __END__

@@ -16,8 +16,27 @@ options are incorrect in some way.
 
 =cut
 
-use constant SubmitForSettlementIsRequiredForCloning => "91544";
-use constant VaultIsDisabled                         => "91525";
+=head1 METHODS
+
+=over 4
+
+=cut
+
+=item SubmitForSettlementIsRequiredForCloning
+
+=cut
+
+use constant SubmitForSettlementIsRequiredForCloning => '91544';
+
+=item VaultIsDisabled
+
+=cut
+
+use constant VaultIsDisabled => '91525';
+
+=back
+
+=cut
 
 1;
 __END__

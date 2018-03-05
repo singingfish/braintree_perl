@@ -16,13 +16,57 @@ individual record for a merchant account is incorrect in some way.
 
 =cut
 
-use constant StreetAddressIsRequired => "82657";
-use constant LocalityIsRequired      => "82658";
-use constant PostalCodeIsRequired    => "82659";
-use constant RegionIsRequired        => "82660";
-use constant StreetAddressIsInvalid  => "82661";
-use constant PostalCodeIsInvalid     => "82662";
-use constant RegionIsInvalid         => "82668";
+=head1 METHODS
+
+=over 4
+
+=cut
+
+=item StreetAddressIsRequired
+
+=cut
+
+use constant StreetAddressIsRequired => '82657';
+
+=item LocalityIsRequired
+
+=cut
+
+use constant LocalityIsRequired => '82658';
+
+=item PostalCodeIsRequired
+
+=cut
+
+use constant PostalCodeIsRequired => '82659';
+
+=item RegionIsRequired
+
+=cut
+
+use constant RegionIsRequired => '82660';
+
+=item StreetAddressIsInvalid
+
+=cut
+
+use constant StreetAddressIsInvalid => '82661';
+
+=item PostalCodeIsInvalid
+
+=cut
+
+use constant PostalCodeIsInvalid => '82662';
+
+=item RegionIsInvalid
+
+=cut
+
+use constant RegionIsInvalid => '82668';
+
+=back
+
+=cut
 
 1;
 __END__

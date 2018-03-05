@@ -16,16 +16,75 @@ individual record for a merchant account is incorrect in some way.
 
 =cut
 
-use constant FirstNameIsRequired    => "82637";
-use constant LastNameIsRequired     => "82638";
-use constant DateOfBirthIsRequired  => "82639";
-use constant SsnIsInvalid           => "82642";
-use constant EmailIsInvalid         => "82643";
-use constant FirstNameIsInvalid     => "82644";
-use constant LastNameIsInvalid      => "82645";
-use constant PhoneIsInvalid         => "82656";
-use constant DateOfBirthIsInvalid   => "82666";
-use constant EmailIsRequired        => "82667";
+=head1 METHODS
+
+=over 4
+
+=cut
+
+=item FirstNameIsRequired
+
+=cut
+
+use constant FirstNameIsRequired => '82637';
+
+=item LastNameIsRequired
+
+=cut
+
+use constant LastNameIsRequired => '82638';
+
+=item DateOfBirthIsRequired
+
+=cut
+
+use constant DateOfBirthIsRequired => '82639';
+
+=item SsnIsInvalid
+
+=cut
+
+use constant SsnIsInvalid => '82642';
+
+=item EmailIsInvalid
+
+=cut
+
+use constant EmailIsInvalid => '82643';
+
+=item FirstNameIsInvalid
+
+=cut
+
+use constant FirstNameIsInvalid => '82644';
+
+=item LastNameIsInvalid
+
+=cut
+
+use constant LastNameIsInvalid => '82645';
+
+=item PhoneIsInvalid
+
+=cut
+
+use constant PhoneIsInvalid => '82656';
+
+=item DateOfBirthIsInvalid
+
+=cut
+
+use constant DateOfBirthIsInvalid => '82666';
+
+=item EmailIsRequired
+
+=cut
+
+use constant EmailIsRequired => '82667';
+
+=back
+
+=cut
 
 1;
 __END__

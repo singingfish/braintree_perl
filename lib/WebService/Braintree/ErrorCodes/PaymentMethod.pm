@@ -16,12 +16,51 @@ method is incorrect in some way.
 
 =cut
 
-use constant CustomerIdIsRequired           => "93104";
-use constant CustomerIdIsInvalid            => "93105";
-use constant CannotForwardPaymentMethodType => "93106";
-use constant NonceIsInvalid                 => "93102";
-use constant NonceIsRequired                => "93103";
-use constant PaymentMethodParamsAreRequired => "93101";
+=head1 METHODS
+
+=over 4
+
+=cut
+
+=item CustomerIdIsRequired
+
+=cut
+
+use constant CustomerIdIsRequired => '93104';
+
+=item CustomerIdIsInvalid
+
+=cut
+
+use constant CustomerIdIsInvalid => '93105';
+
+=item CannotForwardPaymentMethodType
+
+=cut
+
+use constant CannotForwardPaymentMethodType => '93106';
+
+=item NonceIsInvalid
+
+=cut
+
+use constant NonceIsInvalid => '93102';
+
+=item NonceIsRequired
+
+=cut
+
+use constant NonceIsRequired => '93103';
+
+=item PaymentMethodParamsAreRequired
+
+=cut
+
+use constant PaymentMethodParamsAreRequired => '93101';
+
+=back
+
+=cut
 
 1;
 __END__
