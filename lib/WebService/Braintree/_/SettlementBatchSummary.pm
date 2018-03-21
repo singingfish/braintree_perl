@@ -21,6 +21,10 @@ use Moose;
 
 extends 'WebService::Braintree::_';
 
+use WebService::Braintree::Types qw(
+    ArrayRefOfSettlementBatchSummaryRecord
+);
+
 use WebService::Braintree::_::SettlementBatchSummaryRecord;
 
 =head1 ATTRIBUTES

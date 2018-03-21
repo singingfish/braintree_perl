@@ -22,6 +22,10 @@ use MooseX::Aliases;
 
 extends 'WebService::Braintree::_';
 
+use WebService::Braintree::Types qw(
+    MerchantAccountAddressDetails
+);
+
 use WebService::Braintree::_::MerchantAccount::AddressDetails;
 
 =head1 ATTRIBUTES
@@ -38,7 +42,7 @@ C<< address_details() >> is an alias for this attribute.
 
 has address => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::MerchantAccount::AddressDetails',
+    isa => MerchantAccountAddressDetails,
     coerce => 1,
     alias => 'address_details',
 );

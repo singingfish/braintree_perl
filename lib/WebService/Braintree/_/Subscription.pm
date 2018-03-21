@@ -22,15 +22,23 @@ use MooseX::Aliases;
 
 extends 'WebService::Braintree::_';
 
-=head1 ATTRIBUTES
-
-=cut
+use WebService::Braintree::Types qw(
+    ArrayRefOfAddOn
+    Descriptor
+    ArrayRefOfDiscount
+    ArrayRefOfSubscriptionStatusDetail
+    ArrayRefOfTransaction
+);
 
 use WebService::Braintree::_::AddOn;
 use WebService::Braintree::_::Descriptor;
 use WebService::Braintree::_::Discount;
 use WebService::Braintree::_::Subscription::StatusDetail;
 use WebService::Braintree::_::Transaction;
+
+=head1 ATTRIBUTES
+
+=cut
 
 =head2 add_ons()
 
@@ -41,7 +49,7 @@ of L<WebService::Braintree::_::AddOn/>.
 
 has add_ons => (
     is => 'ro',
-    isa => 'ArrayRefOfAddOn',
+    isa => ArrayRefOfAddOn,
     coerce => 1,
 );
 
@@ -139,7 +147,7 @@ object of type L<WebService::Braintree::_::Descriptor/>.
 
 has descriptor => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::Descriptor',
+    isa => Descriptor,
     coerce => 1,
 );
 
@@ -152,7 +160,7 @@ of L<WebService::Braintree::_::Discount/>.
 
 has discounts => (
     is => 'ro',
-    isa => 'ArrayRefOfDiscount',
+    isa => ArrayRefOfDiscount,
     coerce => 1,
 );
 
@@ -306,7 +314,7 @@ of L<WebService::Braintree::_::Subscription::StatusDetail/>.
 
 has status_history => (
     is => 'ro',
-    isa => 'ArrayRefOfSubscriptionStatusDetail',
+    isa => ArrayRefOfSubscriptionStatusDetail,
     coerce => 1,
     default => sub { [] },
 );
@@ -320,7 +328,7 @@ of L<WebService::Braintree::_::Transaction/>.
 
 has transactions => (
     is => 'ro',
-    isa => 'ArrayRefOfTransaction',
+    isa => ArrayRefOfTransaction,
     coerce => 1,
 );
 

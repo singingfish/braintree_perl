@@ -21,6 +21,10 @@ use Moose;
 
 extends 'WebService::Braintree::_';
 
+use WebService::Braintree::Types qw(
+    IbanBankAccount
+);
+
 use WebService::Braintree::_::IbanBankAccount;
 
 =head1 ATTRIBUTES
@@ -65,7 +69,7 @@ This is the iban_bank_account for this ideal payment. This will be an object of 
 
 has iban_bank_account => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::IbanBankAccount',
+    isa => IbanBankAccount,
     coerce => 1,
 );
 

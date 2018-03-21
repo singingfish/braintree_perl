@@ -19,8 +19,18 @@ This class will only be created as part of a L<response|WebService::Braintree::R
 
 use Moose;
 use MooseX::Aliases;
+use MooseX::Types::Moose qw(
+    Undef
+);
 
 extends 'WebService::Braintree::_';
+
+use WebService::Braintree::Types qw(
+    Address',
+    PaymentMethodNonce
+    ArrayRefOfCreditCardVerification
+    ArrayRefOfSubscription
+);
 
 =head1 ATTRIBUTES
 
@@ -35,7 +45,7 @@ object of type L<WebService::Braintree::_::Address/>.
 
 has billing_address => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::Address',
+    isa => Address,
     coerce => 1,
 );
 
@@ -239,7 +249,7 @@ C<< nonce() >> is an alias for this attribute.
 
 has payment_method_nonce => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::PaymentMethodNonce|Undef',
+    isa => PaymentMethodNonce|Undef,
     coerce => 1,
     default => sub {
         my $self = shift;
@@ -288,7 +298,7 @@ associated with this credit card.
 
 has subscriptions => (
     is => 'ro',
-    isa => 'ArrayRefOfSubscription',
+    isa => ArrayRefOfSubscription,
     coerce => 1,
 );
 
@@ -346,7 +356,7 @@ associated with this credit card.
 
 has verifications => (
     is => 'ro',
-    isa => 'ArrayRefOfCreditCardVerification',
+    isa => ArrayRefOfCreditCardVerification,
     coerce => 1,
 );
 

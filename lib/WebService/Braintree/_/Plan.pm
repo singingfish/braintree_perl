@@ -21,6 +21,11 @@ use Moose;
 
 extends 'WebService::Braintree::_';
 
+use WebService::Braintree::Types qw(
+    ArrayRefOfAddOn
+    ArrayRefOfDiscount
+);
+
 use WebService::Braintree::_::AddOn;
 use WebService::Braintree::_::Discount;
 
@@ -37,7 +42,7 @@ L<add-ons|WebService::Braintree::_::AddOn/>.
 
 has add_ons => (
     is => 'ro',
-    isa => 'ArrayRefOfAddOn',
+    isa => ArrayRefOfAddOn,
     coerce => 1,
 );
 
@@ -100,7 +105,7 @@ L<discounts|WebService::Braintree::_::Discount/>.
 
 has discounts => (
     is => 'ro',
-    isa => 'ArrayRefOfDiscount',
+    isa => ArrayRefOfDiscount,
     coerce => 1,
 );
 

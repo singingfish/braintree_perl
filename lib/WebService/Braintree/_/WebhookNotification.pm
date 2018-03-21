@@ -22,6 +22,20 @@ use MooseX::Aliases;
 
 extends 'WebService::Braintree::_';
 
+use WebService::Braintree::Types qw(
+    ErrorResult
+    ConnectedMerchantPayPalStatusChanged
+    ConnectedMerchantStatusTransitioned
+    Disbursement
+    Dispute
+    GrantedPaymentInstrumentUpdate
+    IdealPayment
+    MerchantAccount
+    HashInflator
+    Subscription
+    Transaction
+);
+
 use Hash::Inflator;
 
 use WebService::Braintree::ErrorResult;
@@ -61,7 +75,7 @@ C<< error_result() >> is an alias for this attribute.
 
 has api_error_response => (
     is => 'rw',
-    isa => 'WebService::Braintree::ErrorResult',
+    isa => ErrorResult,
     coerce => 1,
     alias => 'error_result',
 );
@@ -75,7 +89,7 @@ L<WebService::Braintree::_::ConnectedMerchantPayPalStatusChanged/>.
 
 has connected_merchant_paypal_status_changed => (
     is => 'rw',
-    isa => 'WebService::Braintree::_::ConnectedMerchantPayPalStatusChanged',
+    isa => ConnectedMerchantPayPalStatusChanged,
     coerce => 1,
 );
 
@@ -88,7 +102,7 @@ L<WebService::Braintree::_::ConnectedMerchantstatusTransitioned/>.
 
 has connected_merchant_status_transitioned => (
     is => 'rw',
-    isa => 'WebService::Braintree::_::ConnectedMerchantStatusTransitioned',
+    isa => ConnectedMerchantStatusTransitioned,
     coerce => 1,
 );
 
@@ -101,7 +115,7 @@ L<WebService::Braintree::_::Disbursement/>.
 
 has disbursement => (
     is => 'rw',
-    isa => 'WebService::Braintree::_::Disbursement',
+    isa => Disbursement,
     coerce => 1,
 );
 
@@ -114,7 +128,7 @@ L<WebService::Braintree::_::Dispute/>.
 
 has dispute => (
     is => 'rw',
-    isa => 'WebService::Braintree::_::Dispute',
+    isa => Dispute,
     coerce => 1,
 );
 
@@ -127,7 +141,7 @@ L<WebService::Braintree::_::GrantedPaymentInstrumentUpdate/>.
 
 has granted_payment_instrument_update => (
     is => 'rw',
-    isa => 'WebService::Braintree::_::GrantedPaymentInstrumentUpdate',
+    isa => GrantedPaymentInstrumentUpdate,
     coerce => 1,
 );
 
@@ -140,7 +154,7 @@ L<WebService::Braintree::_::IdealPayment/>.
 
 has ideal_payment => (
     is => 'rw',
-    isa => 'WebService::Braintree::_::IdealPayment',
+    isa => IdealPayment,
     coerce => 1,
 );
 
@@ -163,7 +177,7 @@ L<WebService::Braintree::_::MerchantAccount/>.
 
 has merchant_account => (
     is => 'rw',
-    isa => 'WebService::Braintree::_::MerchantAccount',
+    isa => MerchantAccount,
     coerce => 1,
 );
 
@@ -176,7 +190,7 @@ L<Hash::Inflator/>.
 
 has partner_merchant => (
     is => 'rw',
-    isa => 'Hash::Inflator',
+    isa => HashInflator,
     coerce => 1,
 );
 
@@ -189,7 +203,7 @@ L<WebService::Braintree::_::Subscription/>.
 
 has subscription => (
     is => 'rw',
-    isa => 'WebService::Braintree::_::Subscription',
+    isa => Subscription,
     coerce => 1,
 );
 
@@ -224,7 +238,7 @@ L<WebService::Braintree::_::Transaction/>.
 
 has transaction => (
     is => 'rw',
-    isa => 'WebService::Braintree::_::Transaction',
+    isa => Transaction,
     coerce => 1,
 );
 

@@ -11,31 +11,186 @@ use Hash::Inflator;
 use Moose;
 use Moose::Util::TypeConstraints;
 
-foreach my $type_proto (qw(
-    AccountUpdaterDailyReport
-    AchMandate AddOn Address AmexExpressCheckoutCard AndroidPayCard
-    ApplePay ApplePayCard
-    AuthorizationAdjustment
-    BinData CoinbaseAccount
+use MooseX::Types -declare => [qw(
+    AchMandate
+    Address
+    AmexExpressCheckoutCard
+    AndroidPayCard
+    ApplePayCard
+    BinData
+    CodeRef
+    CoinbaseAccount
     ConnectedMerchantPayPalStatusChanged
     ConnectedMerchantStatusTransitioned
-    CreditCard CreditCardVerification Customer
-    Descriptor Disbursement DisbursementDetails Discount Dispute
-    DocumentUpload EuropeBankAccount GrantedPaymentInstrumentUpdate
-    IbanBankAccount IdealPayment MasterpassCard
-    Merchant MerchantAccount PaymentMethodNonce PaymentMethodNonceDetails
-    PayPalAccount Plan SettlementBatchSummary SettlementBatchSummaryRecord
-    Subscription ThreeDSecureInfo Transaction UnknownPaymentMethod
-    UsBankAccount VenmoAccount VisaCheckoutCard WebhookNotification
+    CreditCard
+    CreditCardVerification
+    Descriptor
+    Disbursement
+    Dispute
+    DisputeTransaction
+    DisputeTransactionDetails
+    EuropeBankAccount
+    GrantedPaymentInstrumentUpdate
+    IbanBankAccount
+    IdealPayment
+    MasterpassCard
+    MerchantAccount
+    MerchantAccountAddressDetails
+    MerchantAccountBusinessDetails
+    MerchantAccountFundingDetails
+    MerchantAccountIndividualDetails
+    PaymentMethodNonce
+    PaymentMethodNonceDetails
+    PaymentMethodNonce
+    PayPalAccount
+    Subscription
+    ThreeDSecureInfo
+    Transaction
+    TransactionAddressDetail
+    TransactionAmexExpressCheckoutDetail
+    TransactionAndroidPayDetail
+    TransactionApplePayDetail
+    TransactionCoinbaseDetail
+    TransactionCreditCardDetail
+    TransactionCustomerDetail
+    TransactionDisbursementDetail
+    TransactionFacilitatedDetail
+    TransactionFacilitatorDetail
+    TransactionIdealPaymentDetail
+    TransactionMasterpassCardDetail
+    TransactionPayPalDetail
+    TransactionRiskData
+    TransactionSubscriptionDetail
+    TransactionUsBankAccountDetail
+    TransactionVenmoAccountDetail
+    TransactionVisaCheckoutCardDetail
+    UnknownPaymentMethod
+    UsBankAccount
+    VenmoAccount
+    VisaCheckoutCard
 
-    Dispute::Evidence Dispute::HistoryEvent
-    Dispute::Transaction Dispute::TransactionDetails
+    ArrayRefOfAddOn
+    ArrayRefOfAddress
+    ArrayRefOfAmexExpressCheckoutCard
+    ArrayRefOfAndroidPayCard
+    ArrayRefOfApplePayCard
+    ArrayRefOfAuthorizationAdjustment
+    ArrayRefOfCoinbaseAccount
+    ArrayRefOfCreditCard
+    ArrayRefOfCreditCardVerification
+    ArrayRefOfDiscount
+    ArrayRefOfDispute
+    ArrayRefOfDisputeEvidence
+    ArrayRefOfDisputeHistoryEvent
+    ArrayRefOfEuropeBankAccount
+    ArrayRefOfMasterpassCard
+    ArrayRefOfMerchantAccount
+    ArrayRefOfPayPalAccount
+    ArrayRefOfSettlementBatchSummaryRecord
+    ArrayRefOfSubscription
+    ArrayRefOfSubscriptionStatusDetail
+    ArrayRefOfTransaction
+    ArrayRefOfTransactionStatusDetail
+    ArrayRefOfUsBankAccount
+    ArrayRefOfVenmoAccount
+    ArrayRefOfVisaCheckoutCard
 
-    MerchantAccount::AddressDetails MerchantAccount::BusinessDetails
-    MerchantAccount::FundingDetails MerchantAccount::IndividualDetails
+    ErrorResult
+    ValidationErrorCollection
 
+    HashInflator
+)];
+
+use MooseX::Types::Moose qw(
+    ArrayRef HashRef Undef
+);
+
+sub build_type {
+    my ($class_prefix, $type) = @_;
+
+    my $class = "${class_prefix}::${type}";
+
+    # MooseX::Types cannot handle types with colons in their names.
+    $type =~ s/:://g;
+
+    # Even though Moose declares a type with the classname, that's really
+    # long. Declare a short version of the classname as a type.
+    class_type $type, { class => $class };
+    eval qq{
+    coerce 'WebService::Braintree::Types::$type',
+        from HashRef,
+        via { $class->new(\$_) };
+    }; if ($@) { die $@ }
+
+    my $x = qq{
+        subtype ArrayRefOf${type},
+            as ArrayRef[$type];
+
+        coerce ArrayRefOf${type} =>
+            from ArrayRef[HashRef],
+            via {[ map { $class->new(\$_) } \@{\$_} ]};
+    };
+
+#    warn "$x\n" if $type eq 'AchMandate';
+#    eval $x; if ($@) {
+#        die $@
+#    }
+}
+
+foreach my $type (qw(
+    AccountUpdaterDailyReport
+    AchMandate
+    AddOn
+    Address
+    AmexExpressCheckoutCard
+    AndroidPayCard
+    ApplePay
+    ApplePayCard
+    ApplePayOptions
+    AuthorizationAdjustment
+    BinData
+    CoinbaseAccount
+    ConnectedMerchantPayPalStatusChanged
+    ConnectedMerchantStatusTransitioned
+    CreditCard
+    CreditCardVerification
+    Customer
+    Descriptor
+    Disbursement
+    DisbursementDetails
+    Discount
+    Dispute
+    DocumentUpload
+    EuropeBankAccount
+    GrantedPaymentInstrumentUpdate
+    IbanBankAccount
+    IdealPayment
+    MasterpassCard
+    Merchant
+    MerchantAccount
+    PaymentMethodNonce
+    PaymentMethodNonceDetails
+    PayPalAccount
+    Plan
+    SettlementBatchSummary
+    SettlementBatchSummaryRecord
+    Subscription
+    ThreeDSecureInfo
+    Transaction
+    UnknownPaymentMethod
+    UsBankAccount
+    VenmoAccount
+    VisaCheckoutCard
+    WebhookNotification
+    Dispute::Evidence
+    Dispute::HistoryEvent
+    Dispute::Transaction
+    Dispute::TransactionDetails
+    MerchantAccount::AddressDetails
+    MerchantAccount::BusinessDetails
+    MerchantAccount::FundingDetails
+    MerchantAccount::IndividualDetails
     Subscription::StatusDetail
-
     Transaction::AddressDetail
     Transaction::AmexExpressCheckoutDetail
     Transaction::AndroidPayDetail
@@ -56,44 +211,20 @@ foreach my $type_proto (qw(
     Transaction::VenmoAccountDetail
     Transaction::VisaCheckoutCardDetail
 )) {
-    my $class = "WebService::Braintree::_::${type_proto}";
-
-    my $type = $type_proto;
-    $type =~ s/:://g;
-
-    subtype "ArrayRefOf${type}",
-        as "ArrayRef[${class}]";
-
-    coerce "ArrayRefOf${type}",
-        from 'ArrayRef[HashRef]',
-        via {[ map { $class->new($_) } @{$_} ]};
-
-    coerce $class,
-        from 'HashRef',
-        via { $class->new($_) };
+    build_type('WebService::Braintree::_', $type);
 }
 
 # These are unconverted classes
 foreach my $type (qw(
-    ErrorResult ValidationErrorCollection
+    ErrorResult
+    ValidationErrorCollection
 )) {
-    my $class = "WebService::Braintree::${type}";
-
-    subtype "ArrayRefOf${type}",
-        as "ArrayRef[$class]";
-
-    coerce "ArrayRefOf${type}",
-        from 'ArrayRef[HashRef]',
-        via {[ map { $class->new($_) } @{$_} ]};
-
-    coerce $class,
-        from 'HashRef',
-        via { $class->new($_) };
+    build_type('WebService::Braintree', $type);
 }
 
-class_type 'Hash::Inflator';
-coerce 'Hash::Inflator',
-    from 'HashRef',
+class_type HashInflator, { class => 'Hash::Inflator' };
+coerce HashInflator,
+    from HashRef,
     via { Hash::Inflator->new($_) };
 
 1;

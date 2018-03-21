@@ -22,6 +22,10 @@ use MooseX::Aliases;
 
 extends 'WebService::Braintree::_';
 
+use WebService::Braintree::Types qw(
+    ArrayRefOfSubscription
+);
+
 use WebService::Braintree::_::Subscription;
 
 =head1 ATTRIBUTES
@@ -90,7 +94,7 @@ L<subscriptions|WebService::Braintree::_::Subscription/>.
 
 has subscriptions => (
     is => 'ro',
-    isa => 'ArrayRefOfSubscription',
+    isa => ArrayRefOfSubscription,
     coerce => 1,
 );
 
