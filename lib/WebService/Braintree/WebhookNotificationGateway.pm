@@ -1,4 +1,7 @@
-package WebService::Braintree::WebhookNotificationGateway;
+# vim: sw=4 ts=4 ft=perl
+
+package # hide from pause
+    WebService::Braintree::WebhookNotificationGateway;
 
 use 5.010_001;
 use strictures 1;
@@ -12,6 +15,8 @@ use Moose;
 
 has 'gateway' => (is => 'ro');
 
+use WebService::Braintree::_::WebhookNotification;
+
 sub parse {
     my ($self, $signature, $payload) = @_;
 
@@ -20,7 +25,7 @@ sub parse {
     my $xml_payload = decode_base64($payload);
     my $attributes = xml_to_hash($xml_payload);
 
-    WebService::Braintree::WebhookNotification->new($attributes->{notification});
+    WebService::Braintree::_::WebhookNotification->new($attributes->{notification});
 }
 
 sub _matching_signature {

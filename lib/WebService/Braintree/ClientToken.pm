@@ -1,3 +1,5 @@
+# vim: sw=4 ts=4 ft=perl
+
 package WebService::Braintree::ClientToken;
 
 use 5.010_001;
@@ -13,6 +15,10 @@ This class generates the client token needed by client-side SDKs, such as
 Mobile and Javascript.
 
 =cut
+
+use Moose;
+
+with 'WebService::Braintree::Role::Interface';
 
 use constant DEFAULT_VERSION => "2";
 
@@ -43,36 +49,10 @@ This will default to the DEFAULT_VERSION of 2.
 
 sub generate {
     my ($class, $params) = @_;
-    if (!exists $params->{version}) {
-        $params->{version} = DEFAULT_VERSION;
-    }
+    $params->{version} //= DEFAULT_VERSION;
 
     $class->gateway->client_token->generate($params);
 }
 
-sub gateway {
-    WebService::Braintree->configuration->gateway;
-}
-
-=head1 OBJECT METHODS
-
-None. Please see L</generate()> for more information.
-
-=cut
-
 1;
 __END__
-
-=head1 TODO
-
-=over 4
-
-=item Need to document the keys and values that are returned
-
-=item Need to document the required and optional input parameters
-
-=item Need to document the possible errors/exceptions
-
-=back
-
-=cut

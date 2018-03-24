@@ -1,4 +1,7 @@
-package WebService::Braintree::WebhookTestingGateway;
+# vim: sw=4 ts=4 ft=perl
+
+package # hide from pause
+    WebService::Braintree::WebhookTestingGateway;
 
 use 5.010_001;
 use strictures 1;
