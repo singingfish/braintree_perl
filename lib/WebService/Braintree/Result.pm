@@ -130,7 +130,7 @@ patch_in_response_accessors($response_objects);
 
 =head2 is_success
 
-This always returns false.
+This always returns true.
 
 =cut
 
