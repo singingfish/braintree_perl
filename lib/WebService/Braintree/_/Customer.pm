@@ -21,6 +21,21 @@ use Moose;
 
 extends 'WebService::Braintree::_';
 
+use WebService::Braintree::Types qw(
+    ArrayRefOfAddress
+    ArrayRefOfAmexExpressCheckoutCard
+    ArrayRefOfAndroidPayCard
+    ArrayRefOfApplePayCard
+    ArrayRefOfCoinbaseAccount
+    ArrayRefOfCreditCard
+    ArrayRefOfEuropeBankAccount
+    ArrayRefOfMasterpassCard
+    ArrayRefOfPayPalAccount
+    ArrayRefOfUsBankAccount
+    ArrayRefOfVenmoAccount
+    ArrayRefOfVisaCheckoutCard
+);
+
 use WebService::Braintree::_::Address;
 use WebService::Braintree::_::AmexExpressCheckoutCard;
 use WebService::Braintree::_::AndroidPayCard;
@@ -47,7 +62,7 @@ L<WebService::Braintree::_::Address/>.
 
 has addresses => (
     is => 'ro',
-    isa => 'ArrayRefOfAddress',
+    isa => ArrayRefOfAddress,
     coerce => 1,
 );
 
@@ -60,7 +75,7 @@ L<WebService::Braintree::_::AmexExpressCheckoutCard/>.
 
 has amex_express_checkout_cards => (
     is => 'ro',
-    isa => 'ArrayRefOfAmexExpressCheckoutCard',
+    isa => ArrayRefOfAmexExpressCheckoutCard,
     coerce => 1,
 );
 
@@ -73,7 +88,7 @@ L<WebService::Braintree::_::AndroidPayCard/>.
 
 has android_pay_cards => (
     is => 'ro',
-    isa => 'ArrayRefOfAndroidPayCard',
+    isa => ArrayRefOfAndroidPayCard,
     coerce => 1,
 );
 
@@ -86,7 +101,7 @@ L<WebService::Braintree::_::ApplePayCard/>.
 
 has apple_pay_cards => (
     is => 'ro',
-    isa => 'ArrayRefOfApplePayCard',
+    isa => ArrayRefOfApplePayCard,
     coerce => 1,
 );
 
@@ -99,7 +114,7 @@ L<WebService::Braintree::_::CoinbaseAccount/>.
 
 has coinbase_accounts => (
     is => 'ro',
-    isa => 'ArrayRefOfCoinbaseAccount',
+    isa => ArrayRefOfCoinbaseAccount,
     coerce => 1,
 );
 
@@ -132,7 +147,7 @@ L<WebService::Braintree::_::CreditCard/>.
 
 has credit_cards => (
     is => 'ro',
-    isa => 'ArrayRefOfCreditCard',
+    isa => ArrayRefOfCreditCard,
     coerce => 1,
 );
 
@@ -168,7 +183,7 @@ L<WebService::Braintree::_::EuropeBankAccount/>.
 
 has europe_bank_accounts => (
     is => 'ro',
-    isa => 'ArrayRefOfEuropeBankAccount',
+    isa => ArrayRefOfEuropeBankAccount,
     coerce => 1,
 );
 
@@ -221,7 +236,7 @@ L<WebService::Braintree::_::MasterpassCard/>.
 
 has masterpass_cards => (
     is => 'ro',
-    isa => 'ArrayRefOfMasterpassCard',
+    isa => ArrayRefOfMasterpassCard,
     coerce => 1,
 );
 
@@ -244,7 +259,7 @@ L<WebService::Braintree::_::PayPalAccount/>.
 
 has paypal_accounts => (
     is => 'ro',
-    isa => 'ArrayRefOfPayPalAccount',
+    isa => ArrayRefOfPayPalAccount,
     coerce => 1,
 );
 
@@ -277,7 +292,7 @@ L<WebService::Braintree::_::UsBankAccount/>.
 
 has us_bank_accounts => (
     is => 'ro',
-    isa => 'ArrayRefOfUsBankAccount',
+    isa => ArrayRefOfUsBankAccount,
     coerce => 1,
 );
 
@@ -290,7 +305,7 @@ L<WebService::Braintree::_::VenmoAccount/>.
 
 has venmo_accounts => (
     is => 'ro',
-    isa => 'ArrayRefOfVenmoAccount',
+    isa => ArrayRefOfVenmoAccount,
     coerce => 1,
 );
 
@@ -303,7 +318,7 @@ L<WebService::Braintree::_::VisaCheckoutCard/>.
 
 has visa_checkout_cards => (
     is => 'ro',
-    isa => 'ArrayRefOfVisaCheckoutCard',
+    isa => ArrayRefOfVisaCheckoutCard,
     coerce => 1,
 );
 

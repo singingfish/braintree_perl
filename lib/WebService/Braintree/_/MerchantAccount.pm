@@ -22,6 +22,13 @@ use MooseX::Aliases;
 
 extends 'WebService::Braintree::_';
 
+use WebService::Braintree::Types qw(
+    MerchantAccountBusinessDetails
+    MerchantAccountFundingDetails
+    MerchantAccountIndividualDetails
+    MerchantAccount
+);
+
 use WebService::Braintree::_::MerchantAccount::BusinessDetails;
 use WebService::Braintree::_::MerchantAccount::FundingDetails;
 use WebService::Braintree::_::MerchantAccount::IndividualDetails;
@@ -41,7 +48,7 @@ C<< business_details() >> is an alias for this attribute.
 
 has business => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::MerchantAccount::BusinessDetails',
+    isa => MerchantAccountBusinessDetails,
     coerce => 1,
     alias => 'business_details',
 );
@@ -80,7 +87,7 @@ C<< funding_details() >> is an alias for this attribute.
 
 has funding => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::MerchantAccount::FundingDetails',
+    isa => MerchantAccountFundingDetails,
     coerce => 1,
     alias => 'funding_details',
 );
@@ -106,7 +113,7 @@ C<< individual_details() >> is an alias for this attribute.
 
 has individual => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::MerchantAccount::IndividualDetails',
+    isa => MerchantAccountIndividualDetails,
     coerce => 1,
     alias => 'individual_details',
 );
@@ -120,7 +127,7 @@ object of type L<WebService::Braintree::_::MerchantAccount/>.
 
 has master_merchant_account => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::MerchantAccount',
+    isa => MerchantAccount,
     coerce => 1,
 );
 

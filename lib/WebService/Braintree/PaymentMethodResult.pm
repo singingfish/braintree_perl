@@ -20,6 +20,22 @@ This class is a sibling class to L<WebService::Braintree::Result>.
 
 use Moose;
 
+use WebService::Braintree::Types qw(
+    AmexExpressCheckoutCard
+    AndroidPayCard
+    ApplePayCard
+    CoinbaseAccount
+    CreditCard
+    EuropeBankAccount
+    MasterpassCard
+    PaymentMethodNonce
+    PayPalAccount
+    UsBankAccount
+    VenmoAccount
+    VisaCheckoutCard
+    UnknownPaymentMethod
+);
+
 =head1 METHODS
 
 =cut
@@ -66,70 +82,72 @@ will be in the C<< unknown() >>.
 
 has amex_express_checkout_card => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::AmexExpressCheckoutCard',
+    isa => AmexExpressCheckoutCard,
     coerce => 1,
 );
 has android_pay_card => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::AndroidPayCard',
+    isa => AndroidPayCard,
     coerce => 1,
 );
 has apple_pay_card => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::ApplePayCard',
+    isa => ApplePayCard,
     coerce => 1,
 );
 has coinbase_account => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::CoinbaseAccount',
+    isa => CoinbaseAccount,
     coerce => 1,
 );
 has credit_card => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::CreditCard',
+    isa => CreditCard,
     coerce => 1,
 );
 has europe_bank_account => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::EuropeBankAccount',
+    isa => EuropeBankAccount,
     coerce => 1,
 );
 has masterpass_card => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::MasterpassCard',
+    isa => MasterpassCard,
     coerce => 1,
 );
 has payment_method_nonce => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::PaymentMethodNonce',
+    isa => PaymentMethodNonce,
     coerce => 1,
 );
 has paypal_account => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::PayPalAccount',
+    isa => PayPalAccount,
     coerce => 1,
 );
 has us_bank_account => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::UsBankAccount',
+    isa => UsBankAccount,
     coerce => 1,
 );
 has venmo_account => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::VenmoAccount',
+    isa => VenmoAccount,
     coerce => 1,
 );
 has visa_checkout_card => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::VisaCheckoutCard',
+    isa => VisaCheckoutCard,
     coerce => 1,
 );
 has unknown => (
     is => 'rw',
-    isa => 'WebService::Braintree::_::UnknownPaymentMethod',
+    isa => UnknownPaymentMethod,
     coerce => 1,
 );
 
+# This has a BUILD() because we need to set the payment method to the
+# unknown() if the result returns something we don't know about.
 sub BUILD {
     my ($self, $attrs) = @_;
 

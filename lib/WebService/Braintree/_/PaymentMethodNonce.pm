@@ -19,8 +19,18 @@ This class will only be created as part of a L<response|WebService::Braintree::R
 
 use Moose;
 use MooseX::Aliases;
+use MooseX::Types::Moose qw(
+    Undef
+);
 
 extends 'WebService::Braintree::_';
+
+use WebService::Braintree::Types qw(
+    BinData
+    PaymentMethodNonceDetails
+    ThreeDSecureInfo
+    Undef
+);
 
 use WebService::Braintree::_::BinData;
 use WebService::Braintree::_::PaymentMethodNonceDetails;
@@ -39,7 +49,7 @@ L<bin data|WebService::Braintree::_::BinData/>.
 
 has bin_data => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::BinData',
+    isa => BinData,
     coerce => 1,
 );
 
@@ -88,7 +98,7 @@ L<defaults|WebService::Braintree::_::PaymentMethodNonceDetails/>.
 
 has details => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::PaymentMethodNonceDetails',
+    isa => PaymentMethodNonceDetails,
     coerce => 1,
 );
 
@@ -131,7 +141,7 @@ L<ThreeD secure info|WebService::Braintree::_::ThreeDSecureInfo/>.
 
 has three_d_secure_info => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::ThreeDSecureInfo|Undef',
+    isa => ThreeDSecureInfo|Undef,
     coerce => 1,
 );
 

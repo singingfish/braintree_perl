@@ -22,6 +22,11 @@ use MooseX::Aliases;
 
 extends 'WebService::Braintree::_';
 
+use WebService::Braintree::Types qw(
+    Address
+    CreditCard
+);
+
 =head1 ATTRIBUTES
 
 =cut
@@ -78,7 +83,7 @@ C<< billing_address() >> is an alias to this attribute.
 
 has billing => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::Address',
+    isa => Address,
     coerce => 1,
     alias => 'billing_address',
 );
@@ -103,7 +108,7 @@ object of type L<WebService::Braintree::_::CreditCard/>.
 
 has credit_card => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::CreditCard',
+    isa => CreditCard,
     coerce => 1,
 );
 

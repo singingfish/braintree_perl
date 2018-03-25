@@ -22,6 +22,10 @@ use MooseX::Aliases;
 
 extends 'WebService::Braintree::_';
 
+use WebService::Braintree::Types qw(
+    AchMandate
+);
+
 use WebService::Braintree::_::AchMandate;
 
 =head1 ATTRIBUTES
@@ -47,7 +51,7 @@ object of type L<WebService::Braintree::_::AchMandate/>.
 
 has ach_mandate => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::AchMandate',
+    isa => AchMandate,
     coerce => 1,
 );
 
