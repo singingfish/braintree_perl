@@ -1,3 +1,5 @@
+# vim: sw=4 ts=4 ft=perl
+
 package WebService::Braintree::TransparentRedirect;
 
 use 5.010_001;
@@ -18,6 +20,8 @@ TODO
 =cut
 
 use Moose;
+
+with 'WebService::Braintree::Role::Interface';
 
 =head1 CLASS METHODS
 
@@ -96,10 +100,6 @@ This takes no parameters and returns whatever url() returns.
 sub url {
     my $class = shift;
     $class->gateway->transparent_redirect->url;
-}
-
-sub gateway {
-    WebService::Braintree->configuration->gateway;
 }
 
 __PACKAGE__->meta->make_immutable;

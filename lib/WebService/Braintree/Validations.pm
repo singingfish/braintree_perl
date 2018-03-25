@@ -1,4 +1,7 @@
-package WebService::Braintree::Validations;
+# vim: sw=4 ts=4 ft=perl
+
+package # hide from pause
+    WebService::Braintree::Validations;
 
 use 5.010_001;
 use strictures 1;
@@ -163,7 +166,8 @@ sub transaction_signature{
         subscription_id => ".",
         venmo_sdk_payment_method_code => ".",
         service_fee_amount => ".",
-        three_d_secure_token => "."
+        three_d_secure_token => ".",
+        line_items => '.',
     };
 }
 

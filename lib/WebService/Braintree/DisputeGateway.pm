@@ -1,4 +1,7 @@
-package WebService::Braintree::DisputeGateway;
+# vim: sw=4 ts=4 ft=perl
+
+package # hide from pause
+    WebService::Braintree::DisputeGateway;
 
 use 5.010_001;
 use strictures 1;
@@ -10,6 +13,9 @@ with 'WebService::Braintree::Role::CollectionBuilder';
 use WebService::Braintree::Util qw(validate_id);
 
 has 'gateway' => (is => 'ro');
+
+use WebService::Braintree::_::Dispute;
+use WebService::Braintree::DisputeSearch;
 
 sub accept {
     my $self = shift;
@@ -68,7 +74,7 @@ sub search {
     return $self->paginated_collection({
         method => 'post',
         url => "/disputes/advanced_search",
-        inflate => [qw/disputes dispute Dispute/],
+        inflate => [qw/disputes dispute _::Dispute/],
         search => $block->(WebService::Braintree::DisputeSearch->new),
     });
 }
