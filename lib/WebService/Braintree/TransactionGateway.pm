@@ -17,8 +17,6 @@ use WebService::Braintree::Validations qw(
     transaction_search_results_signature
 );
 
-has 'gateway' => (is => 'ro');
-
 use WebService::Braintree::_::Transaction;
 use WebService::Braintree::TransactionSearch;
 

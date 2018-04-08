@@ -11,8 +11,6 @@ with 'WebService::Braintree::Role::MakeRequest';
 
 use WebService::Braintree::_::Plan;
 
-has 'gateway' => (is => 'ro');
-
 sub all {
     my $self = shift;
     return $self->_array_request(

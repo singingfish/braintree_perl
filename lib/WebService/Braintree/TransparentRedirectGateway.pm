@@ -17,8 +17,6 @@ use WebService::Braintree::HTTP;
 use WebService::Braintree::Result;
 use WebService::Braintree::TransparentRedirect::QueryString;
 
-has 'gateway' => (is => 'ro');
-
 sub confirm {
     my ($self, $query_string) = @_;
     my $qs = WebService::Braintree::TransparentRedirect::QueryString->new(config => $self->gateway->config);

@@ -16,8 +16,6 @@ use WebService::Braintree::Validations qw(
     client_token_signature_without_customer_id
 );
 
-has 'gateway' => (is => 'ro');
-
 sub generate {
     my ($self, $params) = @_;
     if ($params) {

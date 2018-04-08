@@ -11,8 +11,6 @@ with 'WebService::Braintree::Role::MakeRequest';
 
 use WebService::Braintree::Util qw(validate_id);
 
-has 'gateway' => (is => 'ro');
-
 use WebService::Braintree::_::PaymentMethodNonce;
 
 sub create {

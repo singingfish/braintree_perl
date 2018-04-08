@@ -13,8 +13,6 @@ use Carp qw(confess);
 
 use Moose;
 
-has 'gateway' => (is => 'ro');
-
 use WebService::Braintree::_::WebhookNotification;
 
 sub parse {

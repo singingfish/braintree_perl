@@ -18,8 +18,6 @@ use WebService::Braintree::Result;
 use WebService::Braintree::_::Customer;
 use WebService::Braintree::CustomerSearch;
 
-has 'gateway' => (is => 'ro');
-
 sub create {
     my ($self, $params) = @_;
     confess "ArgumentError" unless verify_params($params, customer_signature);

@@ -18,8 +18,6 @@ use WebService::Braintree::Validations qw(
 );
 use Carp qw(confess);
 
-has 'gateway' => (is => 'ro');
-
 use WebService::Braintree::_::CreditCardVerification;
 use WebService::Braintree::CreditCardVerificationSearch;
 

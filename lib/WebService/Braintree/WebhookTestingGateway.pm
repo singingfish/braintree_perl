@@ -12,8 +12,6 @@ use WebService::Braintree::Digest qw(hexdigest);
 use WebService::Braintree::WebhookNotification::Kind;
 use Moose;
 
-has 'gateway' => (is => 'ro');
-
 sub sample_notification {
     my ($self, $kind, $id) = @_;
 

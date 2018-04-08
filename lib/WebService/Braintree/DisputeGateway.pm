@@ -12,8 +12,6 @@ with 'WebService::Braintree::Role::CollectionBuilder';
 
 use WebService::Braintree::Util qw(is_not_empty validate_id);
 
-has 'gateway' => (is => 'ro');
-
 use WebService::Braintree::_::Dispute;
 use WebService::Braintree::DisputeSearch;
 

@@ -13,8 +13,6 @@ use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 with 'WebService::Braintree::Role::CollectionBuilder';
 
-has 'gateway' => (is => 'ro');
-
 use WebService::Braintree::_::Subscription;
 use WebService::Braintree::SubscriptionSearch;
 

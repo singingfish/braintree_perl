@@ -10,8 +10,6 @@ use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 use Carp qw(confess);
 
-has 'gateway' => (is => 'ro');
-
 use WebService::Braintree::_::SettlementBatchSummary;
 
 sub generate {

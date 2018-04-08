@@ -16,8 +16,6 @@ use WebService::Braintree::Result;
 
 use WebService::Braintree::_::Address;
 
-has 'gateway' => (is => 'ro');
-
 sub create {
     my($self, $params) = @_;
     my $customer_id = delete($params->{'customer_id'});

@@ -15,8 +15,6 @@ use WebService::Braintree::Validations qw(verify_params);
 use WebService::Braintree::Util qw(validate_id is_hashref);
 use WebService::Braintree::Result;
 
-has 'gateway' => (is => 'ro');
-
 use WebService::Braintree::_::MerchantAccount;
 
 sub create {

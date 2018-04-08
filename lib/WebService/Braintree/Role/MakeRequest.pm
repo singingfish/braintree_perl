@@ -8,6 +8,8 @@ use strictures 1;
 
 use Moose::Role;
 
+has 'gateway' => (is => 'ro');
+
 use WebService::Braintree::ErrorResult;
 use WebService::Braintree::Result;
 use WebService::Braintree::Util qw(to_instance_array);
