@@ -30,7 +30,7 @@ sub verify_params {
     my ($params, $white_list) = @_;
     foreach (keys %$params) {
         my $key = $_;
-        my $sub_white_list = $white_list-> {$key};
+        my $sub_white_list = $white_list->{$key};
         return 0 unless($sub_white_list);
         if (is_hashref($sub_white_list)) {
             return 0 unless verify_params($params->{$key}, $sub_white_list);

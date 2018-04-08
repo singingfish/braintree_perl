@@ -10,6 +10,7 @@ use Moose::Role;
 
 use WebService::Braintree::ErrorResult;
 use WebService::Braintree::Result;
+use WebService::Braintree::Util qw(to_instance_array);
 
 sub _make_request {
     my($self, $path, $verb, @args) = @_;
@@ -39,6 +40,13 @@ sub _make_raw_request {
     else {
         return $response;
     }
+}
+
+sub _array_request {
+    my ($self, $path, $key, $class) = @_;
+    my $response = $self->gateway->http->get($path);
+    my $attrs = $response->{$key} || [];
+    return to_instance_array($attrs, $class);
 }
 
 1;

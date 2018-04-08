@@ -178,10 +178,19 @@
 
     use Carp;
     use Moose;
-    use WebService::Braintree::Util qw(difference_arrays is_arrayref);
+    use WebService::Braintree::Util qw(is_arrayref);
     extends 'WebService::Braintree::SearchNode';
 
     has allowed_values => (is => 'ro');
+
+    sub difference_arrays {
+        my ($array1, $array2) = @_;
+        my @diff;
+        foreach my $element (@$array1) {
+            push(@diff, $element) unless grep { $element eq $_ } @$array2;
+        }
+        return \@diff;
+    }
 
     sub default_criteria {
         return [];

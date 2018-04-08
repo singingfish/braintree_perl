@@ -10,7 +10,7 @@ use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 with 'WebService::Braintree::Role::CollectionBuilder';
 
-use WebService::Braintree::Util qw(validate_id);
+use WebService::Braintree::Util qw(is_not_empty validate_id);
 
 has 'gateway' => (is => 'ro');
 
@@ -46,7 +46,7 @@ sub add_text_evidence {
     my $self = shift;
     my ($id, $content) = @_;
     confess "ArgumentError" unless validate_id($id);
-    confess "ArgumentError" unless validate_id($content);
+    confess "ArgumentError" unless is_not_empty($content);
 
     $self->_make_request("/disputes/${id}/evidence", "post", {comments => $content});
 }

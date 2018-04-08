@@ -26,7 +26,6 @@ use WebService::Braintree::CreditCardVerificationSearch;
 sub find {
     my ($self, $id) = @_;
     confess "NotFoundError" unless validate_id($id);
-    my $response = $self->gateway->http->get("/verifications/$id");
     $self->_make_request("/verifications/$id", "get", undef)->verification;
 }
 
