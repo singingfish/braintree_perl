@@ -8,6 +8,7 @@ use strictures 1;
 
 use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
+
 use Carp qw(confess);
 
 use WebService::Braintree::_::SettlementBatchSummary;

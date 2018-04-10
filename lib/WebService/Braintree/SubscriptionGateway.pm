@@ -6,12 +6,13 @@ package # hide from pause
 use 5.010_001;
 use strictures 1;
 
-use WebService::Braintree::Util qw(validate_id);
-use Carp qw(confess);
-
 use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 with 'WebService::Braintree::Role::CollectionBuilder';
+
+use Carp qw(confess);
+
+use WebService::Braintree::Util qw(validate_id);
 
 use WebService::Braintree::_::Subscription;
 use WebService::Braintree::SubscriptionSearch;
@@ -30,11 +31,13 @@ sub find {
 
 sub update {
     my ($self, $id, $params) = @_;
+    confess "NotFoundError" unless validate_id($id);
     my $result = $self->_make_request("/subscriptions/$id", "put", {subscription => $params});
 }
 
 sub cancel {
     my ($self, $id) = @_;
+    confess "NotFoundError" unless validate_id($id);
     my $result = $self->_make_request("/subscriptions/$id/cancel", "put", undef);
 }
 

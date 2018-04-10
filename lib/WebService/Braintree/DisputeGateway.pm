@@ -10,6 +10,8 @@ use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 with 'WebService::Braintree::Role::CollectionBuilder';
 
+use Carp qw(confess);
+
 use WebService::Braintree::Util qw(is_not_empty validate_id);
 
 use WebService::Braintree::_::Dispute;

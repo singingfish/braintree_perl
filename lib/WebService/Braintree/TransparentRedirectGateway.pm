@@ -11,10 +11,9 @@ with 'WebService::Braintree::Role::MakeRequest';
 
 use Carp qw(confess);
 use DateTime;
+
 use WebService::Braintree::Util qw(hash_to_query_string);
 use WebService::Braintree::Digest qw(hexdigest);
-use WebService::Braintree::HTTP;
-use WebService::Braintree::Result;
 use WebService::Braintree::TransparentRedirect::QueryString;
 
 sub confirm {

@@ -10,6 +10,7 @@ use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 
 use Carp qw(confess);
+
 use WebService::Braintree::Validations qw(
     verify_params
     client_token_signature_with_customer_id

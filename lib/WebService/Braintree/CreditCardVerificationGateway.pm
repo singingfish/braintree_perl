@@ -10,13 +10,13 @@ use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 with 'WebService::Braintree::Role::CollectionBuilder';
 
-use WebService::Braintree::CreditCardVerificationSearch;
+use Carp qw(confess);
+
 use WebService::Braintree::Util qw(validate_id);
 use WebService::Braintree::Validations qw(
     verify_params
     credit_card_verification_signature
 );
-use Carp qw(confess);
 
 use WebService::Braintree::_::CreditCardVerification;
 use WebService::Braintree::CreditCardVerificationSearch;

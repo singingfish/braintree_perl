@@ -9,24 +9,21 @@ use strictures 1;
 use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 
+use Carp qw(confess);
+
 use WebService::Braintree::Util qw(validate_id);
 
 use WebService::Braintree::_::PaymentMethodNonce;
 
 sub create {
     my ($self, $token) = @_;
-    if (!validate_id($token)) {
-        confess "NotFoundError";
-    }
+    confess "NotFoundError" if !validate_id($token);
     $self->_make_request("/payment_methods/${token}/nonces", 'post');
 }
 
 sub find {
     my ($self, $token) = @_;
-    if (!validate_id($token)) {
-        confess "NotFoundError";
-    }
-
+    confess "NotFoundError" if !validate_id($token);
     $self->_make_request("/payment_method_nonces/" . $token, 'get');
 }
 

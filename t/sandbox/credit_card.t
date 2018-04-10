@@ -361,7 +361,7 @@ subtest "Valid Venmo Sdk Session" => sub {
     plan skip_all => 'This is broken';
     my $result = WebService::Braintree::CreditCard->create(credit_card({
         customer_id => $customer_create->customer->id,
-        options =>  {
+        options => {
             venmo_sdk_session => WebService::Braintree::Test::VenmoSdk::Session,
         },
     }));
@@ -373,7 +373,7 @@ subtest "Valid Venmo Sdk Session" => sub {
 subtest "Invalid Venmo Sdk Session" => sub {
     my $result = WebService::Braintree::CreditCard->create(credit_card({
         customer_id => $customer_create->customer->id,
-        options =>  {
+        options => {
             venmo_sdk_session => WebService::Braintree::Test::VenmoSdk::InvalidSession,
         },
     }));

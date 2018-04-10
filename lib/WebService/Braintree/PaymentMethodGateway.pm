@@ -10,7 +10,6 @@ use Moose;
 extends 'WebService::Braintree::PaymentMethodGatewayBase';
 
 use Carp qw(confess);
-use Scalar::Util qw(blessed);
 
 use WebService::Braintree::Util qw(validate_id);
 
@@ -40,16 +39,19 @@ sub find {
 
 sub delete {
     my ($self, $token) = @_;
+    confess "NotFoundError" unless validate_id($token);
     $self->_make_request("/payment_methods/any/" . $token, 'delete');
 }
 
 sub grant {
     my ($self, $token, $params) = @_;
+    confess "NotFoundError" unless validate_id($token);
     $self->_make_request("/payment_methods/grant", 'post', {payment_method => { %$params, shared_payment_method_token => $token}});
 }
 
 sub revoke {
     my ($self, $token) = @_;
+    confess "NotFoundError" unless validate_id($token);
     $self->_make_request("/payment_methods/revoke", 'post', {payment_method => { shared_payment_method_token => $token}});
 }
 

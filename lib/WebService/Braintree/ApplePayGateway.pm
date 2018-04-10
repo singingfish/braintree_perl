@@ -9,6 +9,10 @@ use strictures 1;
 use Moose;
 with 'WebService::Braintree::Role::MakeRequest';
 
+use Carp qw(confess);
+
+use WebService::Braintree::Util qw(validate_id);
+
 use WebService::Braintree::_::ApplePay;
 
 sub registered_domains {
@@ -18,11 +22,13 @@ sub registered_domains {
 
 sub register_domain {
     my ($self, $domain) = @_;
+    confess "NotFoundError" unless validate_id($domain);
     $self->_make_request("/processing/apple_pay/validate_domains", "post", {url => $domain});
 }
 
 sub unregister_domain {
     my ($self, $domain) = @_;
+    confess "NotFoundError" unless validate_id($domain);
     $self->_make_request("/processing/apple_pay/unregister_domain", "delete", {url => $domain});
 }
 
