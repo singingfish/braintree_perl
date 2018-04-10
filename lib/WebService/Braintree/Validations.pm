@@ -33,6 +33,7 @@ sub verify_params {
         my $sub_white_list = $white_list->{$key};
         return 0 unless($sub_white_list);
         if (is_hashref($sub_white_list)) {
+            return 0 unless is_hashref($params->{$key});
             return 0 unless verify_params($params->{$key}, $sub_white_list);
         } elsif (is_hashref($params->{$key})) {
             return 0 if $sub_white_list ne "_any_key_";
