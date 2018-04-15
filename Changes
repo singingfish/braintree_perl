@@ -1,6 +1,28 @@
 Revision history for WebService-Braintree
 1.x     2018-XX-XX
         Removed unused hexdigest_256() method
+        Add support for options to PaymentMethod->delete()
+        Add params validation to:
+          * DocumentUploadGateway
+              * create
+          * PaymentMethodGateway
+              * create
+              * update
+              * delete
+              * grant
+          * PayPalAccountGateway
+              * create
+              * update
+          * SettlementBatchSummaryGateway
+              * generate
+          * SubscriptionGateway
+              * create
+              * update
+          * TransactionGateway
+              * submit_for_settlement
+              * refund
+              * update_details
+              * submit_for_partial_settlement
 1.2     2018-03-20
         Added new interfaces:
             TransactionLineItem
