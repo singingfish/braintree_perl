@@ -1,4 +1,6 @@
 Revision history for WebService-Braintree
+1.x     2018-XX-XX
+        Removed unused hexdigest_256() method
 1.2     2018-03-20
         Added new interfaces:
             TransactionLineItem

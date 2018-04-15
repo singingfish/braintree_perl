@@ -5,7 +5,6 @@ package WebService::Braintree::Transaction::PaymentInstrumentType;
 use 5.010_001;
 use strictures 1;
 
-use vars qw(@ISA @EXPORT @EXPORT_OK);
 use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(PAYPAL_ACCOUNT SEPA_BANK_ACCOUNT CREDIT_CARD ANY UNKNOWN);

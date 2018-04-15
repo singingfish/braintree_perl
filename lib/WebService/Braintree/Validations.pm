@@ -8,7 +8,6 @@ use strictures 1;
 
 use WebService::Braintree::Util qw(is_hashref);
 
-use vars qw(@ISA @EXPORT_OK);
 use Exporter;
 our @ISA = qw(Exporter);
 
