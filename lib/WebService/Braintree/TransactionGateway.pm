@@ -45,7 +45,17 @@ sub retry_subscription_charge {
 
 sub submit_for_settlement {
     my ($self, $id, $params) = @_;
+
     confess "NotFoundError" unless validate_id($id);
+    confess "ArgumentError" unless verify_params($params, {
+        order_id => 1,
+        description => {
+            name => 1,
+            phone => 1,
+            url => 1,
+        },
+    });
+
     $self->_make_request("/transactions/$id/submit_for_settlement", "put", {transaction => $params});
 }
 
@@ -57,7 +67,13 @@ sub void {
 
 sub refund {
     my ($self, $id, $params) = @_;
+
     confess "NotFoundError" unless validate_id($id);
+    confess "ArgumentError" unless verify_params($params, {
+        amount => 1,
+        order_id => 1,
+    });
+
     $self->_make_request("/transactions/$id/refund", "post", {transaction => $params});
 }
 
@@ -104,13 +120,34 @@ sub cancel_release {
 
 sub update_details {
     my ($self, $id, $params) = @_;
+
     confess "NotFoundError" unless validate_id($id);
+    confess "ArgumentError" unless verify_params($params, {
+        amount => 1,
+        order_id => 1,
+        description => {
+            name => 1,
+            phone => 1,
+            url => 1,
+        },
+    });
+
     $self->_make_request("/transactions/$id/update_details", "put", { transaction => $params });
 }
 
 sub submit_for_partial_settlement {
     my ($self, $id, $amount, $params) = @_;
+
     confess "NotFoundError" unless validate_id($id);
+    confess "ArgumentError" unless verify_params($params, {
+        order_id => 1,
+        description => {
+            name => 1,
+            phone => 1,
+            url => 1,
+        },
+    });
+
     $self->_make_request("/transactions/$id/submit_for_partial_settlement", "post", { transaction => {%$params, amount => $amount}});
 }
 

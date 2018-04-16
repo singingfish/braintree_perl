@@ -58,7 +58,12 @@ sub delete {
 
 sub grant {
     my ($self, $token, $params) = @_;
+
     confess "NotFoundError" unless validate_id($token);
+    #confess "ArgumentError" unless verify_params($params, {
+    #    revoke_all_grants => 1,
+    #});
+
     $self->_make_request("/payment_methods/grant", 'post', {payment_method => { %$params, shared_payment_method_token => $token}});
 }
 
@@ -104,9 +109,12 @@ sub _signature_for {
     };
 
     if ($type eq 'create') {
-        $signature->{customer_id} = 1;
-        $signature->{paypal_refresh_token} = 1;
-        $signature->{paypal_vault_without_upgrade} = 1;
+        $signature = {
+            %{$signature},
+            customer_id => 1,
+            paypal_refresh_token => 1,
+            paypal_vault_without_upgrade => 1,
+        };
         $signature->{options}{fail_on_duplicate_payment_method} = 1;
     }
     elsif ($type eq 'update') {

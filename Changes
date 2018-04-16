@@ -9,12 +9,9 @@ Revision history for WebService-Braintree
               * create
               * update
               * delete
-              * grant
           * PayPalAccountGateway
               * create
               * update
-          * SettlementBatchSummaryGateway
-              * generate
           * SubscriptionGateway
               * create
               * update
