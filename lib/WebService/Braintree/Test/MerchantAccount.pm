@@ -5,8 +5,7 @@ package WebService::Braintree::Test::MerchantAccount;
 use 5.010_001;
 use strictures 1;
 
-use vars qw(@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS );
-use Exporter qw(import);
+use Exporter;
 our @ISA = qw(Exporter);
 
 use constant Approve => "approve_me";
