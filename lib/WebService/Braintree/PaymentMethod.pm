@@ -46,13 +46,22 @@ sub update {
 
 =head2 delete()
 
-This takes a token and deletes the corresponding payment method (if found).
+This takes a token and an optional hashref of parameters. It will delete the
+corresponding payment method (if found).
+
+The optional hashref can contain the following key(s):
+
+=over 4
+
+=item * revoke_all_grants
+
+=back
 
 =cut
 
 sub delete {
-    my ($class, $token) = @_;
-    $class->gateway->payment_method->delete($token);
+    my ($class, $token, $params) = @_;
+    $class->gateway->payment_method->delete($token, $params);
 }
 
 =head2 grant()
