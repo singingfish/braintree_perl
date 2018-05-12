@@ -71,6 +71,21 @@ As of version 0.94, with appropriate manual intervention for your sandbox
 account (documented in C<t/sandbox/README>), more of the sandbox tests
 run/pass for this module than for the original module L<Net::Braintree>.
 
+=head2 OBJECT VS CLASS INTERFACE
+
+As of January, 2018, Braintree released a large refactoring to how clients
+interact with the Braintre API. They call the different class (old-style) vs.
+object (new-style). Under the old style, configuration is global and all the
+interactions with the API use the same configuration. Under the new style, each
+call I<could> use a new configuration, if needed.
+
+Both styles will be supported for the foreseeable future. Clients can still set
+a global configuration and use the class interface, just like before.
+
+In the documentation below, everything applies to both styles, except where
+otherwise noted. If there is a difference between them, an exmaple of both will
+be provided.
+
 =head2 GENERAL STYLE
 
 In general, clients of this library will not instantiate any objects.  Every
@@ -79,6 +94,11 @@ those cases, those objects will be documented for you.
 
 Unless otherwise noted, all attributes in these objects will be read-only and
 will have been populated by the responses from Braintree.
+
+=head3 Object Style
+
+If you use the object style, then you will instantiate and manage instances of
+gateway objects. Each gateway object will have its own configuration.
 
 =cut
 
@@ -89,7 +109,10 @@ will have been populated by the responses from Braintree.
 
 =head2 CONFIGURATION
 
-You will need to set some configuration.
+You will need to set some configuration. Please see
+L<WebService::Braintree::Configuration/> for details.
+
+=head3 Class Style
 
     use WebService::Braintree;
 
@@ -99,7 +122,24 @@ You will need to set some configuration.
     $conf->public_key( 'use_your_public_key' );
     $conf->private_key( 'use_your_private_key' );
 
-Please see L<WebService::Braintree::Configuration/> for more information.
+    my $result = WebService::Braintree::Transaction->sale(
+        ...
+    );
+
+=head3 Object Style
+
+    use WebService::Braintree;
+
+    my $gateway = WebService::Braintree::Gateway->new({
+        environment => 'sandbox',
+        merchant_id => 'use_your_merchant_id',
+        public_key  => 'use_your_public_key',
+        private_key => 'use_your_private_key',
+    });
+
+    my $result = $gateway->transaction->sale(
+        ...
+    );
 
 =head3 Client Tokens
 
