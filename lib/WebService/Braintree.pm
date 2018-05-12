@@ -151,7 +151,16 @@ or to production.
 
 This token is created with L<WebService::Braintree::ClientToken/generate>.
 
-=head2 INTERFACE
+=head2 OBJECT INTERFACE
+
+The object interface is described on each of the gateway classes. In general,
+they are identical to the class interface described below, with the change that
+you have invoked a method on a generic C<< $gateway >> object instead of using
+the class.
+
+q.v. L<WebService::Braintree::Gateway> for more information.
+
+=head2 CLASS INTERFACE
 
 These are the classes that you will interface with.  Please see their
 respective documentation for more detail on how to use them. These classes
@@ -194,6 +203,10 @@ List all plan discounts.
 
 Accept, and find disputes.
 
+=head3 L<WebService::Braintree::DocumentUpload>
+
+Manage document uploads.
+
 =head3 L<WebService::Braintree::EuropeBankAccount>
 
 Find Europe Bank Accounts.
@@ -213,6 +226,10 @@ Create, update, and find merchant accounts.
 =head3 L<WebService::Braintree::PaymentMethod>
 
 Create, update, delete, and find payment methods.
+
+=head3 L<WebService::Braintree::PaymentMethodNonce>
+
+Create, update, delete, and find payment method nonces.
 
 =head3 L<WebService::Braintree::PayPalAccount>
 
