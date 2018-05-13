@@ -268,7 +268,7 @@ Find US Bank Accounts.
 
 =head2 SEARCHING
 
-Several of the class interfaces provide a C<< search() >> method.  This method
+Several of the interfaces provide a C<< search() >> method.  This method
 is unique in that it takes a subroutine reference (subref) instead of a hashref
 or other parameters.
 
