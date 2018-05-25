@@ -29,42 +29,24 @@ with 'WebService::Braintree::Role::Interface';
 
 =head2 sale()
 
-This takes a hashref of parameters and returns the transaction created. This is
-a wrapper around L</create()> with the type set to 'sale'.
+This takes a hashref of parameters and returns the transaction created.
 
 =cut
 
 sub sale {
     my ($class, $params) = @_;
-    $class->create($params, 'sale');
+    $class->gateway->transaction->sale($params);
 }
 
 =head2 credit()
 
-This takes a hashref of parameters and returns the transaction created. This is
-a wrapper around L</create()> with the type set to 'credit'.
+This takes a hashref of parameters and returns the transaction created.
 
 =cut
 
 sub credit {
     my ($class, $params) = @_;
-    $class->create($params, 'credit');
-}
-
-=head2 create()
-
-This takes a hashref of parameters and a type and returns the transaction
-created.
-
-In general, you will not call this method. Instead, call one of the wrappers
-of this method, such as L</sale()> and L</credit()>.
-
-=cut
-
-sub create {
-    my ($class, $params, $type) = @_;
-    $params->{'type'} = $type;
-    $class->gateway->transaction->create($params);
+    $class->gateway->transaction->credit($params);
 }
 
 =head2 find()

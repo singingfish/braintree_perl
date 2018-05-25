@@ -43,7 +43,7 @@ settlement.
 
 sub sale {
     my ($class, $token, $params) = @_;
-    WebService::Braintree::Transaction->sale({
+    $class->gateway->transaction->sale({
         %{$params//{}},
         payment_method_token => $token,
         options => { submit_for_settlement => 1 },
