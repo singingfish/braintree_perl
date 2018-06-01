@@ -11,7 +11,7 @@ WebService::Braintree::AddOn
 
 =head1 PURPOSE
 
-This class lists all add-ons
+This class lists all add-ons.
 
 =cut
 
