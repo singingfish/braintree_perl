@@ -121,7 +121,7 @@ appropriately.
 
 sub credit {
     my ($class, $id, $params) = @_;
-    WebService::Braintree::Transaction->credit({
+    $class->gateway->transaction->credit({
         %{$params // {}},
         customer_id => $id,
     });
@@ -137,7 +137,7 @@ appropriately.
 
 sub sale {
     my ($class, $id, $params) = @_;
-    WebService::Braintree::Transaction->sale({
+    $class->gateway->transaction->sale({
         %{$params // {}},
         customer_id => $id,
     });
