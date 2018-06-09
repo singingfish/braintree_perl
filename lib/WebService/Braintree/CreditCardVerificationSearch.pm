@@ -5,8 +5,6 @@ package WebService::Braintree::CreditCardVerificationSearch;
 use 5.010_001;
 use strictures 1;
 
-use Moose;
-
 =head1 NAME
 
 WebService::Braintree::CreditCardVerificationSearch
@@ -17,7 +15,8 @@ This class represents a search for credit card verifications.
 
 =cut
 
-extends 'WebService::Braintree::AdvancedSearch';
+use Moose;
+with 'WebService::Braintree::Role::AdvancedSearch';
 
 use WebService::Braintree::CreditCard::CardType;
 
@@ -25,15 +24,13 @@ use WebService::Braintree::CreditCard::CardType;
 
 =cut
 
-my $field = WebService::Braintree::AdvancedSearchFields->new(metaclass => __PACKAGE__->meta);
-
 =head2 id
 
 This is a L<text field|WebService::Braintree::AdvancedSearchNodes/"Text Field">. It will restrict the search to a specific id.
 
 =cut
 
-$field->text("id");
+__PACKAGE__->text_field('id');
 
 =head2 ids
 
@@ -42,7 +39,7 @@ specific ids.
 
 =cut
 
-$field->multiple_values("ids");
+__PACKAGE__->multiple_values_field('ids');
 
 =head2 credit_card_cardholder_name
 
@@ -51,7 +48,7 @@ cards with a specific cardholder name.
 
 =cut
 
-$field->text("credit_card_cardholder_name");
+__PACKAGE__->text_field('credit_card_cardholder_name');
 
 =head2 credit_card_expiration_date
 
@@ -60,7 +57,7 @@ credit cards with a specific expiration date.
 
 =cut
 
-$field->equality("credit_card_expiration_date");
+__PACKAGE__->equality_field('credit_card_expiration_date');
 
 =head2 credit_card_number
 
@@ -69,7 +66,7 @@ credit cards with a specific card number.
 
 =cut
 
-$field->partial_match("credit_card_number");
+__PACKAGE__->partial_match_field('credit_card_number');
 
 =head2 credit_card_card_type
 
@@ -79,7 +76,7 @@ within L<this list|WebService::Braintree::CreditCard::CardType/All>.
 
 =cut
 
-$field->multiple_values("credit_card_card_type", @{WebService::Braintree::CreditCard::CardType::All()});
+__PACKAGE__->multiple_values_field('credit_card_card_type', @{WebService::Braintree::CreditCard::CardType::All()});
 
 =head2 created_at
 
@@ -88,7 +85,7 @@ between the two dates.
 
 =cut
 
-$field->range("created_at");
+__PACKAGE__->range_field('created_at');
 
 __PACKAGE__->meta->make_immutable;
 

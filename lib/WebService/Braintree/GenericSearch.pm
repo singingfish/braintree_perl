@@ -7,12 +7,10 @@ use 5.010_001;
 use strictures 1;
 
 use Moose;
-extends 'WebService::Braintree::AdvancedSearch';
+with 'WebService::Braintree::Role::AdvancedSearch';
 
-my $field = WebService::Braintree::AdvancedSearchFields->new(metaclass => __PACKAGE__->meta);
-
-$field->text("id");
-$field->multiple_values("ids");
+__PACKAGE__->text_field("id");
+__PACKAGE__->multiple_values_field("ids");
 
 __PACKAGE__->meta->make_immutable;
 
