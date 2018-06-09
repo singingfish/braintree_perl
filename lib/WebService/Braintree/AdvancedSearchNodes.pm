@@ -1,5 +1,9 @@
 # vim: sw=4 ts=4 ft=perl
 
+# Notes:
+# 1. name() is only used in one error message
+# 2. searcher() is returned so that every method can chain()
+
 {
     package WebService::Braintree::AdvancedSearchNodes;
 
