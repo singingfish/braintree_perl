@@ -14,7 +14,7 @@ use Moose::Util::TypeConstraints;
 foreach my $type_proto (qw(
     AccountUpdaterDailyReport
     AchMandate AddOn Address AmexExpressCheckoutCard AndroidPayCard
-    ApplePay ApplePayCard
+    ApplePay ApplePayCard ApplePayOptions
     AuthorizationAdjustment
     BinData CoinbaseAccount
     ConnectedMerchantPayPalStatusChanged

@@ -242,12 +242,29 @@ sub BUILD {
         $wrapper = $wrapper->{api_error_response};
     }
 
-    my $meta = $self->meta;
-    foreach my $attr ($meta->get_all_attributes) {
-        my $name = $attr->name;
-        next unless exists $wrapper->{$name};
+    # Yes, this is a duplicate list of the attributes and could be
+    # retrieved with $self->meta->get_all_attributes(). But, we use
+    # Moo, not Moose, so there's no $self->meta.
+    foreach my $attr (qw(
+        account_updater_daily_report
+        api_error_response
+        connected_merchant_paypal_status_changed
+        connected_merchant_status_transitioned
+        disbursement
+        dispute
+        granted_payment_instrument_update
+        ideal_payment
+        kind
+        merchant_account
+        partner_merchant
+        subscription
+        subject
+        timestamp
+        transaction
+    )) {
+        next unless exists $wrapper->{$attr};
 
-        $self->$name($wrapper->{$name});
+        $self->$attr($wrapper->{$attr});
     }
 }
 

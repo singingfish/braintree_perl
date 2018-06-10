@@ -31,13 +31,13 @@ sub field {
         my $node_class = "WebService::Braintree::${proto}";
         $default = sub {
             return $node_class->new(
-                name => $name,
                 searcher => shift,
+                name => $name,
             );
         };
     }
 
-    $class->meta->add_attribute($name => (
+    $class->can('has')->($name => (
         is => 'rw',
         default => $default,
     ));
