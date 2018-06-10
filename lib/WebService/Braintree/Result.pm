@@ -79,28 +79,28 @@ result does not have anything for that method, it will return undef.
 =cut
 
 my $response_objects = {
-    add_on => 'WebService::Braintree::_::AddOn',
-    address => 'WebService::Braintree::_::Address',
-    apple_pay_card => 'WebService::Braintree::_::ApplePayCard',
-    apple_pay_options => 'WebService::Braintree::ApplePayOptions',
-    credit_card => 'WebService::Braintree::_::CreditCard',
-    credit_card_verification => 'WebService::Braintree::_::CreditCardVerification',
-    customer => 'WebService::Braintree::_::Customer',
-    dispute => 'WebService::Braintree::_::Dispute',
-    discount => 'WebService::Braintree::_::Discount',
-    document_upload => 'WebService::Braintree::_::DocumentUpload',
-    europe_bank_account => 'WebService::Braintree::_::EuropeBankAccount',
-    evidence => 'WebService::Braintree::_::Dispute::Evidence',
-    ideal_payment => 'WebService::Braintree::IdealPayment',
-    merchant => 'WebService::Braintree::_::Merchant',
-    merchant_account => 'WebService::Braintree::_::MerchantAccount',
-    payment_method_nonce => 'WebService::Braintree::_::PaymentMethodNonce',
-    paypal_account => 'WebService::Braintree::_::PayPalAccount',
-    settlement_batch_summary => 'WebService::Braintree::_::SettlementBatchSummary',
-    subscription => 'WebService::Braintree::_::Subscription',
-    transaction => 'WebService::Braintree::_::Transaction',
-    us_bank_account => 'WebService::Braintree::_::UsBankAccount',
-    verification => 'WebService::Braintree::_::CreditCardVerification',
+    add_on => 'AddOn',
+    address => 'Address',
+    apple_pay_card => 'ApplePayCard',
+    apple_pay_options => 'ApplePayOptions',
+    credit_card => 'CreditCard',
+    credit_card_verification => 'CreditCardVerification',
+    customer => 'Customer',
+    dispute => 'Dispute',
+    discount => 'Discount',
+    document_upload => 'DocumentUpload',
+    europe_bank_account => 'EuropeBankAccount',
+    evidence => 'Dispute::Evidence',
+    ideal_payment => 'IdealPayment',
+    merchant => 'Merchant',
+    merchant_account => 'MerchantAccount',
+    payment_method_nonce => 'PaymentMethodNonce',
+    paypal_account => 'PayPalAccount',
+    settlement_batch_summary => 'SettlementBatchSummary',
+    subscription => 'Subscription',
+    transaction => 'Transaction',
+    us_bank_account => 'UsBankAccount',
+    verification => 'CreditCardVerification',
 };
 
 =head2 response
@@ -111,22 +111,13 @@ This is the actual response received from Braintree.
 
 has response => ( is => 'ro' );
 
-my $meta = __PACKAGE__->meta;
-
-sub patch_in_response_accessors {
-    my $field_rules = shift;
-    while (my($key, $rule) = each(%$field_rules)) {
-        $meta->add_method($key => sub {
-            my $self = shift;
-            my $response = $self->response();
-            return if !$response->{$key};
-
-            return $rule->new($response->{$key});
-        });
-    }
+while (my ($method, $classname) = each %$response_objects) {
+    has $method => (
+        is => 'ro',
+        isa => "WebService::Braintree::_::${classname}",
+        coerce => 1,
+    );
 }
-
-patch_in_response_accessors($response_objects);
 
 =head2 is_success
 
