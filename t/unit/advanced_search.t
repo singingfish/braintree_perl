@@ -14,6 +14,8 @@ use WebService::Braintree::TestHelper;
     use Moose;
     with 'WebService::Braintree::Role::AdvancedSearch';
 
+    use constant FIELDS => [];
+
     __PACKAGE__->text_field('billing_company');
     __PACKAGE__->equality_field('credit_card_expiration_date');
     __PACKAGE__->range_field('amount');

@@ -7,21 +7,15 @@ use 5.010_001;
 use strictures 1;
 
 use Moose::Role;
-use MooseX::ClassAttribute;
 
 use WebService::Braintree::AdvancedSearchNodes;
 use WebService::Braintree::Util qw(is_arrayref);
-
-class_has fields => (
-    is => 'rw',
-    default => sub { [] },
-);
 
 sub field {
     my $class = shift;
     my ($proto, $name) = @_;
 
-    push @{$class->fields}, $name;
+    push @{$class->FIELDS}, $name;
 
     my $default;
     if (ref $proto) {
@@ -76,7 +70,7 @@ sub to_hash {
         $_ => $self->$_->criteria
     } grep {
         $self->$_->active
-    } @{$class->fields};
+    } @{$class->FIELDS};
 
     return \%hash;
 }

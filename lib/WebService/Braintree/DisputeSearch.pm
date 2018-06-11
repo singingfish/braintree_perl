@@ -5,8 +5,6 @@ package WebService::Braintree::DisputeSearch;
 use 5.010_001;
 use strictures 1;
 
-use Moose;
-
 =head1 NAME
 
 WebService::Braintree::DisputeSearch
@@ -17,7 +15,10 @@ This class represents a search for disputes.
 
 =cut
 
+use Moose;
 with 'WebService::Braintree::Role::AdvancedSearch';
+
+use constant FIELDS => [];
 
 =head1 FIELDS
 

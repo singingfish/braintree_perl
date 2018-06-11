@@ -9,6 +9,8 @@ use strictures 1;
 use Moose;
 with 'WebService::Braintree::Role::AdvancedSearch';
 
+use constant FIELDS => [];
+
 __PACKAGE__->text_field("id");
 __PACKAGE__->multiple_values_field("ids");
 

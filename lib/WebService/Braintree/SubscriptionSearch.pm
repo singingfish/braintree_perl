@@ -21,6 +21,8 @@ objects of this class through the search interface.
 use Moose;
 with 'WebService::Braintree::Role::AdvancedSearch';
 
+use constant FIELDS => [];
+
 use WebService::Braintree::Subscription::Status;
 
 =head1 FIELDS
