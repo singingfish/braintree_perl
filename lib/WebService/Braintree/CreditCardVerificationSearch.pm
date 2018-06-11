@@ -18,6 +18,8 @@ This class represents a search for credit card verifications.
 use Moose;
 with 'WebService::Braintree::Role::AdvancedSearch';
 
+use constant FIELDS => [];
+
 use WebService::Braintree::CreditCard::CardType;
 
 =head1 FIELDS
