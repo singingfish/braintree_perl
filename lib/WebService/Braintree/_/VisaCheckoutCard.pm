@@ -22,9 +22,12 @@ use MooseX::Aliases;
 
 extends 'WebService::Braintree::_';
 
-use WebService::Braintree::_::Address;
-use WebService::Braintree::_::CreditCardVerification;
-use WebService::Braintree::_::Subscription;
+use Types::Standard qw(ArrayRef);
+use WebService::Braintree::Types qw(
+    Address
+    CreditCardVerification
+    Subscription
+);
 
 =head1 ATTRIBUTES
 
@@ -39,7 +42,7 @@ L<address|WebService::Braintree::_::Address/>.
 
 has billing_address => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::Address',
+    isa => Address,
     coerce => 1,
 );
 
@@ -278,7 +281,7 @@ L<subscriptions|WebService::Braintree::_::Subscription/>.
 
 has subscriptions => (
     is => 'ro',
-    isa => 'ArrayRefOfSubscription',
+    isa => ArrayRef[Subscription],
     coerce => 1,
 );
 
@@ -321,7 +324,7 @@ L<credit card verifications|WebService::Braintree::_::CreditCardVerification/>.
 
 has verifications => (
     is => 'ro',
-    isa => 'ArrayRefOfCreditCardVerification',
+    isa => ArrayRef[CreditCardVerification],
     coerce => 1,
 );
 

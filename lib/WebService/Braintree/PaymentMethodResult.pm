@@ -20,6 +20,22 @@ This class is a sibling class to L<WebService::Braintree::Result>.
 
 use Moose;
 
+use WebService::Braintree::Types qw(
+    AmexExpressCheckoutCard
+    AndroidPayCard
+    ApplePayCard
+    CoinbaseAccount
+    CreditCard
+    EuropeBankAccount
+    MasterpassCard
+    PaymentMethodNonce
+    PayPalAccount
+    UsBankAccount
+    VenmoAccount
+    VisaCheckoutCard
+    UnknownPaymentMethod
+);
+
 =head1 METHODS
 
 =cut
@@ -65,25 +81,25 @@ will be in the C<< unknown() >>.
 =cut
 
 my %payment_methods = (
-    amex_express_checkout_card => 'AmexExpressCheckoutCard',
-    android_pay_card => 'AndroidPayCard',
-    apple_pay_card => 'ApplePayCard',
-    coinbase_account => 'CoinbaseAccount',
-    credit_card => 'CreditCard',
-    europe_bank_account => 'EuropeBankAccount',
-    masterpass_card => 'MasterpassCard',
-    payment_method_nonce => 'PaymentMethodNonce',
-    paypal_account => 'PayPalAccount',
-    us_bank_account => 'UsBankAccount',
-    venmo_account => 'VenmoAccount',
-    visa_checkout_card => 'VisaCheckoutCard',
-    unknown => 'UnknownPaymentMethod',
+    amex_express_checkout_card => AmexExpressCheckoutCard,
+    android_pay_card => AndroidPayCard,
+    apple_pay_card => ApplePayCard,
+    coinbase_account => CoinbaseAccount,
+    credit_card => CreditCard,
+    europe_bank_account => EuropeBankAccount,
+    masterpass_card => MasterpassCard,
+    payment_method_nonce => PaymentMethodNonce,
+    paypal_account => PayPalAccount,
+    us_bank_account => UsBankAccount,
+    venmo_account => VenmoAccount,
+    visa_checkout_card => VisaCheckoutCard,
+    unknown => UnknownPaymentMethod,
 );
 
-while (my ($method, $classname) = each %payment_methods) {
+while (my ($method, $type) = each %payment_methods) {
     has $method => (
         is => 'ro',
-        isa => "WebService::Braintree::_::${classname}",
+        isa => $type,
         coerce => 1,
     );
 }

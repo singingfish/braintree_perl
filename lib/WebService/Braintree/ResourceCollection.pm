@@ -20,17 +20,19 @@ This class will only be created as part of a L<response|WebService::Braintree::R
 
 use Moose;
 
+use Types::Standard qw(CodeRef HashRef);
+
 # These attributes and methods are undocumented because they're meant to be
 # internal-use only. But, prepending underscores makes the code ugly.
 
-has 'callback' => (
+has callback => (
     is => 'ro',
-    isa => 'CodeRef',
+    isa => CodeRef,
     required => 1,
 );
-has 'response' => (
+has response => (
     is => 'ro',
-    isa => 'HashRef',
+    isa => HashRef,
     required => 1,
 );
 

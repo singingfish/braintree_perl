@@ -21,10 +21,13 @@ use Moose;
 
 extends 'WebService::Braintree::_';
 
-use WebService::Braintree::_::Dispute::Evidence;
-use WebService::Braintree::_::Dispute::HistoryEvent;
-use WebService::Braintree::_::Dispute::Transaction;
-use WebService::Braintree::_::Dispute::TransactionDetails;
+use Types::Standard qw(ArrayRef);
+use WebService::Braintree::Types qw(
+    Dispute_Evidence
+    Dispute_HistoryEvent
+    Dispute_Transaction
+    Dispute_TransactionDetails
+);
 
 =head1 ATTRIBUTES
 
@@ -124,7 +127,7 @@ arrayref of L<WebService::Braintree::_::Dispute::Evidence/>.
 
 has evidence => (
     is => 'ro',
-    isa => 'ArrayRefOfDisputeEvidence',
+    isa => ArrayRef[Dispute_Evidence],
     coerce => 1,
 );
 
@@ -269,7 +272,7 @@ arrayref of L<WebService::Braintree::_::Dispute::Evidence/>.
 
 has status_history => (
     is => 'ro',
-    isa => 'ArrayRefOfDisputeHistoryEvent',
+    isa => ArrayRef[Dispute_HistoryEvent],
     coerce => 1,
 );
 
@@ -282,7 +285,7 @@ object of type L<WebService::Braintree::_::Dispute::Transaction/>.
 
 has transaction => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::Dispute::Transaction',
+    isa => Dispute_Transaction,
     coerce => 1,
 );
 
@@ -295,7 +298,7 @@ object of type L<WebService::Braintree::_::Dispute::TransactionDetails/>.
 
 has transaction_details => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::Dispute::TransactionDetails',
+    isa => Dispute_TransactionDetails,
     coerce => 1,
 );
 

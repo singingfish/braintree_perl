@@ -22,6 +22,10 @@ use MooseX::Aliases;
 
 extends 'WebService::Braintree::_';
 
+use WebService::Braintree::Types qw(
+    MerchantAccount
+);
+
 =head1 ATTRIBUTES
 
 =cut
@@ -97,7 +101,7 @@ object of type L<WebService::Braintree::_::MerchantAccount/>.
 
 has merchant_account => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::MerchantAccount',
+    isa => MerchantAccount,
     coerce => 1,
 );
 

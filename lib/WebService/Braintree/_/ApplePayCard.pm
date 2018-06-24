@@ -22,7 +22,10 @@ use MooseX::Aliases;
 
 extends 'WebService::Braintree::_';
 
-use WebService::Braintree::_::Subscription;
+use Types::Standard qw(ArrayRef);
+use WebService::Braintree::Types qw(
+    Subscription
+);
 
 # Why is this here?
 use WebService::Braintree::ApplePayCard::CardType;
@@ -166,7 +169,7 @@ L<subscriptions|WebService::Braintree::_::Subscription/>.
 
 has subscriptions => (
     is => 'ro',
-    isa => 'ArrayRefOfSubscription',
+    isa => ArrayRef[Subscription],
     coerce => 1,
 );
 

@@ -21,7 +21,10 @@ use Moose;
 
 extends 'WebService::Braintree::_';
 
-use WebService::Braintree::_::SettlementBatchSummaryRecord;
+use Types::Standard qw(ArrayRef);
+use WebService::Braintree::Types qw(
+    SettlementBatchSummaryRecord
+);
 
 =head1 ATTRIBUTES
 
@@ -35,7 +38,7 @@ This is the records of the summary. This will be an arrayref of type L<WebServic
 
 has records => (
     is => 'ro',
-    isa => 'ArrayRefOfSettlementBatchSummaryRecord',
+    isa => ArrayRef[SettlementBatchSummaryRecord],
     coerce => 1,
 );
 
