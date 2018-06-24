@@ -19,7 +19,13 @@ validation errors.
 use Moose;
 use MooseX::Aliases;
 
-use WebService::Braintree::ValidationErrorCollection;
+use WebService::Braintree::Types qw(
+    CreditCardVerification
+    MerchantAccount
+    Subscription
+    Transaction
+    ValidationErrorCollection
+);
 
 =head1 METHODS
 
@@ -38,7 +44,7 @@ of specfic validation errors associatd with this result.
 
 has errors => (
     is => 'ro',
-    isa => 'WebService::Braintree::ValidationErrorCollection',
+    isa => ValidationErrorCollection,
     coerce => 1,
 );
 
@@ -51,7 +57,7 @@ This returns the L<merchant account/WebService::Braintree::_::MerchantAccount>
 
 has merchant_account => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::MerchantAccount',
+    isa => MerchantAccount,
     coerce => 1,
 );
 
@@ -94,7 +100,7 @@ This returns the L<subscription/WebService::Braintree::_::Subscription>
 
 has subscription => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::Subscription',
+    isa => Subscription,
     coerce => 1,
 );
 
@@ -107,7 +113,7 @@ This returns the L<transaction/WebService::Braintree::_::Transaction>
 
 has transaction => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::Transaction',
+    isa => Transaction,
     coerce => 1,
 );
 
@@ -120,7 +126,7 @@ This returns the L<verification/WebService::Braintree::_::CreditCardVerification
 
 has verification => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::CreditCardVerification',
+    isa => CreditCardVerification,
     coerce => 1,
     alias => 'credit_card_verification',
 );

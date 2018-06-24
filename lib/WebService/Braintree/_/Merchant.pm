@@ -21,6 +21,11 @@ use Moose;
 
 extends 'WebService::Braintree::_';
 
+use Types::Standard qw(ArrayRef);
+use WebService::Braintree::Types qw(
+    MerchantAccount
+);
+
 =head1 ATTRIBUTES
 
 =cut
@@ -94,7 +99,7 @@ associated with this merchant.
 
 has merchant_accounts => (
     is => 'ro',
-    isa => 'ArrayRefOfMerchantAccount',
+    isa => ArrayRef[MerchantAccount],
     coerce => 1,
 );
 
