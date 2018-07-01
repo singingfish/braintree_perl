@@ -17,12 +17,14 @@ This class will only be created as part of a L<response|WebService::Braintree::R
 
 =cut
 
-use Moose;
-use MooseX::Aliases;
+use Moo;
+use MooX::Aliases;
 
 extends 'WebService::Braintree::_';
 
-use WebService::Braintree::_::MerchantAccount::AddressDetails;
+use WebService::Braintree::Types qw(
+    MerchantAccount_AddressDetails
+);
 
 =head1 ATTRIBUTES
 
@@ -38,7 +40,7 @@ C<< address_details() >> is an alias for this attribute.
 
 has address => (
     is => 'ro',
-    isa => 'WebService::Braintree::_::MerchantAccount::AddressDetails',
+    isa => MerchantAccount_AddressDetails,
     coerce => 1,
     alias => 'address_details',
 );

@@ -15,7 +15,7 @@ This class finds US Bank Account payment methods.
 
 =cut
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

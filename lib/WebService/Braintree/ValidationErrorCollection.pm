@@ -17,7 +17,7 @@ This class will only be created as part of a L<error response|WebService::Braint
 
 =cut
 
-use Moose;
+use Moo;
 use WebService::Braintree::ValidationError;
 
 =head1 METHODS

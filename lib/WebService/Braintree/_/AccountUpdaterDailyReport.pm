@@ -17,8 +17,8 @@ This class will only be created as part of a L<response|WebService::Braintree::R
 
 =cut
 
-use Moose;
-use MooseX::Aliases;
+use Moo;
+use MooX::Aliases;
 
 extends 'WebService::Braintree::_';
 

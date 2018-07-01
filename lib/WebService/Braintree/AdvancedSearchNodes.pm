@@ -1,12 +1,16 @@
 # vim: sw=4 ts=4 ft=perl
 
+# Notes:
+# 1. name() is only used in one error message
+# 2. searcher() is returned so that every method can chain()
+
 {
     package WebService::Braintree::AdvancedSearchNodes;
 
     use 5.010_001;
     use strictures 1;
 
-    use Moose;
+    use Moo;
 }
 
 {
@@ -15,7 +19,7 @@
     use 5.010_001;
     use strictures 1;
 
-    use Moose;
+    use Moo;
 
     has searcher => (is => 'ro');
     has name => (is => 'ro');
@@ -46,7 +50,7 @@
     use 5.010_001;
     use strictures 1;
 
-    use Moose;
+    use Moo;
     extends 'WebService::Braintree::SearchNode';
 
     sub is {
@@ -63,7 +67,7 @@
     use 5.010_001;
     use strictures 1;
 
-    use Moose;
+    use Moo;
     extends 'WebService::Braintree::IsNode';
 
     sub is_not {
@@ -80,7 +84,7 @@
     use 5.010_001;
     use strictures 1;
 
-    use Moose;
+    use Moo;
     extends 'WebService::Braintree::SearchNode';
 
     sub default_criteria {
@@ -107,7 +111,7 @@
     use 5.010_001;
     use strictures 1;
 
-    use Moose;
+    use Moo;
     extends 'WebService::Braintree::EqualityNode';
 
     sub starts_with {
@@ -129,7 +133,7 @@
     use 5.010_001;
     use strictures 1;
 
-    use Moose;
+    use Moo;
     extends 'WebService::Braintree::PartialMatchNode';
 
     sub contains {
@@ -146,7 +150,7 @@
     use 5.010_001;
     use strictures 1;
 
-    use Moose;
+    use Moo;
     extends 'WebService::Braintree::EqualityNode';
 
     use overload ( '>=' => 'min', '<=' => 'max');
@@ -177,7 +181,7 @@
     use strictures 1;
 
     use Carp;
-    use Moose;
+    use Moo;
     use WebService::Braintree::Util qw(is_arrayref);
     extends 'WebService::Braintree::SearchNode';
 

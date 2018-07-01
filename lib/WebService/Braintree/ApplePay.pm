@@ -15,7 +15,7 @@ This class lists, registers, and unregisters ApplePay domains.
 
 =cut
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

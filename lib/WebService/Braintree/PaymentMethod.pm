@@ -15,7 +15,7 @@ This class creates and finds payment methods.
 
 =cut
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

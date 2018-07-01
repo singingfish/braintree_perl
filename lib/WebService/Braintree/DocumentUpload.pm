@@ -15,7 +15,7 @@ This class creates document uploads.
 
 =cut
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

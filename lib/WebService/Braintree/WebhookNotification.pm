@@ -23,7 +23,7 @@ object or provides a verification of it.
 
 use WebService::Braintree::WebhookNotification::Kind;
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

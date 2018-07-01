@@ -15,7 +15,7 @@ This class creates, updates, deletes, and finds customers.
 
 =cut
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

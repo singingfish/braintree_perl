@@ -22,8 +22,8 @@ limited functionality relative to the other payment methods.
 
 =cut
 
-use Moose;
-use MooseX::Aliases;
+use Moo;
+use MooX::Aliases;
 
 extends 'WebService::Braintree::_';
 

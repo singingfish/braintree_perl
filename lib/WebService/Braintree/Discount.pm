@@ -15,7 +15,7 @@ This class lists all discounts.
 
 =cut
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

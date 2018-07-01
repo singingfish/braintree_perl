@@ -17,12 +17,15 @@ This class will only be created as part of a L<response|WebService::Braintree::R
 
 =cut
 
-use Moose;
+use Moo;
 
 extends 'WebService::Braintree::_';
 
-use WebService::Braintree::_::AddOn;
-use WebService::Braintree::_::Discount;
+use Types::Standard qw(ArrayRef);
+use WebService::Braintree::Types qw(
+    AddOn
+    Discount
+);
 
 =head1 ATTRIBUTES
 
@@ -37,7 +40,7 @@ L<add-ons|WebService::Braintree::_::AddOn/>.
 
 has add_ons => (
     is => 'ro',
-    isa => 'ArrayRefOfAddOn',
+    isa => ArrayRef[AddOn],
     coerce => 1,
 );
 
@@ -100,7 +103,7 @@ L<discounts|WebService::Braintree::_::Discount/>.
 
 has discounts => (
     is => 'ro',
-    isa => 'ArrayRefOfDiscount',
+    isa => ArrayRef[Discount],
     coerce => 1,
 );
 
