@@ -15,7 +15,7 @@ This class represents a search for credit card verifications.
 
 =cut
 
-use Moose;
+use Moo;
 with 'WebService::Braintree::Role::AdvancedSearch';
 
 use constant FIELDS => [];

@@ -15,7 +15,7 @@ This class finds, creates, updates, and deletes PayPal accounts.
 
 =cut
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

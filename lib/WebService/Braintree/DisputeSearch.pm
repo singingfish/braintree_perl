@@ -15,7 +15,7 @@ This class represents a search for disputes.
 
 =cut
 
-use Moose;
+use Moo;
 with 'WebService::Braintree::Role::AdvancedSearch';
 
 use constant FIELDS => [];

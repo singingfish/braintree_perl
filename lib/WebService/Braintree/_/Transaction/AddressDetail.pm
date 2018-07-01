@@ -17,7 +17,7 @@ This class will only be created as part of a L<response|WebService::Braintree::R
 use 5.010_001;
 use strictures 1;
 
-use Moose;
+use Moo;
 
 extends 'WebService::Braintree::_';
 

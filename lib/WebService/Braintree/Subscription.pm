@@ -19,7 +19,7 @@ and lists all subscriptions.
 use WebService::Braintree::SubscriptionGateway;
 use WebService::Braintree::Subscription::Status;
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

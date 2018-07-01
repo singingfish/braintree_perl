@@ -17,7 +17,7 @@ In the object interface, this class provides the interface into the API.
 
 =cut
 
-use Moose;
+use Moo;
 use Class::Load qw(try_load_class);
 
 use WebService::Braintree::HTTP;

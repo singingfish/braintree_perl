@@ -18,7 +18,7 @@ This class is a sibling class to L<WebService::Braintree::Result>.
 
 =cut
 
-use Moose;
+use Moo;
 
 use WebService::Braintree::Types qw(
     AmexExpressCheckoutCard

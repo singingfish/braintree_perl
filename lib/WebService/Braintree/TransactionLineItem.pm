@@ -15,7 +15,7 @@ This class finds transaction line items.
 
 =cut
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

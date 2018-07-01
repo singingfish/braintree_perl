@@ -15,7 +15,7 @@ This class provisions merchants from raw ApplePay.
 
 =cut
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

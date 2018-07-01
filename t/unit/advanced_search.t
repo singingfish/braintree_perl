@@ -11,7 +11,7 @@ use WebService::Braintree::TestHelper;
 
 {
     package WebService::Braintree::AdvancedSearchTest;
-    use Moose;
+    use Moo;
     with 'WebService::Braintree::Role::AdvancedSearch';
 
     use constant FIELDS => [];

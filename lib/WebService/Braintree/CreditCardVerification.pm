@@ -15,7 +15,7 @@ This class searches, lists, and finds credit card verifications.
 
 =cut
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

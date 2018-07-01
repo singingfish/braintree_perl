@@ -16,7 +16,7 @@ Mobile and Javascript.
 
 =cut
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

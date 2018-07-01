@@ -5,7 +5,7 @@ package WebService::Braintree::_::Subscription::StatusDetail;
 use 5.010_001;
 use strictures 1;
 
-use Moose;
+use Moo;
 
 =head1 NAME
 

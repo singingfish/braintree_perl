@@ -15,7 +15,7 @@ This class lists all subscription plans.
 
 =cut
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

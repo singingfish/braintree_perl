@@ -21,7 +21,7 @@ the distribution knows what to do.
 =cut
 
 use WebService::Braintree::Gateway;
-use Moose;
+use Moo;
 
 # IS THIS UNUSED? I cannot find reference in the current documentation for Ruby
 # or Node.JS nor is it referenced anywhere else in the code.

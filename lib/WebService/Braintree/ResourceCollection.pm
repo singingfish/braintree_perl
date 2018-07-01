@@ -18,7 +18,7 @@ This class will only be created as part of a L<response|WebService::Braintree::R
 
 =cut
 
-use Moose;
+use Moo;
 
 use Types::Standard qw(CodeRef HashRef);
 

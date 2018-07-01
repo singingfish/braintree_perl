@@ -18,7 +18,7 @@ objects of this class through the search interface.
 
 =cut
 
-use Moose;
+use Moo;
 with 'WebService::Braintree::Role::AdvancedSearch';
 
 use constant FIELDS => [];

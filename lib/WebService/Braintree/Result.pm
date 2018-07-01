@@ -17,7 +17,7 @@ This class is a sibling class to L<WebService::Braintree::PaymentMethodResult>.
 
 =cut
 
-use Moose;
+use Moo;
 
 use WebService::Braintree::Types qw(
     AddOn

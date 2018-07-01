@@ -21,7 +21,7 @@ use WebService::Braintree::Transaction::Source;
 use WebService::Braintree::Transaction::Status;
 use WebService::Braintree::Transaction::Type;
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

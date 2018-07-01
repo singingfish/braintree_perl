@@ -19,7 +19,7 @@ use WebService::Braintree::Dispute::Kind;
 use WebService::Braintree::Dispute::Reason;
 use WebService::Braintree::Dispute::Status;
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 

@@ -16,8 +16,8 @@ validation errors.
 
 =cut
 
-use Moose;
-use MooseX::Aliases;
+use Moo;
+use MooX::Aliases;
 
 use WebService::Braintree::Types qw(
     CreditCardVerification

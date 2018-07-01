@@ -26,7 +26,7 @@ This class creates, updates, deletes, and finds credit cards.
 
 =cut
 
-use Moose;
+use Moo;
 
 with 'WebService::Braintree::Role::Interface';
 
