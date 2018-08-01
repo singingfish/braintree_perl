@@ -43,7 +43,7 @@ around BUILDARGS => sub {
 
     if ( !exists $args->{config} ) {
         $args = {
-            config => WebService::Braintree::Config->new( $args ),
+            config => WebService::Braintree::Configuration->new( $args ),
         };
     }
 
