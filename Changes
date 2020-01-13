@@ -1,4 +1,6 @@
 Revision history for WebService-Braintree
+1.8     2020-01-13
+        Adding some missing validation's fields for creating level 3 transactions
 1.7     2018-07-08
         Forgot to move some 'use Moose::Role' statements to 'use Moo::Role'
 1.6     2018-07-02

@@ -245,6 +245,9 @@ sub transaction_signature{
         service_fee_amount => 1,
         three_d_secure_token => 1,
         line_items => 1,
+        shipping_amount => 1,
+        discount_amount => 1,
+        ships_from_postal_code => 1,
     };
 }
 
